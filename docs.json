@@ -1,68 +1,128 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Proxify Documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#7C3AED",
+    "light": "#A855F7",
+    "dark": "#5B21B6"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "User Guide",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
               "index",
               "quickstart",
-              "development"
+              "features-overview",
+              "account-setup",
+              "first-touchpoint"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Touchpoints",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "touchpoints/overview",
+              "touchpoints/creating-touchpoints",
+              "touchpoints/managing-touchpoints",
+              "touchpoints/link-versioning",
+              "touchpoints/custom-domains",
+              "touchpoints/multi-channel-routing"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "QR Codes & Visual Tools",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "qr-codes/overview",
+              "qr-codes/generating-qr-codes",
+              "qr-codes/customizing-qr-codes",
+              "qr-codes/branded-qr-codes",
+              "qr-codes/downloading-qr-codes"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Social Media Optimization",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "social-media/overview",
+              "social-media/meta-tags",
+              "social-media/custom-images",
+              "social-media/live-preview",
+              "social-media/platform-optimization"
+            ]
+          },
+          {
+            "group": "Organization & Management",
+            "pages": [
+              "organization/tags",
+              "organization/bulk-operations",
+              "organization/search-and-filter"
+            ]
+          },
+          {
+            "group": "Analytics & Tracking",
+            "pages": [
+              "analytics/overview",
+              "analytics/channel-specific-analytics",
+              "analytics/utm-parameters",
+              "analytics/performance-metrics",
+              "analytics/click-tracking",
+              "analytics/reports"
+            ]
+          },
+          {
+            "group": "Account & Settings",
+            "pages": [
+              "settings/profile",
+              "settings/organization",
+              "settings/security",
+              "settings/notifications"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "Integrations & Advanced",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Marketing Integrations",
             "pages": [
-              "api-reference/introduction"
+              "integrations/overview",
+              "integrations/parcelvoy",
+              "integrations/journey-entrance-setup",
+              "integrations/mautic",
+              "integrations/hubspot"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "AI & Automation",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "ai/overview",
+              "ai/link-optimization",
+              "ai/smart-suggestions",
+              "ai/automated-campaigns"
+            ]
+          },
+          {
+            "group": "Advanced Features",
+            "pages": [
+              "advanced/wifi-sharing",
+              "advanced/nfc-tags",
+              "advanced/bulk-operations",
+              "advanced/webhooks"
+            ]
+          },
+          {
+            "group": "Developer Resources",
+            "pages": [
+              "api/introduction",
+              "api/authentication",
+              "api/touchpoints",
+              "api/analytics",
+              "api/webhooks"
             ]
           }
         ]
@@ -71,19 +131,19 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "Support",
+          "href": "mailto:support@li2.ai",
+          "icon": "life-ring"
         },
         {
           "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
+          "href": "https://community.li2.ai",
+          "icon": "users"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Dashboard",
+          "href": "https://app.li2.ai",
+          "icon": "gauge"
         }
       ]
     }
@@ -95,21 +155,34 @@
   "navbar": {
     "links": [
       {
+        "label": "Pricing",
+        "href": "https://li2.ai/pricing"
+      },
+      {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@li2.ai"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Open Dashboard",
+      "href": "https://app.li2.ai"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/li2ai",
+      "github": "https://github.com/li2ai",
+      "linkedin": "https://linkedin.com/company/li2ai"
     }
+  },
+  "topbar": {
+    "style": "default",
+    "links": [
+      {
+        "label": "Blog",
+        "href": "https://li2.ai/blog"
+      }
+    ]
   }
 }
