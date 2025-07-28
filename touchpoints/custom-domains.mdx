@@ -1,0 +1,371 @@
+---
+title: Custom Domains
+description: Set up custom domains for professional branded short links that build trust and reinforce your brand identity.
+---
+
+# Custom Domains
+
+Custom domains allow you to use your own branded domain for short links instead of the default `li2.ai` domain. This creates professional, trustworthy links that reinforce your brand identity and improve click-through rates.
+
+## Why Use Custom Domains?
+
+<CardGroup cols={2}>
+  <Card title="Professional Branding" icon="badge-check" color="#10B981">
+    Links like `yourbrand.com/summer-sale` look more professional than generic short links.
+  </Card>
+  <Card title="Increased Trust" icon="shield-check" color="#10B981">
+    Users are more likely to click links from domains they recognize and trust.
+  </Card>
+  <Card title="Brand Consistency" icon="palette" color="#10B981">
+    Maintain your brand across all marketing materials and touchpoints.
+  </Card>
+  <Card title="Better Analytics" icon="chart-line" color="#10B981">
+    Custom domains can improve tracking and attribution in your analytics tools.
+  </Card>
+</CardGroup>
+
+**Example**: Instead of `li2.ai/abc123`, you could have `yourbrand.com/product-launch` or `links.yourcompany.com/newsletter`.
+
+---
+
+## Setting Up Custom Domains
+
+### Step 1: Add Your Domain
+
+<Steps>
+  <Step title="Navigate to domain settings">
+    1. Go to **Settings** in the main menu
+    2. Click **Organization Settings** in the left sidebar
+    3. Select **Customize Domain**
+    4. Click **"+ Add Domain"**
+  </Step>
+  
+  <Step title="Enter your domain">
+    In the "Add domain" dialog:
+    1. Enter your custom domain (e.g., `links.yourcompany.com`)
+    2. Click **"Next"** to proceed to verification
+    
+    <Note>
+    **Domain Tips**: Use a subdomain like `links.yourcompany.com` or `go.yourcompany.com` rather than your main domain. This keeps your main website separate from your short links.
+    </Note>
+  </Step>
+</Steps>
+
+### Step 2: Verify Domain Ownership
+
+<Steps>
+  <Step title="Access DNS settings">
+    You'll need to access your domain's DNS settings through your domain registrar or hosting provider (like GoDaddy, Namecheap, Cloudflare, etc.).
+  </Step>
+  
+  <Step title="Add CNAME record">
+    **CNAME Record Setup**:
+    - **Name**: `@` (or leave blank for root domain)
+    - **Target**: `li2.ai`
+    - **TTL**: Default (usually 3600 or "Automatic")
+    
+    This record tells browsers where to find your short links.
+    
+    <Tip>
+    If you're using a subdomain like `links.yourcompany.com`, the Name field should be `links` instead of `@`.
+    </Tip>
+  </Step>
+  
+  <Step title="Add TXT record for verification">
+    **TXT Record Setup**:
+    - **Name**: `_proxify-shortlink-verification`
+    - **Content**: The verification code shown in Proxify (looks like `b3c0fb26-a4a8-4db5-bfac-97cf5ee6e1cc`)
+    - **TTL**: Default
+    
+    This record proves you own the domain.
+  </Step>
+  
+  <Step title="Wait for DNS propagation">
+    <Warning>
+    **DNS changes can take up to 48 hours** to propagate worldwide. Most changes happen within a few hours, but be patient if verification doesn't work immediately.
+    </Warning>
+    
+    You can check if your DNS changes have propagated using online DNS checker tools.
+  </Step>
+  
+  <Step title="Verify in Proxify">
+    1. After setting up both DNS records, return to Proxify
+    2. Click **"Verify"** in the domain verification dialog
+    3. If successful, your domain will show as "Verified" in your domain list
+    4. If verification fails, double-check your DNS records and try again
+    
+    <Note>
+    **Monitor Verification Status**: You can check your domain's verification status anytime in Settings → Organization Settings → Customize Domain. Domains will show status as "Verifying", "Verified", or "Failed".
+    </Note>
+  </Step>
+</Steps>
+
+### Managing Domain Verification
+
+<Steps>
+  <Step title="Check verification status">
+    Navigate to **Settings** → **Organization Settings** → **Customize Domain** to see all your domains with their current verification status:
+    
+    - **Verifying**: Domain verification is in progress
+    - **Verified**: Domain is ready to use in touchpoints
+    - **Failed**: Verification failed, DNS records need attention
+  </Step>
+  
+  <Step title="Re-verify domains when needed">
+    If a domain verification fails or you need to verify again:
+    
+    1. Find your domain in the custom domains list
+    2. Click the **three dots (⋯)** menu next to the domain
+    3. Select **"Verify"** from the action menu
+    4. The system will re-check your DNS records
+    
+    <Tip>
+    **When to re-verify**: After updating DNS records, if verification initially failed, or if a previously verified domain stops working.
+    </Tip>
+  </Step>
+  
+  <Step title="Delete unused domains">
+    You can also remove domains you no longer need:
+    
+    1. Click the **three dots (⋯)** menu next to the domain
+    2. Select **"Delete"** from the action menu
+    3. Confirm deletion
+    
+    <Warning>
+    **Before deleting**: Make sure no active touchpoints are using this domain, as this will break those links.
+    </Warning>
+  </Step>
+</Steps>
+
+---
+
+## Using Custom Domains
+
+### Selecting Domains for Touchpoints
+
+<Steps>
+  <Step title="Domain selection during creation">
+    When creating a new touchpoint:
+    1. In the **Short Link** section, you'll see a **Domain** dropdown
+    2. The default selection is `li2.ai`
+    3. Click the dropdown to see your verified custom domains
+    4. Select your preferred domain for this touchpoint
+    5. Complete the rest of your touchpoint setup normally
+  </Step>
+  
+  <Step title="Search for domains">
+    If you have multiple custom domains:
+    - Use the search box in the domain dropdown
+    - Type part of your domain name to filter options
+    - Select the appropriate domain for your campaign
+  </Step>
+</Steps>
+
+### Important Domain Limitations
+
+<Warning>
+**Cannot Change Domains After Creation**: Once you create a touchpoint with a specific domain, you cannot change it to a different domain. You can only edit the back-half of the link (e.g., changing `summer-sale` to `summer-launch`).
+
+If you need a different domain, you must create a new touchpoint.
+</Warning>
+
+**Planning Considerations**:
+- Choose your domain carefully before creating touchpoints
+- Consider which domain best fits each campaign's purpose
+- Plan domain usage strategy across different marketing channels
+
+---
+
+## Domain Management Best Practices
+
+### Choosing Domain Names
+
+<AccordionGroup>
+  <Accordion title="Subdomain strategies">
+    **Popular subdomain approaches**:
+    - `links.yourcompany.com` - Generic and professional
+    - `go.yourcompany.com` - Short and action-oriented  
+    - `share.yourcompany.com` - Social media focused
+    - `track.yourcompany.com` - Analytics and tracking focused
+    
+    **Benefits of subdomains**:
+    - Keeps short links separate from your main website
+    - Easier DNS management and troubleshooting
+    - Professional appearance while maintaining brand
+  </Accordion>
+  
+  <Accordion title="Domain organization">
+    **Multiple domain strategy**:
+    - **Campaign-specific**: `events.company.com`, `products.company.com`
+    - **Channel-specific**: `social.company.com`, `email.company.com`
+    - **Team-specific**: `sales.company.com`, `marketing.company.com`
+    
+    **Single domain approach**:
+    - Simpler to manage and maintain
+    - Consistent branding across all campaigns
+    - Easier for team members to remember and use
+  </Accordion>
+</AccordionGroup>
+
+### DNS Management Tips
+
+<Steps>
+  <Step title="Keep records documented">
+    - Save DNS record details in a secure location
+    - Document which team member has access to DNS settings
+    - Note the domain registrar and hosting provider information
+    - Keep verification codes for future reference
+  </Step>
+  
+  <Step title="Monitor domain health">
+    - Periodically check that your custom domain links are working
+    - Set up monitoring for critical campaign domains
+    - Have a backup plan if DNS issues arise
+    - Keep contact information current with your domain registrar
+  </Step>
+</Steps>
+
+---
+
+## Troubleshooting Custom Domains
+
+### Common DNS Issues
+
+<AccordionGroup>
+  <Accordion title="Verification fails">
+    **Check these common issues**:
+    
+    **CNAME Record Problems**:
+    - Ensure the target is exactly `li2.ai` (no trailing dots or extra characters)
+    - For subdomains, use the subdomain name (e.g., `links`) not `@`
+    - Some DNS providers require different formats - check their documentation
+    
+    **TXT Record Problems**:
+    - Verify the name is exactly `_proxify-shortlink-verification`
+    - Copy the verification code exactly as shown (no extra spaces)
+    - Some providers require quotes around the TXT record value
+    
+    **DNS Propagation**:
+    - Wait longer - DNS changes can take up to 48 hours
+    - Try verification again after a few hours
+    - Use DNS checker tools to verify your records are visible globally
+  </Accordion>
+  
+  <Accordion title="Domain not appearing in dropdown">
+    **Possible causes**:
+    - Domain verification hasn't completed yet
+    - DNS records weren't set up correctly
+    - Browser cache needs to be refreshed
+    
+    **Solutions**:
+    - Verify domain status in Settings → Organization Settings → Customize Domain
+    - Check that domain shows as "Verified" in your domain list
+    - Refresh your browser and try creating a touchpoint again
+    - Contact support if domain is verified but not appearing
+  </Accordion>
+  
+  <Accordion title="Links not working after setup">
+    **Troubleshooting steps**:
+    - Test the link in an incognito/private browser window
+    - Check if the issue is global or regional (DNS propagation)
+    - Verify the CNAME record is pointing to `li2.ai`
+    - Ensure no other DNS records are conflicting
+    - Contact your DNS provider if issues persist
+  </Accordion>
+</AccordionGroup>
+
+### Getting Help with DNS
+
+<CardGroup cols={2}>
+  <Card title="Contact Your DNS Provider" icon="phone" color="#7C3AED">
+    Your domain registrar or hosting provider can help with DNS record setup if you're having trouble.
+  </Card>
+  <Card title="Use DNS Tools" icon="wrench" color="#A855F7">
+    Online DNS checker tools can help verify your records are set up correctly and propagated.
+  </Card>
+  <Card title="Proxify Support" icon="life-ring" color="#7C3AED">
+    Contact us if verification isn't working after your DNS records are properly configured.
+  </Card>
+  <Card title="Documentation" icon="book" color="#A855F7">
+    Check your DNS provider's documentation for their specific record setup format.
+  </Card>
+</CardGroup>
+
+---
+
+## Domain Security and Maintenance
+
+### Security Considerations
+
+<AccordionGroup>
+  <Accordion title="Domain security">
+    **Protect your custom domains**:
+    - Use strong passwords for domain registrar accounts
+    - Enable two-factor authentication where available
+    - Keep domain registration and DNS contact information current
+    - Monitor domain expiration dates and renew on time
+    
+    **DNS security**:
+    - Only give DNS access to trusted team members
+    - Use DNS providers with good security practices
+    - Monitor DNS records for unauthorized changes
+    - Keep records of all legitimate DNS modifications
+  </Accordion>
+  
+  <Accordion title="Backup planning">
+    **Prepare for issues**:
+    - Have alternative domains ready if needed
+    - Keep backups of DNS record configurations
+    - Document the process for your team
+    - Plan communication strategy if domains experience issues
+    
+    **Business continuity**:
+    - Consider what happens if a domain expires
+    - Plan for DNS provider changes if needed
+    - Keep important domain information accessible to your team
+    - Have contact information for technical support resources
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Related Topics
+
+<CardGroup cols={2}>
+  <Card
+    title="Creating Touchpoints"
+    icon="plus-circle"
+    href="/touchpoints/creating-touchpoints"
+    color="#7C3AED"
+  >
+    Learn how to create touchpoints with custom domains from the start.
+  </Card>
+  <Card
+    title="Managing Touchpoints"
+    icon="gear"
+    href="/touchpoints/managing-touchpoints"
+    color="#A855F7"
+  >
+    Organize and optimize touchpoints across multiple custom domains.
+  </Card>
+  <Card
+    title="Link Versioning"
+    icon="code-branch"
+    href="/touchpoints/link-versioning"
+    color="#7C3AED"
+  >
+    Understand how link changes work with custom domains.
+  </Card>
+  <Card
+    title="Analytics Tracking"
+    icon="chart-line"
+    href="/analytics/overview"
+    color="#A855F7"
+  >
+    Track performance across different custom domains and campaigns.
+  </Card>
+</CardGroup>
+
+---
+
+**Ready to set up your custom domain?** [Go to domain settings →](https://app.li2.ai/) or [contact support for help →](mailto:support@li2.ai)

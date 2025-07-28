@@ -1,0 +1,633 @@
+---
+title: Creating Touchpoints
+description: Comprehensive guide to creating professional marketing touchpoints with advanced configuration, multi-channel routing, and optimization strategies.
+---
+
+# Creating Touchpoints
+
+This comprehensive guide covers everything you need to know about creating professional marketing touchpoints in Proxify. Whether you're building simple campaigns or sophisticated multi-channel marketing strategies, this guide provides the detailed knowledge needed for success.
+
+<Note>
+**New to touchpoints?** Start with our [Create Your First Touchpoint](/first-touchpoint) guide for a step-by-step introduction, then return here for advanced techniques and comprehensive configuration options.
+</Note>
+
+## Planning Your Touchpoint Strategy
+
+Before creating touchpoints, effective planning ensures optimal campaign performance and organization.
+
+### Campaign Strategy Framework
+
+<AccordionGroup>
+  <Accordion title="Define Your Campaign Goals">
+    **Primary Objectives**:
+    - Lead generation and conversion
+    - Brand awareness and engagement
+    - Product promotion and sales
+    - Event promotion and registration
+    - Content distribution and education
+    
+    **Success Metrics**:
+    - Click-through rates by channel
+    - Conversion rates and goal completion
+    - Geographic and demographic insights
+    - Channel performance comparison
+  </Accordion>
+  
+  <Accordion title="Audience & Distribution Planning">
+    **Target Audience Analysis**:
+    - Primary demographics and preferences
+    - Preferred interaction methods (digital vs. physical)
+    - Geographic distribution and timing
+    - Device and platform preferences
+    
+    **Channel Strategy**:
+    - **LINK**: Social media, email, digital advertising
+    - **QR**: Print materials, packaging, events, physical locations
+    - **WiFi**: Venues, events, customer locations *(Coming Soon)*
+    - **NFC**: Business cards, product tags, interactive displays *(Coming Soon)*
+  </Accordion>
+  
+  <Accordion title="Content & Messaging Strategy">
+    **Destination Planning**:
+    - Primary landing page or content
+    - Channel-specific variations for A/B testing
+    - Mobile optimization and responsive design
+    - Conversion path and user experience
+    
+    **Brand Consistency**:
+    - Visual identity across channels
+    - Messaging alignment with brand voice
+    - Professional appearance and trust factors
+    - Integration with existing marketing materials
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Basic Touchpoint Configuration
+
+### Essential Information Setup
+
+<Steps>
+  <Step title="Access touchpoint creation">
+    Navigate to your Proxify dashboard and click **"Create Touchpoint"** or go to **Touchpoints** → **"+ Create Touchpoint"**.
+  </Step>
+  
+  <Step title="Configure basic information">
+    **Touchpoint Name**
+    - **Purpose**: Internal identification and campaign management
+    - **Best Practices**: Descriptive, campaign-specific, team-friendly
+    - **Examples**: 
+      - `Q3-Product-Launch-Landing-Page`
+      - `Email-Newsletter-Signup-Form`
+      - `Trade-Show-Demo-Request`
+      - `Social-Media-Bio-Link-Updates`
+    
+    **Destination URL**
+    - **Purpose**: Primary redirect target for all channels (unless using multi-channel routing)
+    - **Requirements**: Complete URL with `https://` protocol
+    - **Considerations**: 
+      - Mobile responsiveness and load speed
+      - Analytics tracking and conversion setup
+      - Content relevance to campaign goals
+      - Geographic accessibility and compliance
+    
+    **Tag Assignment**
+    - **Purpose**: Campaign organization and filtering
+    - **Strategy**: Develop consistent tagging taxonomy
+    - **Examples**: 
+      - Campaign: `summer-2025`, `product-launch`, `webinar-series`
+      - Channel: `social-media`, `email`, `print`, `events`
+      - Team: `sales`, `marketing`, `customer-success`
+      - Content: `landing-pages`, `demos`, `resources`
+  </Step>
+</Steps>
+
+### Short Link Customization
+
+<Steps>
+  <Step title="Understand link generation">
+    **Automatic Generation**: Proxify creates unique short links using the format `li2.ai/[unique-string]`
+    
+    **Default Benefits**:
+    - Guaranteed uniqueness and availability
+    - Immediate activation and functionality
+    - No conflicts or duplication issues
+    - Professional appearance and trustworthiness
+  </Step>
+  
+  <Step title="Custom back-half configuration">
+    **When to Customize**:
+    - Offline marketing materials (memorable URLs)
+    - Verbal communication and presentations
+    - Brand consistency across campaigns
+    - Long-term or permanent touchpoints
+    
+    **Customization Best Practices**:
+    ```
+    Good Examples:
+    li2.ai/summer-sale     (campaign-specific)
+    li2.ai/demo-request    (action-focused)  
+    li2.ai/contact-sales   (purpose-clear)
+    li2.ai/q3-webinar      (time-specific)
+    
+    Avoid:
+    li2.ai/click-here-now-for-amazing-deals  (too long)
+    li2.ai/a1b2c3          (not memorable)
+    li2.ai/temp            (not descriptive)
+    ```
+    
+    **Technical Considerations**:
+    - Maximum 5 changes allowed per touchpoint
+    - Changes create new versions with complete tracking
+    - Previous versions remain accessible and tracked
+    - URL availability checked automatically
+  </Step>
+  
+  <Step title="Link versioning management">
+    **Version Tracking**:
+    - Complete history of all link changes
+    - Performance comparison across versions
+    - Rollback capability to previous versions
+    - Analytics continuity across changes
+    
+    **Change Strategy**:
+    - Plan changes carefully due to 5-change limit
+    - Consider campaign lifecycle and longevity
+    - Document reasons for changes in campaign notes
+    - Test new versions before broad distribution
+  </Step>
+</Steps>
+
+---
+
+## Multi-Channel Distribution Setup
+
+### Channel Configuration Strategy
+
+<AccordionGroup>
+  <Accordion title="LINK Channel Configuration ✅">
+    **Automatic Activation**: Always enabled for digital distribution
+    
+    **Optimal Use Cases**:
+    - Social media posts and stories
+    - Email marketing campaigns
+    - Website buttons and call-to-action elements
+    - Digital advertising and retargeting
+    - Blog posts and content marketing
+    
+    **Performance Optimization**:
+    - UTM parameter integration for tracking
+    - Social media meta tag optimization
+    - Mobile-first destination design
+    - Analytics goal and conversion setup
+  </Accordion>
+  
+  <Accordion title="QR Code Channel Configuration ✅">
+    **Activation**: Toggle ON for physical distribution needs
+    
+    **Optimal Use Cases**:
+    - Print advertisements and brochures
+    - Product packaging and labels
+    - Business cards and networking materials
+    - Event signage and registration
+    - Restaurant menus and service information
+    - Retail displays and point-of-sale materials
+    
+    **Design Considerations**:
+    - Branded appearance with Proxify logo
+    - High-resolution generation for print quality
+    - Error correction for reliable scanning
+    - Custom design options available
+    - Download formats for various applications
+    
+    **Testing Requirements**:
+    - Multiple device scanning verification
+    - Print quality and size testing
+    - Lighting condition performance
+    - Distance and angle scanning capability
+  </Accordion>
+  
+  <Accordion title="Advanced Multi-Channel Routing ✅">
+    **Independent Destinations**: Each channel can redirect to different URLs
+    
+    **Strategic Applications**:
+    - **A/B Testing**: Compare performance between channels
+      - LINK → Landing Page A
+      - QR → Landing Page B
+    
+    - **Audience Segmentation**: Channel-specific experiences
+      - LINK → Digital-optimized experience
+      - QR → Mobile-first, location-aware content
+    
+    - **Campaign Optimization**: Message testing across touchpoints
+      - LINK → Promotional messaging
+      - QR → Educational content
+    
+    - **Regional Targeting**: Geographic customization
+      - LINK → Global landing page
+      - QR → Location-specific offers
+    
+    **Configuration Process**:
+    1. Enable desired channels (LINK, QR)
+    2. Configure primary destination URL
+    3. Access Advanced settings for channel-specific routing
+    4. Set unique destinations per channel
+    5. Test each channel independently
+    6. Monitor comparative performance analytics
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Advanced Configuration Options
+
+### Social Media Optimization
+
+<Steps>
+  <Step title="Access social optimization settings">
+    Navigate to the **Advanced** tab during touchpoint creation or editing.
+    
+    Enable **Meta Tags** to customize social media appearance.
+  </Step>
+  
+  <Step title="Configure meta tag elements">
+    **Custom Image Upload**:
+    - **Purpose**: Visual representation when shared on social platforms
+    - **Specifications**: High-resolution, branded, campaign-relevant
+    - **Best Practices**: 1200x630px for optimal cross-platform display
+    - **Testing**: Preview across Facebook, Twitter, LinkedIn
+    
+    **Title Optimization**:
+    - **Purpose**: Headline that appears in social media shares
+    - **Best Practices**: Clear, compelling, under 60 characters
+    - **Examples**: 
+      - `"Join Our Summer Product Launch Event"`
+      - `"Download Your Free Marketing Guide"`
+      - `"Schedule Your Product Demo Today"`
+    
+    **Description Enhancement**:
+    - **Purpose**: Supporting text that encourages clicks
+    - **Best Practices**: Benefit-focused, under 160 characters
+    - **Examples**:
+      - `"Discover innovative solutions that transform your marketing campaigns and drive measurable results."`
+      - `"Get instant access to proven strategies used by top-performing marketing teams."`
+  </Step>
+  
+  <Step title="Utilize live preview functionality">
+    **Preview Benefits**:
+    - See exact appearance across platforms
+    - Test visual hierarchy and messaging
+    - Ensure brand consistency and professional appearance
+    - Identify optimization opportunities before publishing
+    
+    **Testing Protocol**:
+    - Review preview for visual appeal and clarity
+    - Verify all text is readable and compelling
+    - Confirm image quality and brand alignment
+    - Test click-through appeal and messaging effectiveness
+  </Step>
+</Steps>
+
+### UTM Parameter Management
+
+<Steps>
+  <Step title="Access UTM configuration">
+    In the **Advanced** tab, locate the **UTM Parameters** section.
+    
+    Enable UTM tracking to add comprehensive campaign analytics.
+  </Step>
+  
+  <Step title="Configure required parameters">
+    **Source (utm_source)**:
+    - **Purpose**: Identify the traffic source
+    - **Examples**: `facebook`, `email-newsletter`, `google-ads`, `print-campaign`
+    - **Best Practice**: Use consistent naming conventions across campaigns
+    
+    **Medium (utm_medium)**:
+    - **Purpose**: Identify the marketing medium
+    - **Examples**: `social`, `email`, `cpc`, `organic`, `qr-code`, `print`
+    - **Best Practice**: Standardize medium categories for reporting
+    
+    **Campaign (utm_campaign)**:
+    - **Purpose**: Identify the specific campaign
+    - **Examples**: `summer-launch-2025`, `webinar-series-q3`, `product-demo-campaign`
+    - **Best Practice**: Use descriptive, date-specific names
+  </Step>
+  
+  <Step title="Configure optional parameters">
+    **Term (utm_term)**:
+    - **Purpose**: Identify paid search keywords or audience segments
+    - **Examples**: `marketing-automation`, `small-business-owners`, `enterprise-solutions`
+    - **Use Cases**: Paid advertising, audience targeting, A/B testing
+    
+    **Content (utm_content)**:
+    - **Purpose**: Distinguish similar content or test variations
+    - **Examples**: `header-cta`, `sidebar-banner`, `email-footer`, `qr-code-v1`
+    - **Use Cases**: A/B testing, content optimization, placement tracking
+    
+    **Advanced Options**:
+    - **UTM Override**: Allow manual parameter customization
+    - **Template Creation**: Save UTM patterns for reuse
+    - **Validation**: Automatic parameter formatting and verification
+  </Step>
+</Steps>
+
+### Marketing Integration Configuration
+
+<Steps>
+  <Step title="Parcelvoy integration setup">
+    **Automatic Availability**: Integration is enabled by default for all users
+    
+    **Configuration Options**:
+    - **Integration Selection**: Choose specific Parcelvoy account
+    - **Journey Assignment**: Select automated email journey
+    - **Entrance Configuration**: Define entry points and triggers
+    - **Data Synchronization**: Customer data and interaction tracking
+    
+    **Use Cases**:
+    - Automated welcome sequences for new subscribers
+    - Product-specific nurturing campaigns
+    - Event registration and follow-up automation
+    - Lead scoring and qualification workflows
+  </Step>
+  
+  <Step title="Future integration preparation">
+    **Coming Soon Integrations**:
+    - **Mautic**: Marketing automation and lead nurturing
+    - **HubSpot**: CRM integration and sales pipeline tracking
+    - **Webhook Support**: Custom integrations and real-time notifications
+    - **API Access**: Advanced automation and custom workflows
+    
+    **Preparation Steps**:
+    - Document current campaign workflows
+    - Identify integration requirements and goals
+    - Plan data synchronization and tracking needs
+    - Prepare for beta testing and early access opportunities
+  </Step>
+</Steps>
+
+---
+
+## Testing and Validation
+
+### Comprehensive Testing Protocol
+
+<Steps>
+  <Step title="Pre-launch functionality testing">
+    **Link Testing**:
+    1. Copy short link and test in multiple browsers
+    2. Verify redirect accuracy and speed
+    3. Test on mobile and desktop devices
+    4. Confirm analytics tracking activation
+    
+    **QR Code Testing**:
+    1. Download QR code in multiple formats
+    2. Test scanning with various devices and apps
+    3. Verify redirect accuracy from QR scans
+    4. Test print quality and scanning reliability
+    
+    **Multi-Channel Verification**:
+    - Confirm independent routing (if configured)
+    - Test each channel's unique destination
+    - Verify analytics separation by channel
+    - Validate UTM parameter accuracy
+  </Step>
+  
+  <Step title="Social media preview testing">
+    **Platform Testing**:
+    - Share link on Facebook and verify meta tag display
+    - Test Twitter card appearance and functionality
+    - Confirm LinkedIn preview accuracy and appeal
+    - Check Instagram link-in-bio functionality
+    
+    **Optimization Verification**:
+    - Confirm custom image displays correctly
+    - Verify title and description accuracy
+    - Test click-through appeal and messaging
+    - Ensure brand consistency across platforms
+  </Step>
+  
+  <Step title="Analytics and tracking verification">
+    **Tracking Confirmation**:
+    - Generate test clicks and verify analytics registration
+    - Confirm UTM parameter capture and reporting
+    - Test geographic and device data collection
+    - Verify integration data synchronization
+    
+    **Performance Baseline**:
+    - Document initial configuration and settings
+    - Record test results and performance metrics
+    - Establish monitoring and reporting schedule
+    - Plan optimization and improvement strategies
+  </Step>
+</Steps>
+
+---
+
+## Professional Best Practices
+
+### Campaign Lifecycle Management
+
+<AccordionGroup>
+  <Accordion title="Planning and Strategy">
+    **Pre-Creation Checklist**:
+    - Define clear campaign objectives and success metrics
+    - Identify target audience and preferred interaction methods
+    - Plan distribution channels and messaging strategy
+    - Prepare destination content and conversion tracking
+    - Establish monitoring and optimization schedule
+    
+    **Resource Preparation**:
+    - Gather branded assets (logos, images, colors)
+    - Prepare UTM parameter strategy and naming conventions
+    - Plan integration workflows and automation
+    - Coordinate with team members and stakeholders
+  </Accordion>
+  
+  <Accordion title="Creation and Configuration">
+    **Professional Standards**:
+    - Use consistent naming conventions across campaigns
+    - Implement comprehensive tagging strategy
+    - Configure all relevant channels and optimizations
+    - Test thoroughly before launch and distribution
+    - Document configuration decisions and rationale
+    
+    **Quality Assurance**:
+    - Review all settings and configurations
+    - Verify brand consistency and professional appearance
+    - Test functionality across devices and platforms
+    - Confirm analytics and tracking accuracy
+  </Accordion>
+  
+  <Accordion title="Launch and Optimization">
+    **Launch Protocol**:
+    - Gradual rollout for testing and optimization
+    - Monitor initial performance and user feedback
+    - Address any technical issues or improvements
+    - Scale distribution based on early results
+    
+    **Ongoing Management**:
+    - Regular performance review and analysis
+    - A/B testing and optimization opportunities
+    - Update and refresh content as needed
+    - Archive or update outdated campaigns
+  </Accordion>
+</AccordionGroup>
+
+### Advanced Use Cases
+
+<AccordionGroup>
+  <Accordion title="Complex Multi-Channel Campaigns">
+    **Scenario**: Product launch with integrated online and offline marketing
+    
+    **Strategy**:
+    - **LINK Channel**: Social media teasers → Product announcement page
+    - **QR Channel**: Print ads → Exclusive early access signup
+    - **UTM Tracking**: Separate campaign tracking for digital vs. print
+    - **Social Optimization**: Platform-specific messaging and visuals
+    
+    **Benefits**: Channel performance comparison, audience insight, ROI analysis
+  </Accordion>
+  
+  <Accordion title="Event Marketing Integration">
+    **Scenario**: Conference promotion with pre, during, and post-event touchpoints
+    
+    **Strategy**:
+    - **Pre-Event**: Registration links with early bird tracking
+    - **During Event**: QR codes for session feedback and networking
+    - **Post-Event**: Follow-up resources and next step calls-to-action
+    - **Integration**: Parcelvoy automation for attendee nurturing
+    
+    **Benefits**: Complete event lifecycle tracking, attendee engagement optimization
+  </Accordion>
+  
+  <Accordion title="Content Marketing Campaigns">
+    **Scenario**: Educational content series with lead generation goals
+    
+    **Strategy**:
+    - **LINK Channel**: Blog posts and social shares → Resource downloads
+    - **QR Channel**: Business cards and presentations → Contact information
+    - **UTM Strategy**: Content topic and format tracking
+    - **Social Optimization**: Educational and value-focused messaging
+    
+    **Benefits**: Content performance analysis, lead source tracking, authority building
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Troubleshooting Common Issues
+
+<AccordionGroup>
+  <Accordion title="Link and Redirect Issues">
+    **Custom Link Unavailable**:
+    - Try alternative naming variations
+    - Check for typos or invalid characters
+    - Consider adding numbers or campaign identifiers
+    - Use auto-generated links for immediate needs
+    
+    **Redirect Problems**:
+    - Verify destination URL accuracy and accessibility
+    - Check for SSL certificate and security requirements
+    - Test destination page mobile responsiveness
+    - Confirm geographic accessibility and compliance
+  </Accordion>
+  
+  <Accordion title="QR Code Scanning Problems">
+    **Scanning Reliability**:
+    - Ensure adequate size for scanning distance
+    - Test different lighting conditions and angles
+    - Verify print quality and resolution
+    - Check for damage or distortion in printed materials
+    
+    **Mobile Compatibility**:
+    - Test with multiple camera apps and devices
+    - Verify iOS and Android compatibility
+    - Check for camera permission and functionality
+    - Test in various scanning environments
+  </Accordion>
+  
+  <Accordion title="Analytics and Tracking Issues">
+    **Missing Analytics Data**:
+    - Verify touchpoint activation and functionality
+    - Check UTM parameter configuration and syntax
+    - Confirm integration setup and data synchronization
+    - Allow time for data processing and display
+    
+    **Integration Problems**:
+    - Verify account connections and permissions
+    - Check API limits and usage quotas
+    - Confirm webhook and automation configurations
+    - Test data flow and synchronization accuracy
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps and Advanced Topics
+
+<CardGroup cols={2}>
+  <Card
+    title="Managing Touchpoints"
+    icon="gear"
+    href="/touchpoints/managing-touchpoints"
+    color="#7C3AED"
+  >
+    Organization, editing, and optimization strategies for professional campaign management.
+  </Card>
+  <Card
+    title="Multi-Channel Routing"
+    icon="route"
+    href="/touchpoints/multi-channel-routing"
+    color="#A855F7"
+  >
+    Advanced distribution strategies and A/B testing with independent channel routing.
+  </Card>
+  <Card
+    title="Link Versioning Management"
+    icon="code-branch"
+    href="/touchpoints/link-versioning"
+    color="#7C3AED"
+  >
+    Understanding and managing link changes, version history, and performance tracking.
+  </Card>
+  <Card
+    title="Custom Domain Setup"
+    icon="globe"
+    href="/touchpoints/custom-domains"
+    color="#A855F7"
+  >
+    Professional branding with custom domains for enhanced trust and recognition.
+  </Card>
+</CardGroup>
+
+## Additional Resources
+
+<CardGroup cols={3}>
+  <Card
+    title="Social Media Optimization"
+    icon="share-nodes"
+    href="/social-media/overview"
+  >
+    Detailed guide to social media meta tag optimization
+  </Card>
+  <Card
+    title="UTM Parameter Management"
+    icon="chart-line"
+    href="/analytics/utm-parameters"
+  >
+    Advanced campaign tracking and analytics setup
+  </Card>
+  <Card
+    title="Marketing Integrations"
+    icon="plug"
+    href="/integrations/overview"
+  >
+    Connect touchpoints with your marketing automation tools
+  </Card>
+</CardGroup>
+
+---
+
+**Ready to create sophisticated marketing touchpoints?** [Start creating →](https://app.li2.ai) or [contact support for advanced assistance →](mailto:support@li2.ai)

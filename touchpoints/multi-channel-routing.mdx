@@ -1,0 +1,391 @@
+---
+title: Multi-Channel Routing
+description: Advanced marketing strategy using different destination URLs for each distribution channel to optimize user experience and campaign performance.
+---
+
+# Multi-Channel Routing
+
+Multi-channel routing allows you to send users to different destination URLs depending on how they access your touchpoint. This powerful feature enables sophisticated A/B testing, audience segmentation, and channel-specific optimization strategies.
+
+## What Is Multi-Channel Routing?
+
+Instead of sending all users to the same destination, multi-channel routing lets you customize the user experience based on their interaction method:
+
+- **LINK Channel** (Digital) → One destination URL
+- **QR Channel** (Physical) → Different destination URL  
+- **WiFi Channel** (Coming Soon) → Unique destination URL
+- **NFC Channel** (Coming Soon) → Specialized destination URL
+
+<Note>
+**Example**: Your LINK channel could direct users to a desktop-optimized landing page, while your QR channel sends mobile users to a mobile-first experience with location-specific offers.
+</Note>
+
+---
+
+## Why Use Multi-Channel Routing?
+
+<CardGroup cols={2}>
+  <Card title="A/B Testing" icon="flask" color="#7C3AED">
+    Test different landing pages, messaging, or offers across channels to see what performs better.
+  </Card>
+  <Card title="Channel Optimization" icon="target" color="#A855F7">
+    Optimize user experience based on how people interact with your touchpoint.
+  </Card>
+  <Card title="Audience Segmentation" icon="users" color="#7C3AED">
+    Provide different experiences for digital vs. physical audience interactions.
+  </Card>
+  <Card title="Better Attribution" icon="chart-line" color="#A855F7">
+    Track which channels and destinations drive the best results for optimization.
+  </Card>
+</CardGroup>
+
+**Strategic Benefits**:
+- **Mobile Optimization**: Send QR code scanners to mobile-optimized pages
+- **Geographic Targeting**: Different offers based on physical vs. digital distribution
+- **Message Testing**: Compare messaging effectiveness across interaction methods
+- **Conversion Optimization**: Tailor user journeys for maximum conversion rates
+
+---
+
+## Setting Up Multi-Channel Routing
+
+### During Touchpoint Creation
+
+<Steps>
+  <Step title="Configure primary destination">
+    1. Start creating a new touchpoint
+    2. Enter your **touchpoint name**
+    3. In the **Destination URL** field, enter the primary destination (this becomes your LINK channel destination)
+    4. Add tags and configure your short link as usual
+  </Step>
+  
+  <Step title="Enable additional channels">
+    In the **Interaction Channel** section:
+    1. **LINK** is automatically enabled with your primary destination
+    2. Toggle **ON** the **QR** channel
+    3. You'll see an **"Enter URL"** field appear for the QR channel
+    4. Enter a different destination URL for QR users
+  </Step>
+  
+  <Step title="Configure channel-specific destinations">
+    **For QR Channel**:
+    - Click in the QR **"Enter URL"** field
+    - Add your QR-specific destination URL
+    - This can be completely different from your LINK destination
+    
+    **Example Setup**:
+    - **LINK**: `https://yoursite.com/desktop-landing`
+    - **QR**: `https://yoursite.com/mobile-landing`
+  </Step>
+  
+  <Step title="Create your touchpoint">
+    Click **"Create Touch Point"** to generate your multi-channel touchpoint with independent routing.
+  </Step>
+</Steps>
+
+### Configuring Existing Touchpoints
+
+<Steps>
+  <Step title="Access touchpoint details">
+    1. Go to your touchpoints list
+    2. Click on the touchpoint you want to modify
+    3. Navigate to the **Details** tab
+    4. Scroll down to the **Interaction Channel** section
+  </Step>
+  
+  <Step title="Modify channel destinations">
+    **LINK Channel**:
+    - View or edit the destination URL in the LINK section
+    - This affects all digital link clicks
+    
+    **QR Channel**:
+    - Toggle QR **ON** if not already enabled
+    - View or edit the destination URL in the QR section
+    - This affects all QR code scans
+  </Step>
+  
+  <Step title="Save changes">
+    Changes are automatically saved when you update destination URLs.
+    
+    Test both channels to ensure they're routing correctly.
+  </Step>
+</Steps>
+
+---
+
+## Strategic Use Cases
+
+### Marketing Campaign Examples
+
+<AccordionGroup>
+  <Accordion title="Product Launch Campaign">
+    **Scenario**: Launching a new product with both digital and physical marketing
+    
+    **Strategy**:
+    - **LINK Channel**: Detailed product information page with specifications
+    - **QR Channel**: Quick mobile signup for early access with simplified form
+    
+    **Benefits**: Digital users get comprehensive information, physical location visitors get immediate action opportunity
+  </Accordion>
+  
+  <Accordion title="Event Promotion">
+    **Scenario**: Conference or workshop promotion across multiple channels
+    
+    **Strategy**:
+    - **LINK Channel**: Full event details with agenda and speaker information  
+    - **QR Channel**: Quick registration form optimized for mobile completion
+    
+    **Benefits**: Online users can research thoroughly, attendees at partner events can register instantly
+  </Accordion>
+  
+  <Accordion title="Retail Integration">
+    **Scenario**: Product promotion in physical stores and online
+    
+    **Strategy**:
+    - **LINK Channel**: Product page with full catalog and related items
+    - **QR Channel**: Mobile-optimized product page with store location and inventory
+    
+    **Benefits**: Online shoppers see full selection, in-store customers get location-relevant information
+  </Accordion>
+  
+  <Accordion title="Content Marketing">
+    **Scenario**: Educational content distributed across digital and print materials
+    
+    **Strategy**:
+    - **LINK Channel**: Full blog post or resource with related content
+    - **QR Channel**: Mobile-friendly summary with email signup for full content
+    
+    **Benefits**: Digital readers get immediate access, print readers get optimized mobile experience
+  </Accordion>
+</AccordionGroup>
+
+### A/B Testing Strategies
+
+<CardGroup cols={2}>
+  <Card title="Landing Page Testing" icon="browser" color="#10B981">
+    **LINK**: Original landing page design
+    **QR**: Alternative design or messaging
+    Compare conversion rates to optimize
+  </Card>
+  <Card title="Offer Testing" icon="gift" color="#10B981">
+    **LINK**: Standard pricing or offer
+    **QR**: Exclusive discount or bonus
+    Measure which incentive drives more action
+  </Card>
+  <Card title="Message Testing" icon="megaphone" color="#10B981">
+    **LINK**: Feature-focused messaging
+    **QR**: Benefit-focused messaging  
+    Test which approach resonates better
+  </Card>
+  <Card title="User Journey Testing" icon="route" color="#10B981">
+    **LINK**: Multi-step conversion process
+    **QR**: Simplified one-step process
+    Optimize based on channel preferences
+  </Card>
+</CardGroup>
+
+---
+
+## Best Practices
+
+### Strategic Planning
+
+<AccordionGroup>
+  <Accordion title="Channel-audience alignment">
+    **Consider user context**:
+    - **LINK users**: Often browsing, researching, have time to explore
+    - **QR users**: Mobile-first, looking for quick action, might be in physical location
+    - **Future WiFi users**: Seeking connectivity, potentially extended engagement
+    - **Future NFC users**: Immediate proximity, instant interaction expectations
+    
+    **Design accordingly**:
+    - Match page complexity to user context and device capabilities
+    - Consider location awareness for QR and future physical channels
+    - Optimize for the likely user mindset and available time
+  </Accordion>
+  
+  <Accordion title="Content strategy">
+    **Destination page optimization**:
+    - **Mobile-first for QR**: Fast loading, thumb-friendly navigation, clear CTAs
+    - **Comprehensive for LINK**: Detailed information, multiple options, rich media
+    - **Consistent branding**: Maintain brand identity across all destinations
+    - **Clear value proposition**: Each channel should deliver relevant value immediately
+    
+    **Testing framework**:
+    - Start with hypothesis about channel differences
+    - Test one variable at a time (page design, offer, messaging)
+    - Measure meaningful metrics (conversions, not just clicks)
+    - Iterate based on data, not assumptions
+  </Accordion>
+</AccordionGroup>
+
+### Implementation Tips
+
+<Steps>
+  <Step title="Start simple">
+    **Begin with basic differentiation**:
+    - Same content, different page layouts (mobile vs. desktop optimized)
+    - Identical offers, different presentation formats
+    - Similar messaging, different call-to-action emphasis
+    
+    **Build complexity gradually** as you learn what works for your audience.
+  </Step>
+  
+  <Step title="Plan for analytics">
+    **Set up proper tracking**:
+    - Use different UTM parameters for each channel destination
+    - Configure goal tracking for each destination page
+    - Plan comparison metrics before launching
+    - Document your testing hypotheses and expected outcomes
+  </Step>
+  
+  <Step title="Maintain consistency">
+    **Brand and message alignment**:
+    - Keep core value proposition consistent across channels
+    - Maintain visual brand identity even with different layouts
+    - Ensure both destinations fulfill the promise made in your marketing
+    - Test that both user journeys lead to satisfactory outcomes
+  </Step>
+</Steps>
+
+---
+
+## Analytics and Optimization
+
+### Measuring Multi-Channel Performance
+
+<CardGroup cols={2}>
+  <Card title="Channel Comparison" icon="chart-bar" color="#7C3AED">
+    Compare click-through rates, conversion rates, and engagement metrics between LINK and QR channels.
+  </Card>
+  <Card title="Destination Performance" icon="target" color="#A855F7">
+    Analyze how different destination pages perform for each channel's audience.
+  </Card>
+  <Card title="User Behavior Analysis" icon="users" color="#7C3AED">
+    Study how users from different channels interact with your content and convert.
+  </Card>
+  <Card title="ROI Optimization" icon="trending-up" color="#A855F7">
+    Calculate return on investment for each channel and optimize budget allocation.
+  </Card>
+</CardGroup>
+
+---
+
+## Future Channel Capabilities
+
+### Coming Soon: WiFi and NFC Routing
+
+<Note>
+**Expanding Multi-Channel Options**: WiFi and NFC channels will soon support independent destination routing, opening new possibilities for location-based and proximity marketing.
+</Note>
+
+<AccordionGroup>
+  <Accordion title="WiFi channel routing 🔄">
+    **Planned capabilities**:
+    - Separate destinations for WiFi network access
+    - Location-aware content and offers
+    - Extended engagement opportunities
+    - Guest network integration with marketing
+    
+    **Potential use cases**:
+    - Venue-specific information and offers
+    - Location-based service promotion
+    - Extended content experiences
+    - Customer feedback and engagement
+  </Accordion>
+  
+  <Accordion title="NFC channel routing 🔄">
+    **Planned capabilities**:
+    - Instant tap-to-access destinations
+    - Proximity-based content delivery
+    - Interactive display integration
+    - Contact and information sharing
+    
+    **Potential use cases**:
+    - Product information and reviews
+    - Instant contact sharing
+    - Interactive kiosk experiences
+    - Event check-in and networking
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Troubleshooting Multi-Channel Routing
+
+<AccordionGroup>
+  <Accordion title="Channels routing to wrong destinations">
+    **Check destination URLs**:
+    - Verify each channel has the correct destination URL
+    - Test both LINK and QR channels independently
+    - Ensure URLs are complete with `https://` protocol
+    - Check for typos or copy/paste errors
+    
+    **Update if needed**:
+    - Go to touchpoint Details tab
+    - Modify destination URLs in the Interaction Channel section
+    - Test again after saving changes
+  </Accordion>
+  
+  <Accordion title="QR channel not working">
+    **Verification steps**:
+    - Confirm QR channel is toggled ON
+    - Check that QR destination URL is filled in
+    - Test QR code scanning with multiple devices
+    - Verify destination page is mobile-friendly
+    
+    **Common issues**:
+    - QR channel disabled but expecting it to work
+    - Missing or incomplete destination URL
+    - Destination page not optimized for mobile scanning
+  </Accordion>
+  
+  <Accordion title="Analytics not separating channels">
+    **Analytics setup**:
+    - Verify that different UTM parameters are used for each destination
+    - Check that goal tracking is configured for both destinations
+    - Ensure analytics tools can distinguish between channel sources
+    - Allow time for sufficient data collection before drawing conclusions
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Related Topics
+
+<CardGroup cols={2}>
+  <Card
+    title="Creating Touchpoints"
+    icon="plus-circle"
+    href="/touchpoints/creating-touchpoints"
+    color="#7C3AED"
+  >
+    Learn how to set up multi-channel routing from the start of touchpoint creation.
+  </Card>
+  <Card
+    title="QR Code Management"
+    icon="qrcode"
+    href="/qr-codes/overview"
+    color="#A855F7"
+  >
+    Optimize your QR codes for the destinations you're routing users to.
+  </Card>
+  <Card
+    title="Analytics Tracking"
+    icon="chart-line"
+    href="/analytics/overview"
+    color="#7C3AED"
+  >
+    Set up comprehensive analytics to measure multi-channel routing performance.
+  </Card>
+  <Card
+    title="UTM Parameters"
+    icon="tags"
+    href="/analytics/utm-parameters"
+    color="#A855F7"
+  >
+    Use UTM parameters to track and compare channel performance effectively.
+  </Card>
+</CardGroup>
+
+---
