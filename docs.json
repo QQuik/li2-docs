@@ -70,10 +70,7 @@
           {
             "group": "Account & Settings",
             "pages": [
-              "settings/profile",
-              "settings/organization",
-              "settings/security",
-              "settings/notifications"
+              "settings/profile"
             ]
           }
         ]
@@ -94,29 +91,13 @@
           {
             "group": "AI & Automation",
             "pages": [
-              "ai/overview",
-              "ai/link-optimization",
-              "ai/smart-suggestions",
-              "ai/automated-campaigns"
+              
             ]
           },
           {
             "group": "Advanced Features",
             "pages": [
-              "advanced/wifi-sharing",
-              "advanced/nfc-tags",
-              "advanced/bulk-operations",
-              "advanced/webhooks"
-            ]
-          },
-          {
-            "group": "Developer Resources",
-            "pages": [
-              "api/introduction",
-              "api/authentication",
-              "api/touchpoints",
-              "api/analytics",
-              "api/webhooks"
+              
             ]
           }
         ]
@@ -128,11 +109,6 @@
           "anchor": "Support",
           "href": "mailto:support@li2.ai",
           "icon": "life-ring"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://community.li2.ai",
-          "icon": "users"
         },
         {
           "anchor": "Dashboard",
@@ -147,11 +123,7 @@
     "dark": "/logo/dark.svg"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Pricing",
-        "href": "https://li2.ai/pricing"
-      },
+    "links": [      
       {
         "label": "Support",
         "href": "mailto:support@li2.ai"
@@ -163,20 +135,5 @@
       "href": "https://app.li2.ai"
     }
   },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/li2ai",
-      "github": "https://github.com/li2ai",
-      "linkedin": "https://linkedin.com/company/li2ai"
-    }
-  },
-  "topbar": {
-    "style": "default",
-    "links": [
-      {
-        "label": "Blog",
-        "href": "https://li2.ai/blog"
-      }
-    ]
-  }
+  "footer": {}
 }

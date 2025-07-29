@@ -1,0 +1,395 @@
+---
+title: UTM Parameters
+description: Track marketing campaign performance with UTM parameters, including built-in UTM builder and direct Google Analytics/GTM integration.
+---
+
+# UTM Parameters
+
+Enhance your marketing campaign tracking with Proxify's comprehensive UTM parameter system. Build professional UTM tags, track campaign performance, and send data directly to Google Analytics or Google Tag Manager for detailed attribution analysis.
+
+## UTM Parameter System
+
+<CardGroup cols={2}>
+  <Card title="Built-in UTM Builder" icon="wrench" color="#7C3AED">
+    **Integrated Tools**: Create professional UTM parameters directly in Proxify with guided field entry and validation.
+  </Card>
+  <Card title="Analytics Integration" icon="chart-line" color="#A855F7">
+    **Direct Tracking**: Send UTM data directly to Google Analytics or Google Tag Manager, even without destination page tracking.
+  </Card>
+  <Card title="Campaign Attribution" icon="target" color="#7C3AED">
+    **Marketing Insights**: Track campaign sources, mediums, and content for comprehensive performance analysis.
+  </Card>
+  <Card title="Professional Standards" icon="badge-check" color="#A855F7">
+    **Best Practices**: Pre-populated suggestions and standardized formats ensure consistent, professional UTM implementation.
+  </Card>
+</CardGroup>
+
+---
+
+## Accessing UTM Parameters
+
+### UTM Builder Location
+
+<Steps>
+  <Step title="Navigate to touchpoint advanced settings">
+    1. Go to **Touchpoints** and select your touchpoint
+    2. Click on the **Advanced** tab
+    3. Find the **UTM Parameters** section
+    4. Toggle **UTM Parameters** to **ON** to enable UTM tracking
+  </Step>
+  
+  <Step title="Understanding UTM builder interface">
+    The UTM Parameters section includes:
+    - **Required Fields**: Source (mandatory for all campaigns)
+    - **Optional Fields**: Campaign, Medium, Term, Content
+    - **Analytics Integration**: GA4 ID/GTM ID for direct tracking
+    - **Redirect Example**: Preview of final URL with UTM parameters
+  </Step>
+</Steps>
+
+---
+
+## UTM Parameter Configuration
+
+### Required Parameters
+
+<AccordionGroup>
+  <Accordion title="Source (Required)">
+    **Purpose**: Identifies where traffic originates from
+    
+    **Built-in Suggestions**:
+    - **google** - Google Ads, Google search campaigns
+    - **facebook** - Facebook and Meta advertising
+    - **instagram** - Instagram-specific campaigns
+    - **linkedin** - LinkedIn advertising and content
+    - **twitter** - Twitter/X campaigns and posts
+    - **email** - Email marketing campaigns
+    - **newsletter** - Newsletter-specific tracking
+    - **bing** - Microsoft Bing advertising
+    
+    **Custom Sources**: Enter any custom source name for specific platforms or campaigns
+  </Accordion>
+</AccordionGroup>
+
+### Optional Parameters
+
+<AccordionGroup>
+  <Accordion title="Campaign">
+    **Purpose**: Identifies specific marketing campaigns
+    
+    **Example Values**:
+    - **holiday_special** - Seasonal promotional campaigns
+    - **birthday_promotion** - Special event campaigns
+    - **product_launch** - New product introduction campaigns
+    - **summer_2025** - Time-based campaign identification
+    
+    **Best Practices**:
+    - Use consistent naming conventions across campaigns
+    - Include dates or periods for time-sensitive campaigns
+    - Keep names descriptive but concise
+  </Accordion>
+  
+  <Accordion title="Medium">
+    **Purpose**: Categorizes the marketing medium or channel type
+    
+    **Built-in Suggestions**:
+    - **cpc** - Cost-per-click advertising
+    - **email** - Email marketing campaigns
+    - **social** - Social media posts and campaigns
+    - **display** - Display advertising and banners
+    - **referral** - Referral program tracking
+    - **organic** - Organic social media posts
+    - **paid-social** - Paid social media advertising
+    - **affiliate** - Affiliate marketing programs
+    
+    **Strategic Value**: Groups similar marketing activities for performance comparison
+  </Accordion>
+  
+  <Accordion title="Term">
+    **Purpose**: Tracks specific keywords or targeting criteria
+    
+    **Example Usage**:
+    - **iphone_15** - Product-specific keywords
+    - **wireless_earbuds** - Category targeting
+    - **hotel_deal** - Service-specific terms
+    - **marketing_automation** - B2B keyword targeting
+    
+    **Applications**: Particularly useful for paid search campaigns and keyword tracking
+  </Accordion>
+  
+  <Accordion title="Content">
+    **Purpose**: Differentiates between similar content or creative variations
+    
+    **Example Values**:
+    - **video_ad_short** - Video advertisement variations
+    - **popup_offer_button** - Specific call-to-action elements
+    - **banner_ad_1** - Creative testing and optimization
+    - **header_cta** - Placement-specific tracking
+    
+    **A/B Testing**: Essential for comparing different creative approaches and placements
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Analytics Integration
+
+### Google Analytics 4 (GA4) Integration
+
+<Steps>
+  <Step title="Configure GA4 tracking">
+    1. In the **UTM Parameters** section, find **GA4 ID / GTM ID** field
+    2. Enter your Google Analytics 4 measurement ID (format: GTM-XXXXXXX or G-XXXXXXX)
+    3. UTM parameters will be sent directly to your GA4 property
+    4. Works even if destination pages don't have GA4 tracking code
+  </Step>
+  
+  <Step title="Benefits of direct GA4 integration">
+    **Enhanced Tracking Capabilities**:
+    - **Bypasses Missing Tracking**: Send data even without destination page analytics
+    - **Consistent Attribution**: Reliable campaign tracking across all touchpoints
+    - **Immediate Data Flow**: UTM parameters reach GA4 regardless of destination setup
+    - **Complete Campaign View**: Track full customer journey from Proxify to conversion
+  </Step>
+</Steps>
+
+### Google Tag Manager (GTM) Integration
+
+<Note>
+**GTM Support**: Enter your Google Tag Manager container ID (GTM-XXXXXXX format) to send UTM parameter data directly to your GTM setup for advanced tracking configurations.
+</Note>
+
+**GTM Integration Benefits**:
+- **Advanced Event Tracking**: Trigger custom events based on UTM parameters
+- **Cross-Platform Attribution**: Connect Proxify data with other marketing platforms
+- **Custom Dimension Tracking**: Send UTM data to custom GA4 dimensions
+- **Enhanced E-commerce Tracking**: Attribute transactions to specific campaigns
+
+---
+
+## UTM Parameter Management
+
+### URL Construction and Preview
+
+<Steps>
+  <Step title="Automatic URL building">
+    **How UTM URLs Are Created**:
+    1. Proxify automatically appends UTM parameters to your destination URL
+    2. **Redirect Example** shows the final URL users will visit
+    3. Parameters are properly formatted and encoded
+    4. No manual URL construction required
+  </Step>
+  
+  <Step title="UTM overwrite settings">
+    **Allow UTM Overwrite Option**:
+    - **When Enabled**: UTM parameters in short URLs override stored ones
+    - **When Disabled**: Stored UTM parameters always take precedence
+    - **Use Case**: Allows dynamic UTM modification for different campaigns using the same touchpoint
+  </Step>
+</Steps>
+
+### Campaign Tracking Strategy
+
+<AccordionGroup>
+  <Accordion title="Consistent naming conventions">
+    **Professional UTM Standards**:
+    - **Source**: Use lowercase, standardized platform names
+    - **Medium**: Stick to common medium types (cpc, email, social, display)
+    - **Campaign**: Use descriptive, date-inclusive names
+    - **Term/Content**: Include specific identifiers for A/B testing
+    
+    **Example UTM Structure**:
+    ```
+    Source: facebook
+    Medium: paid-social
+    Campaign: summer_2025_sale
+    Content: video_ad_v2
+    ```
+  </Accordion>
+  
+  <Accordion title="Multi-channel campaign coordination">
+    **Campaign Organization**:
+    - **Consistent Campaign Names**: Use same campaign parameter across all channels
+    - **Channel-Specific Sources**: Different sources for each platform (facebook, google, email)
+    - **Medium Differentiation**: Distinguish between organic and paid efforts
+    - **Content Variations**: Track different creative approaches within campaigns
+    
+    **Strategic Benefits**:
+    - Compare performance across different marketing channels
+    - Understand which creative variations work best
+    - Track customer journey across multiple touchpoints
+    - Optimize marketing spend based on UTM attribution data
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## UTM Best Practices
+
+### Professional UTM Implementation
+
+<CardGroup cols={2}>
+  <Card title="Naming Consistency" icon="text" color="#10B981">
+    **Standardized Format**: Use consistent naming conventions across all campaigns for reliable reporting and analysis.
+  </Card>
+  <Card title="Documentation" icon="book" color="#10B981">
+    **Campaign Records**: Maintain documentation of UTM strategies and naming conventions for team consistency.
+  </Card>
+  <Card title="Testing Approach" icon="flask" color="#10B981">
+    **A/B Testing**: Use Content parameter to test different creative approaches and optimize performance.
+  </Card>
+  <Card title="Analytics Verification" icon="check-circle" color="#10B981">
+    **Data Validation**: Verify UTM data appears correctly in Google Analytics for accurate attribution.
+  </Card>
+</CardGroup>
+
+### Strategic UTM Planning
+
+<Steps>
+  <Step title="Campaign structure planning">
+    **Before Creating UTM Parameters**:
+    - Define campaign objectives and key performance indicators
+    - Plan naming conventions for consistent tracking
+    - Identify which parameters are essential for your analysis
+    - Consider how UTM data will integrate with existing analytics
+  </Step>
+  
+  <Step title="Cross-channel coordination">
+    **Multi-Channel UTM Strategy**:
+    - Use consistent campaign names across all marketing channels
+    - Differentiate sources clearly (facebook vs facebook_ads)
+    - Plan medium categories that align with your marketing mix
+    - Design content parameters for meaningful A/B testing
+  </Step>
+  
+  <Step title="Performance monitoring setup">
+    **Analytics Preparation**:
+    - Ensure GA4 or GTM integration is properly configured
+    - Set up custom reports for UTM parameter analysis
+    - Plan attribution models that leverage UTM data
+    - Create performance benchmarks for different UTM combinations
+  </Step>
+</Steps>
+
+---
+
+## Current vs Future UTM Features
+
+### Available Now
+
+**Current UTM Capabilities**:
+- Complete UTM parameter builder with guided suggestions
+- Direct Google Analytics 4 and Google Tag Manager integration
+- Professional UTM construction and validation
+- UTM overwrite settings for flexible campaign management
+- Real-time URL preview with UTM parameters
+
+### Coming Soon Features
+
+<Note>
+**Enhanced UTM Analytics**: Future updates will include UTM parameter visibility within Proxify's analytics dashboard, allowing you to track campaign performance directly in Proxify without needing external analytics platforms.
+</Note>
+
+<AccordionGroup>
+  <Accordion title="Proxify analytics UTM integration 🔄">
+    **Planned Features**:
+    - **UTM Parameter Reporting**: View UTM performance directly in Proxify analytics
+    - **Campaign Attribution**: Track which UTM combinations drive the most engagement
+    - **Source/Medium Analysis**: Compare performance across different traffic sources
+    - **UTM-Based Filtering**: Filter all analytics by specific UTM parameters
+    
+    **Strategic Value**:
+    - Unified campaign tracking within Proxify interface
+    - Immediate UTM performance insights without external tools
+    - Enhanced campaign optimization based on integrated data
+  </Accordion>
+  
+  <Accordion title="Advanced UTM features 🔄">
+    **Future Enhancements**:
+    - **UTM Template System**: Save and reuse UTM parameter combinations
+    - **Bulk UTM Application**: Apply UTM parameters to multiple touchpoints
+    - **UTM Performance Alerts**: Notifications for high-performing UTM combinations
+    - **Advanced Attribution Modeling**: Multi-touch attribution with UTM data
+    
+    **Professional Benefits**:
+    - Streamlined UTM management for large campaigns
+    - Automated optimization based on UTM performance
+    - Enterprise-level campaign attribution capabilities
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Troubleshooting UTM Parameters
+
+<AccordionGroup>
+  <Accordion title="UTM data not appearing in analytics">
+    **Common Issues and Solutions**:
+    
+    **Missing GA4/GTM ID**:
+    - Verify GA4 ID or GTM ID is correctly entered
+    - Ensure ID format matches GTM-XXXXXXX or G-XXXXXXX
+    - Check that GA4 property is active and receiving data
+    
+    **URL Construction Problems**:
+    - Review Redirect Example to verify UTM parameters are properly appended
+    - Ensure destination URL doesn't already contain UTM parameters
+    - Check Allow UTM Overwrite settings if using dynamic UTMs
+  </Accordion>
+  
+  <Accordion title="UTM parameter formatting">
+    **Best Practice Formatting**:
+    - **Use Lowercase**: Avoid mixed case in UTM values
+    - **No Spaces**: Use underscores or hyphens instead of spaces
+    - **Special Characters**: Avoid special characters that might break URLs
+    - **Length Limits**: Keep UTM values concise for better URL management
+    
+    **Validation Tips**:
+    - Use Proxify's built-in suggestions when possible
+    - Test URLs in analytics platforms before large campaigns
+    - Verify UTM data appears correctly in GA4 reports
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Related Topics
+
+<CardGroup cols={2}>
+  <Card
+    title="Analytics Overview"
+    icon="chart-line"
+    href="/analytics/overview"
+    color="#7C3AED"
+  >
+    Understanding how UTM data enhances your overall analytics and campaign tracking.
+  </Card>
+  <Card
+    title="Campaign Analytics"
+    icon="target"
+    href="/analytics/campaign-analytics"
+    color="#A855F7"
+  >
+    Using UTM parameters for comprehensive campaign performance analysis.
+  </Card>
+  <Card
+    title="Advanced Touchpoints"
+    icon="gear"
+    href="/touchpoints/creating-touchpoints"
+    color="#7C3AED"
+  >
+    Integrating UTM parameters into your touchpoint creation workflow.
+  </Card>
+  <Card
+    title="Tags Management"
+    icon="tags"
+    href="/organization/tags"
+    color="#A855F7"
+  >
+    Combining tags and UTM parameters for comprehensive campaign organization.
+  </Card>
+</CardGroup>
+
+---
+
+**Ready to implement UTM tracking?** [Create a touchpoint with UTMs →](https://app.li2.ai/touchpoints/create) or [view your analytics →](https://app.li2.ai/analytics)
