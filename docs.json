@@ -40,7 +40,6 @@
               "qr-codes/overview",
               "qr-codes/generating-qr-codes",
               "qr-codes/customizing-qr-codes",
-              "qr-codes/branded-qr-codes",
               "qr-codes/downloading-qr-codes"
             ]
           },
@@ -48,18 +47,13 @@
             "group": "Social Media Optimization",
             "pages": [
               "social-media/overview",
-              "social-media/meta-tags",
-              "social-media/custom-images",
-              "social-media/live-preview",
-              "social-media/platform-optimization"
+              "social-media/meta-tags"
             ]
           },
           {
             "group": "Organization & Management",
             "pages": [
-              "organization/tags",
-              "organization/bulk-operations",
-              "organization/search-and-filter"
+              "organization/tags"              
             ]
           },
           {
