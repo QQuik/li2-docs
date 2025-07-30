@@ -1,3 +1,3 @@
-# Proxify
+# Li2.ai
 
-Proxify Documentations
+Li2.ai Documentations
