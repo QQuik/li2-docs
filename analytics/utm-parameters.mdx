@@ -1,6 +1,6 @@
 ---
-title: UTM Parameters
-description: Track marketing campaign performance with UTM parameters, including built-in UTM builder and direct Google Analytics/GTM integration.
+title: "UTM Parameters"
+description: "Track marketing campaign performance with UTM parameters, including built-in UTM builder and direct Google Analytics/GTM integration."
 ---
 
 # UTM Parameters
@@ -37,13 +37,15 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
     3. Find the **UTM Parameters** section
     4. Toggle **UTM Parameters** to **ON** to enable UTM tracking
   </Step>
-  
   <Step title="Understanding UTM builder interface">
     The UTM Parameters section includes:
+
     - **Required Fields**: Source (mandatory for all campaigns)
     - **Optional Fields**: Campaign, Medium, Term, Content
     - **Analytics Integration**: GA4 ID/GTM ID for direct tracking
     - **Redirect Example**: Preview of final URL with UTM parameters
+
+      ![UTM Parameter Management Pn](/images/UTM-parameter-management.png)
   </Step>
 </Steps>
 
@@ -56,8 +58,9 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
 <AccordionGroup>
   <Accordion title="Source (Required)">
     **Purpose**: Identifies where traffic originates from
-    
+
     **Built-in Suggestions**:
+
     - **google** - Google Ads, Google search campaigns
     - **facebook** - Facebook and Meta advertising
     - **instagram** - Instagram-specific campaigns
@@ -66,7 +69,7 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
     - **email** - Email marketing campaigns
     - **newsletter** - Newsletter-specific tracking
     - **bing** - Microsoft Bing advertising
-    
+
     **Custom Sources**: Enter any custom source name for specific platforms or campaigns
   </Accordion>
 </AccordionGroup>
@@ -76,23 +79,25 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
 <AccordionGroup>
   <Accordion title="Campaign">
     **Purpose**: Identifies specific marketing campaigns
-    
+
     **Example Values**:
+
     - **holiday_special** - Seasonal promotional campaigns
     - **birthday_promotion** - Special event campaigns
     - **product_launch** - New product introduction campaigns
     - **summer_2025** - Time-based campaign identification
-    
+
     **Best Practices**:
+
     - Use consistent naming conventions across campaigns
     - Include dates or periods for time-sensitive campaigns
     - Keep names descriptive but concise
   </Accordion>
-  
   <Accordion title="Medium">
     **Purpose**: Categorizes the marketing medium or channel type
-    
+
     **Built-in Suggestions**:
+
     - **cpc** - Cost-per-click advertising
     - **email** - Email marketing campaigns
     - **social** - Social media posts and campaigns
@@ -101,31 +106,31 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
     - **organic** - Organic social media posts
     - **paid-social** - Paid social media advertising
     - **affiliate** - Affiliate marketing programs
-    
+
     **Strategic Value**: Groups similar marketing activities for performance comparison
   </Accordion>
-  
   <Accordion title="Term">
     **Purpose**: Tracks specific keywords or targeting criteria
-    
+
     **Example Usage**:
+
     - **iphone_15** - Product-specific keywords
     - **wireless_earbuds** - Category targeting
     - **hotel_deal** - Service-specific terms
     - **marketing_automation** - B2B keyword targeting
-    
+
     **Applications**: Particularly useful for paid search campaigns and keyword tracking
   </Accordion>
-  
   <Accordion title="Content">
     **Purpose**: Differentiates between similar content or creative variations
-    
+
     **Example Values**:
+
     - **video_ad_short** - Video advertisement variations
     - **popup_offer_button** - Specific call-to-action elements
     - **banner_ad_1** - Creative testing and optimization
     - **header_cta** - Placement-specific tracking
-    
+
     **A/B Testing**: Essential for comparing different creative approaches and placements
   </Accordion>
 </AccordionGroup>
@@ -143,9 +148,9 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
     3. UTM parameters will be sent directly to your GA4 property
     4. Works even if destination pages don't have GA4 tracking code
   </Step>
-  
   <Step title="Benefits of direct GA4 integration">
     **Enhanced Tracking Capabilities**:
+
     - **Bypasses Missing Tracking**: Send data even without destination page analytics
     - **Consistent Attribution**: Reliable campaign tracking across all touchpoints
     - **Immediate Data Flow**: UTM parameters reach GA4 regardless of destination setup
@@ -156,10 +161,11 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
 ### Google Tag Manager (GTM) Integration
 
 <Note>
-**GTM Support**: Enter your Google Tag Manager container ID (GTM-XXXXXXX format) to send UTM parameter data directly to your GTM setup for advanced tracking configurations.
+  **GTM Support**: Enter your Google Tag Manager container ID (GTM-XXXXXXX format) to send UTM parameter data directly to your GTM setup for advanced tracking configurations.
 </Note>
 
 **GTM Integration Benefits**:
+
 - **Advanced Event Tracking**: Trigger custom events based on UTM parameters
 - **Cross-Platform Attribution**: Connect Li2.ai data with other marketing platforms
 - **Custom Dimension Tracking**: Send UTM data to custom GA4 dimensions
@@ -174,14 +180,15 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
 <Steps>
   <Step title="Automatic URL building">
     **How UTM URLs Are Created**:
+
     1. Li2.ai automatically appends UTM parameters to your destination URL
     2. **Redirect Example** shows the final URL users will visit
     3. Parameters are properly formatted and encoded
     4. No manual URL construction required
   </Step>
-  
   <Step title="UTM overwrite settings">
     **Allow UTM Overwrite Option**:
+
     - **When Enabled**: UTM parameters in short URLs override stored ones
     - **When Disabled**: Stored UTM parameters always take precedence
     - **Use Case**: Allows dynamic UTM modification for different campaigns using the same touchpoint
@@ -193,12 +200,14 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
 <AccordionGroup>
   <Accordion title="Consistent naming conventions">
     **Professional UTM Standards**:
+
     - **Source**: Use lowercase, standardized platform names
     - **Medium**: Stick to common medium types (cpc, email, social, display)
     - **Campaign**: Use descriptive, date-inclusive names
     - **Term/Content**: Include specific identifiers for A/B testing
-    
+
     **Example UTM Structure**:
+
     ```
     Source: facebook
     Medium: paid-social
@@ -206,15 +215,16 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
     Content: video_ad_v2
     ```
   </Accordion>
-  
   <Accordion title="Multi-channel campaign coordination">
     **Campaign Organization**:
+
     - **Consistent Campaign Names**: Use same campaign parameter across all channels
     - **Channel-Specific Sources**: Different sources for each platform (facebook, google, email)
     - **Medium Differentiation**: Distinguish between organic and paid efforts
     - **Content Variations**: Track different creative approaches within campaigns
-    
+
     **Strategic Benefits**:
+
     - Compare performance across different marketing channels
     - Understand which creative variations work best
     - Track customer journey across multiple touchpoints
@@ -248,22 +258,23 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
 <Steps>
   <Step title="Campaign structure planning">
     **Before Creating UTM Parameters**:
+
     - Define campaign objectives and key performance indicators
     - Plan naming conventions for consistent tracking
     - Identify which parameters are essential for your analysis
     - Consider how UTM data will integrate with existing analytics
   </Step>
-  
   <Step title="Cross-channel coordination">
     **Multi-Channel UTM Strategy**:
+
     - Use consistent campaign names across all marketing channels
     - Differentiate sources clearly (facebook vs facebook_ads)
     - Plan medium categories that align with your marketing mix
     - Design content parameters for meaningful A/B testing
   </Step>
-  
   <Step title="Performance monitoring setup">
     **Analytics Preparation**:
+
     - Ensure GA4 or GTM integration is properly configured
     - Set up custom reports for UTM parameter analysis
     - Plan attribution models that leverage UTM data
@@ -278,6 +289,7 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
 ### Available Now
 
 **Current UTM Capabilities**:
+
 - Complete UTM parameter builder with guided suggestions
 - Direct Google Analytics 4 and Google Tag Manager integration
 - Professional UTM construction and validation
@@ -287,31 +299,34 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
 ### Coming Soon Features
 
 <Note>
-**Enhanced UTM Analytics**: Future updates will include UTM parameter visibility within Li2.ai's analytics dashboard, allowing you to track campaign performance directly in Li2.ai without needing external analytics platforms.
+  **Enhanced UTM Analytics**: Future updates will include UTM parameter visibility within Li2.ai's analytics dashboard, allowing you to track campaign performance directly in Li2.ai without needing external analytics platforms.
 </Note>
 
 <AccordionGroup>
   <Accordion title="Li2.ai analytics UTM integration 🔄">
     **Planned Features**:
+
     - **UTM Parameter Reporting**: View UTM performance directly in Li2.ai analytics
     - **Campaign Attribution**: Track which UTM combinations drive the most engagement
     - **Source/Medium Analysis**: Compare performance across different traffic sources
     - **UTM-Based Filtering**: Filter all analytics by specific UTM parameters
-    
+
     **Strategic Value**:
+
     - Unified campaign tracking within Li2.ai interface
     - Immediate UTM performance insights without external tools
     - Enhanced campaign optimization based on integrated data
   </Accordion>
-  
   <Accordion title="Advanced UTM features 🔄">
     **Future Enhancements**:
+
     - **UTM Template System**: Save and reuse UTM parameter combinations
     - **Bulk UTM Application**: Apply UTM parameters to multiple touchpoints
     - **UTM Performance Alerts**: Notifications for high-performing UTM combinations
     - **Advanced Attribution Modeling**: Multi-touch attribution with UTM data
-    
+
     **Professional Benefits**:
+
     - Streamlined UTM management for large campaigns
     - Automated optimization based on UTM performance
     - Enterprise-level campaign attribution capabilities
@@ -325,26 +340,29 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
 <AccordionGroup>
   <Accordion title="UTM data not appearing in analytics">
     **Common Issues and Solutions**:
-    
+
     **Missing GA4/GTM ID**:
+
     - Verify GA4 ID or GTM ID is correctly entered
     - Ensure ID format matches GTM-XXXXXXX or G-XXXXXXX
     - Check that GA4 property is active and receiving data
-    
+
     **URL Construction Problems**:
+
     - Review Redirect Example to verify UTM parameters are properly appended
     - Ensure destination URL doesn't already contain UTM parameters
     - Check Allow UTM Overwrite settings if using dynamic UTMs
   </Accordion>
-  
   <Accordion title="UTM parameter formatting">
     **Best Practice Formatting**:
+
     - **Use Lowercase**: Avoid mixed case in UTM values
     - **No Spaces**: Use underscores or hyphens instead of spaces
     - **Special Characters**: Avoid special characters that might break URLs
     - **Length Limits**: Keep UTM values concise for better URL management
-    
+
     **Validation Tips**:
+
     - Use Li2.ai's built-in suggestions when possible
     - Test URLs in analytics platforms before large campaigns
     - Verify UTM data appears correctly in GA4 reports
@@ -356,36 +374,16 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
 ## Related Topics
 
 <CardGroup cols={2}>
-  <Card
-    title="Analytics Overview"
-    icon="chart-line"
-    href="/analytics/overview"
-    color="#7C3AED"
-  >
+  <Card title="Analytics Overview" icon="chart-line" color="#7C3AED" href="/analytics/overview">
     Understanding how UTM data enhances your overall analytics and campaign tracking.
   </Card>
-  <Card
-    title="Campaign Analytics"
-    icon="target"
-    href="/analytics/campaign-analytics"
-    color="#A855F7"
-  >
+  <Card title="Campaign Analytics" icon="target" color="#A855F7" href="/analytics/campaign-analytics">
     Using UTM parameters for comprehensive campaign performance analysis.
   </Card>
-  <Card
-    title="Advanced Touchpoints"
-    icon="gear"
-    href="/touchpoints/creating-touchpoints"
-    color="#7C3AED"
-  >
+  <Card title="Advanced Touchpoints" icon="gear" color="#7C3AED" href="/touchpoints/creating-touchpoints">
     Integrating UTM parameters into your touchpoint creation workflow.
   </Card>
-  <Card
-    title="Tags Management"
-    icon="tags"
-    href="/organization/tags"
-    color="#A855F7"
-  >
+  <Card title="Tags Management" icon="tags" color="#A855F7" href="/organization/tags">
     Combining tags and UTM parameters for comprehensive campaign organization.
   </Card>
 </CardGroup>
