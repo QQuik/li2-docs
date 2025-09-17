@@ -24,10 +24,10 @@
             ]
           },
           {
-            "group": "Touchpoints",
+            "group": "Short Link",
             "pages": [
-              "touchpoints/overview",
-              "touchpoints/creating-touchpoints",
+              "short-link/overview",
+              "touchpoints/create-shortlink",
               "touchpoints/managing-touchpoints",
               "touchpoints/link-versioning",
               "touchpoints/custom-domains",
