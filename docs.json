@@ -17,10 +17,10 @@
             "group": "Getting Started",
             "pages": [
               "index",
+              "creating-account",
               "quickstart",
               "features-overview",
-              "account-setup",
-              "first-touchpoint"
+              "account-setup"
             ]
           },
           {
@@ -30,8 +30,6 @@
               "short-link/create-shortlink",
               "short-link/custome-black-half",
               "short-link/delete-disable-links",
-              "touchpoints/managing-touchpoints",
-              "touchpoints/link-versioning",
               "touchpoints/custom-domains",
               "touchpoints/multi-channel-routing"
             ]
