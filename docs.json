@@ -27,7 +27,9 @@
             "group": "Short Link",
             "pages": [
               "short-link/overview",
-              "touchpoints/create-shortlink",
+              "short-link/create-shortlink",
+              "short-link/custome-black-half",
+              "short-link/delete-disable-links",
               "touchpoints/managing-touchpoints",
               "touchpoints/link-versioning",
               "touchpoints/custom-domains",
