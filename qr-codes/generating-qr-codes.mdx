@@ -42,6 +42,10 @@ Nếu bạn chưa đăng nhập hoặc muốn thử nhanh:
      </Step>
    </Steps>
 
+<Tip>
+  QR code được tạo trong [Li2.ai](http://Li2.ai) đều là QR động (Dynamic QR). Nghĩa là nếu bạn đổi **URL đích** sau này, QR code vẫn giữ thiết kế cũ nhưng tự động cập nhật dữ liệu mới – không cần in lại.
+</Tip>
+
 ---
 
 ## 3. Tạo mã QR từ link rút gọn đã có trong tài khoản của bạn
@@ -52,217 +56,20 @@ Nếu bạn chưa đăng nhập hoặc muốn thử nhanh:
   <Step title="Đăng nhập vào tài khoản Li2 tại app.li2.ai.">
     
   </Step>
-  <Step title="Chọn mục Short link ở thanh bên trái">
-    - Nhấp vào tiêu đề của**link**  mà bạn muốn tạo mã QR.
-    - Bật thêm mã QR
+  <Step title="Từ menu bên trái, chọn Short Link" iconType="regular">
+    - Nhấp vào tiêu đề của **link** mà bạn muốn tạo mã QR.
+    - Bật thêm mã QR.
   </Step>
-  <Step title="Thiết kế mã QR">
-    - Tùy chỉnh màu sắc, style, logo
+  <Step title="Tuỳ chỉnh thiết kế QR">
+    - **Màu sắc:** chọn màu mặc định (đen, xanh, tím) hoặc nhấp vào biểu tượng bút màu để chọn màu tuỳ chỉnh.
+    - **Logo:** chọn logo hoặc tải lên logo riêng.
+    - **Hình dạng ô QR:** chọn style hiển thị cho các ô nhỏ (pixel).
+    - **Khung góc QR:** chọn kiểu hiển thị cho các góc (vuông, tròn, bo góc). Tùy chỉnh màu sắc, style, logo
   </Step>
   <Step title="Nhấp lưu thay đổi">
-    Tải xuống và chia sẻ mã QR mới của bạn!
+    - Khi hoàn tất nhấn **Lưu**.
+    - QR code của bạn sẽ được lưu và có thể tải về để sử dụng ngay.
   </Step>
 </Steps>
-
-### 
-
----
-
-## Understanding Automatic Generation
-
-### What Happens When QR Is Enabled
-
-<AccordionGroup>
-  <Accordion title="Instant generation process">
-    **Automatic Creation**:
-
-    - QR code generates immediately when QR channel is enabled
-    - Uses standard QR code appearance (black pattern on white background)
-    - Includes Li2.ai branding for professional appearance
-    - Incorporates error correction for reliable scanning
-
-    **No Additional Steps Required**:
-
-    - No separate "generate" button needed
-    - No waiting period or processing time
-    - Immediate availability for download and use
-    - Analytics tracking active from first scan
-  </Accordion>
-  <Accordion title="Default settings applied">
-    **Standard Appearance**:
-
-    - Classic black QR pattern on white background
-    - Standard body and eye patterns
-    - Professional Li2.ai branding included
-    - Optimized size and error correction
-
-    **Professional Quality**:
-
-    - High resolution suitable for print and digital use
-    - Reliable scanning across devices and conditions
-    - Professional appearance appropriate for business use
-    - Consistent quality across all generated codes
-  </Accordion>
-</AccordionGroup>
-
-### QR Code Regeneration
-
-<Note>
-  **Automatic Updates**: QR codes automatically regenerate when you change the destination URL in your touchpoint details. The visual design remains the same, but the QR data updates to reflect the new destination.
-</Note>
-
-**When QR Codes Regenerate**:
-
-- Destination URL changes in touchpoint details
-- Updates happen automatically without manual intervention
-- Previous QR code images may need to be re-downloaded
-- Analytics continue seamlessly with updated tracking
-
----
-
-## QR Generation Requirements
-
-### Prerequisites for QR Creation
-
-<CardGroup cols={2}>
-  <Card title="Active Touchpoint" icon="link" color="#10B981">
-    QR codes are generated as part of touchpoints - you need a touchpoint with a valid destination URL.
-  </Card>
-  <Card title="QR Channel Enabled" icon="toggle-on" color="#10B981">
-    QR generation only occurs when the QR channel is explicitly enabled in touchpoint settings.
-  </Card>
-</CardGroup>
-
-### Account and Feature Access
-
-<AccordionGroup>
-  <Accordion title="QR generation availability">
-    **Current Access**:
-
-    - Available for all Li2.ai accounts
-    - No separate QR-specific subscription required
-    - Included in premium access during launch period
-    - Unlimited QR code generation per account
-
-    **No Restrictions**:
-
-    - Generate QR codes for any touchpoint
-    - No limits on number of QR codes per campaign
-    - Full customization available for all generated codes
-    - Complete analytics access for all QR activity
-  </Accordion>
-  <Accordion title="Technical requirements">
-    **Touchpoint Dependencies**:
-
-    - Valid destination URL required
-    - Touchpoint must be active for QR functionality
-    - Analytics tracking requires proper touchpoint setup
-    - Multi-channel routing requires both LINK and QR enabled
-
-    **No Additional Setup**:
-
-    - No separate QR account or service required
-    - No external QR code service integration needed
-    - No technical configuration beyond enabling the channel
-    - Immediate availability after enabling QR channel
-  </Accordion>
-</AccordionGroup>
-
----
-
-## Testing Your Generated QR Codes
-
-### Verification Process
-
-<Steps>
-  <Step title="Immediate functionality test">
-    After QR generation:
-
-    1. Use your smartphone camera to scan the QR code
-    2. Verify it redirects to the correct destination
-    3. Check that analytics register the scan
-    4. Confirm mobile experience is optimized
-  </Step>
-  <Step title="Cross-device testing">
-    Test QR code functionality across:
-
-    - Different smartphone models and operating systems
-    - Various QR code scanning apps
-    - Different lighting conditions and angles
-    - Multiple distances and scanning positions
-  </Step>
-  <Step title="Analytics verification">
-    Confirm tracking is working:
-
-    1. Check that scans appear in touchpoint analytics
-    2. Verify geographic and device data collection
-    3. Test UTM parameter capture if configured
-    4. Ensure QR metrics separate from LINK metrics
-  </Step>
-</Steps>
-
-### Quality Assurance Checklist
-
-<AccordionGroup>
-  <Accordion title="Technical verification">
-    **QR Code Functionality**:
-
-    - ✅ Scans correctly with multiple devices
-    - ✅ Redirects to intended destination
-    - ✅ Works in various lighting conditions
-    - ✅ Analytics tracking functions properly
-
-    **User Experience Check**:
-
-    - ✅ Destination page is mobile-optimized
-    - ✅ Loading speed is acceptable on mobile
-    - ✅ Call-to-action is clear and accessible
-    - ✅ User journey leads to desired outcome
-  </Accordion>
-  <Accordion title="Integration verification">
-    **Touchpoint Integration**:
-
-    - ✅ QR channel shows as enabled in touchpoint details
-    - ✅ QR analytics separate from LINK analytics
-    - ✅ Multi-channel routing works if configured
-    - ✅ Campaign tags and organization function properly
-
-    **Campaign Readiness**:
-
-    - ✅ QR design aligns with brand standards
-    - ✅ Destination content matches campaign messaging
-    - ✅ Analytics goals configured for measurement
-    - ✅ Team members have access to download QR code
-  </Accordion>
-</AccordionGroup>
-
----
-
-## Future QR Generation Features
-
-### Coming Soon Enhancements
-
-<Note>
-  **Bulk Generation**: We're developing bulk QR generation capabilities that will allow you to create QR codes for multiple touchpoints simultaneously, perfect for large campaigns and enterprise use.
-</Note>
-
----
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Customize Your QR Codes" icon="palette" color="#7C3AED" href="/qr-codes/customizing-qr-codes">
-    Learn to customize patterns, colors, and branding for professional QR codes.
-  </Card>
-  <Card title="Download QR Codes" icon="download" color="#A855F7" href="/qr-codes/downloading-qr-codes">
-    Understand format options and sizing for different marketing applications.
-  </Card>
-  <Card title="Multi-Channel Strategy" icon="route" color="#7C3AED" href="/touchpoints/multi-channel-routing">
-    Set up different destinations for QR vs LINK channels for advanced testing.
-  </Card>
-  <Card title="Analytics Tracking" icon="chart-line" color="#A855F7" href="/analytics/overview">
-    Monitor QR code performance and optimize scan rates for better results.
-  </Card>
-</CardGroup>
 
 ---
