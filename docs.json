@@ -28,7 +28,7 @@
             "pages": [
               "short-link/overview",
               "short-link/create-shortlink",
-              "short-link/custome-back-half",
+              "short-link/custom-back-half",
               "short-link/delete-disable-links",
               "touchpoints/custom-domains",
               "touchpoints/multi-channel-routing"
