@@ -30,6 +30,7 @@
               "short-link/create-shortlink",
               "short-link/custom-back-half",
               "short-link/delete-disable-links",
+              "short-link/destination-url",
               "touchpoints/custom-domains",
               "touchpoints/multi-channel-routing"
             ]
@@ -53,7 +54,7 @@
           {
             "group": "Organization & Management",
             "pages": [
-              "organization/tags"              
+              "organization/tags"
             ]
           },
           {
@@ -87,18 +88,6 @@
               "integrations/mautic",
               "integrations/hubspot"
             ]
-          },
-          {
-            "group": "AI & Automation",
-            "pages": [
-              
-            ]
-          },
-          {
-            "group": "Advanced Features",
-            "pages": [
-              
-            ]
           }
         ]
       }
@@ -119,7 +108,7 @@
     }
   },
   "navbar": {
-    "links": [      
+    "links": [
       {
         "label": "Support",
         "href": "mailto:support@li2.ai"
