@@ -1,236 +1,75 @@
 ---
-title: "UTM Parameters"
-description: "Track marketing campaign performance with UTM parameters, including built-in UTM builder and direct Google Analytics/GTM integration."
+title: "Cách Gắn UTM Parameters "
+description: "Với Li2.ai, bạn có thể gắn thẻ UTM để biết chính xác khách truy cập đến từ đâu. Nhờ đó, bạn dễ dàng theo dõi hiệu quả chiến dịch và xem báo cáo chi tiết ngay trong Google Analytics hoặc Google Tag Manager."
+sidebarTitle: "Gắn UTM Parameters"
 ---
 
-# UTM Parameters
+## Cách gắn UTM cho link rút gọn
 
-Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM parameter system. Build professional UTM tags, track campaign performance, and send data directly to Google Analytics or Google Tag Manager for detailed attribution analysis.
+UTM Parameters cho phép bạn **theo dõi nguồn, chiến dịch, và nội dung** khi người dùng truy cập link. Có một số cách khác nhau để gắn UTM cho link và mã QR tại Li2. Bạn muốn làm theo cách nào?
 
-## UTM Parameter System
+1. Gắn UTM cho link rút gọn tạo mới.
+2. Gắn UTM cho link rút gọn và mã QR đã có trong tài khoản
 
-<CardGroup cols={2}>
-  <Card title="Built-in UTM Builder" icon="wrench" color="#7C3AED">
-    **Integrated Tools**: Create professional UTM parameters directly in Li2.ai with guided field entry and validation.
-  </Card>
-  <Card title="Analytics Integration" icon="chart-line" color="#A855F7">
-    **Direct Tracking**: Send UTM data directly to Google Analytics or Google Tag Manager, even without destination page tracking.
-  </Card>
-  <Card title="Campaign Attribution" icon="target" color="#7C3AED">
-    **Marketing Insights**: Track campaign sources, mediums, and content for comprehensive performance analysis.
-  </Card>
-  <Card title="Professional Standards" icon="badge-check" color="#A855F7">
-    **Best Practices**: Pre-populated suggestions and standardized formats ensure consistent, professional UTM implementation.
-  </Card>
-</CardGroup>
-
----
-
-## Accessing UTM Parameters
-
-### UTM Builder Location
+## Cách gắn UTM cho link rút gọn tạo mới
 
 <Steps>
-  <Step title="Navigate to touchpoint advanced settings">
-    1. Go to **Touchpoints** and select your touchpoint
-    2. Click on the **Advanced** tab
-    3. Find the **UTM Parameters** section
-    4. Toggle **UTM Parameters** to **ON** to enable UTM tracking
+  <Step title="Đăng nhập vào tài khoản Li2 tại app.li2.ai.">
+    
   </Step>
-  <Step title="Understanding UTM builder interface">
-    The UTM Parameters section includes:
+  <Step title="Nhập vào Tạo mới ở góc bên trái,  tại tab Rút Gọn Link.">
+    - Nhập URL bạn muốn rút ngắn vào trường **URL Đích**.
+    - Tùy chỉnh Back-half (slug).
+    - Thêm **tiêu đề** để dễ tìm kiếm sau này (tùy chọn).
+    - Thêm **Tag** (tùy chọn).
+  </Step>
+  <Step title="Nhấp vào biểu tượng UTM, điền thông tin UTM">
+    - **Source (bắt buộc)**: nguồn truy cập (vd: facebook, google, email).
+    - **Medium (tùy chọn)**: kênh quảng bá (vd: banner, cpc, social).
+    - **Campaign (tùy chọn)**: tên chiến dịch (vd: summer_sale, birthday_promo).
+    - **Term (tùy chọn)**: từ khóa hoặc sản phẩm (vd: iphone15, sale50%).
+    - **Content (tùy chọn)**: loại nội dung (vd: video_ad, popup_offer).
+  </Step>
+  <Step title="Nhấn Lưu để lưu trữ các thông tin UTM">
+    Xem ví dụ đường dẫn chuyển hướng ở phần cuối bảng.
+  </Step>
+  <Step title="Nhấn Tạo Link ở góc bên phải. ">
+    Link rút gọn của bạn đã được tạo và sẵn sàng để bạn chia sẻ!
+  </Step>
+</Steps>
 
-    - **Required Fields**: Source (mandatory for all campaigns)
-    - **Optional Fields**: Campaign, Medium, Term, Content
-    - **Analytics Integration**: GA4 ID/GTM ID for direct tracking
-    - **Redirect Example**: Preview of final URL with UTM parameters
 
-      ![UTM Parameter Management Pn](/images/UTM-parameter-management.png)
+<Warning>
+  Lưu ý: các tham số này sẽ không xuất hiện trên link rút gọn.
+</Warning>
+
+## Cách gắn UTM cho link rút gọn đã có trong tài khoản Li2
+
+<Steps>
+  <Step title="Đăng nhập vào tài khoản Li2 tại app.li2.ai.">
+    
+  </Step>
+  <Step title="Trong menu bên trái, chọn Link Rút Gọn.    ">
+    
+  </Step>
+  <Step title="Tìm link cần chỉnh sửa">
+    Nhấp vào **Tiêu đề** hoặc ô ba chấm chọn biểu tượng ✏️ **Sửa.**
+  </Step>
+  <Step title="Tại màn hình chi tiết, chọn tab Nâng cao ">
+    Bật công tắc UTM Parameters. Điền thông tin:
+
+    - **Source (bắt buộc)**: nguồn truy cập (vd: facebook, google, email).
+    - **Medium (tùy chọn)**: kênh quảng bá (vd: banner, cpc, social).
+    - **Campaign (tùy chọn)**: tên chiến dịch (vd: summer_sale, birthday_promo).
+    - **Term (tùy chọn)**: từ khóa hoặc sản phẩm (vd: iphone15, sale50%).
+    - **Content (tùy chọn)**: loại nội dung (vd: video_ad, popup_offer).
+  </Step>
+  <Step title="Nhấn Lưu để hoàn tất.">
+    
   </Step>
 </Steps>
 
 ---
-
-## UTM Parameter Configuration
-
-### Required Parameters
-
-<AccordionGroup>
-  <Accordion title="Source (Required)">
-    **Purpose**: Identifies where traffic originates from
-
-    **Built-in Suggestions**:
-
-    - **google** - Google Ads, Google search campaigns
-    - **facebook** - Facebook and Meta advertising
-    - **instagram** - Instagram-specific campaigns
-    - **linkedin** - LinkedIn advertising and content
-    - **twitter** - Twitter/X campaigns and posts
-    - **email** - Email marketing campaigns
-    - **newsletter** - Newsletter-specific tracking
-    - **bing** - Microsoft Bing advertising
-
-    **Custom Sources**: Enter any custom source name for specific platforms or campaigns
-  </Accordion>
-</AccordionGroup>
-
-### Optional Parameters
-
-<AccordionGroup>
-  <Accordion title="Campaign">
-    **Purpose**: Identifies specific marketing campaigns
-
-    **Example Values**:
-
-    - **holiday_special** - Seasonal promotional campaigns
-    - **birthday_promotion** - Special event campaigns
-    - **product_launch** - New product introduction campaigns
-    - **summer_2025** - Time-based campaign identification
-
-    **Best Practices**:
-
-    - Use consistent naming conventions across campaigns
-    - Include dates or periods for time-sensitive campaigns
-    - Keep names descriptive but concise
-  </Accordion>
-  <Accordion title="Medium">
-    **Purpose**: Categorizes the marketing medium or channel type
-
-    **Built-in Suggestions**:
-
-    - **cpc** - Cost-per-click advertising
-    - **email** - Email marketing campaigns
-    - **social** - Social media posts and campaigns
-    - **display** - Display advertising and banners
-    - **referral** - Referral program tracking
-    - **organic** - Organic social media posts
-    - **paid-social** - Paid social media advertising
-    - **affiliate** - Affiliate marketing programs
-
-    **Strategic Value**: Groups similar marketing activities for performance comparison
-  </Accordion>
-  <Accordion title="Term">
-    **Purpose**: Tracks specific keywords or targeting criteria
-
-    **Example Usage**:
-
-    - **iphone_15** - Product-specific keywords
-    - **wireless_earbuds** - Category targeting
-    - **hotel_deal** - Service-specific terms
-    - **marketing_automation** - B2B keyword targeting
-
-    **Applications**: Particularly useful for paid search campaigns and keyword tracking
-  </Accordion>
-  <Accordion title="Content">
-    **Purpose**: Differentiates between similar content or creative variations
-
-    **Example Values**:
-
-    - **video_ad_short** - Video advertisement variations
-    - **popup_offer_button** - Specific call-to-action elements
-    - **banner_ad_1** - Creative testing and optimization
-    - **header_cta** - Placement-specific tracking
-
-    **A/B Testing**: Essential for comparing different creative approaches and placements
-  </Accordion>
-</AccordionGroup>
-
----
-
-## Analytics Integration
-
-### Google Analytics 4 (GA4) Integration
-
-<Steps>
-  <Step title="Configure GA4 tracking">
-    1. In the **UTM Parameters** section, find **GA4 ID / GTM ID** field
-    2. Enter your Google Analytics 4 measurement ID (format: GTM-XXXXXXX or G-XXXXXXX)
-    3. UTM parameters will be sent directly to your GA4 property
-    4. Works even if destination pages don't have GA4 tracking code
-  </Step>
-  <Step title="Benefits of direct GA4 integration">
-    **Enhanced Tracking Capabilities**:
-
-    - **Bypasses Missing Tracking**: Send data even without destination page analytics
-    - **Consistent Attribution**: Reliable campaign tracking across all touchpoints
-    - **Immediate Data Flow**: UTM parameters reach GA4 regardless of destination setup
-    - **Complete Campaign View**: Track full customer journey from Li2.ai to conversion
-  </Step>
-</Steps>
-
-### Google Tag Manager (GTM) Integration
-
-<Note>
-  **GTM Support**: Enter your Google Tag Manager container ID (GTM-XXXXXXX format) to send UTM parameter data directly to your GTM setup for advanced tracking configurations.
-</Note>
-
-**GTM Integration Benefits**:
-
-- **Advanced Event Tracking**: Trigger custom events based on UTM parameters
-- **Cross-Platform Attribution**: Connect Li2.ai data with other marketing platforms
-- **Custom Dimension Tracking**: Send UTM data to custom GA4 dimensions
-- **Enhanced E-commerce Tracking**: Attribute transactions to specific campaigns
-
----
-
-## UTM Parameter Management
-
-### URL Construction and Preview
-
-<Steps>
-  <Step title="Automatic URL building">
-    **How UTM URLs Are Created**:
-
-    1. Li2.ai automatically appends UTM parameters to your destination URL
-    2. **Redirect Example** shows the final URL users will visit
-    3. Parameters are properly formatted and encoded
-    4. No manual URL construction required
-  </Step>
-  <Step title="UTM overwrite settings">
-    **Allow UTM Overwrite Option**:
-
-    - **When Enabled**: UTM parameters in short URLs override stored ones
-    - **When Disabled**: Stored UTM parameters always take precedence
-    - **Use Case**: Allows dynamic UTM modification for different campaigns using the same touchpoint
-  </Step>
-</Steps>
-
-### Campaign Tracking Strategy
-
-<AccordionGroup>
-  <Accordion title="Consistent naming conventions">
-    **Professional UTM Standards**:
-
-    - **Source**: Use lowercase, standardized platform names
-    - **Medium**: Stick to common medium types (cpc, email, social, display)
-    - **Campaign**: Use descriptive, date-inclusive names
-    - **Term/Content**: Include specific identifiers for A/B testing
-
-    **Example UTM Structure**:
-
-    ```
-    Source: facebook
-    Medium: paid-social
-    Campaign: summer_2025_sale
-    Content: video_ad_v2
-    ```
-  </Accordion>
-  <Accordion title="Multi-channel campaign coordination">
-    **Campaign Organization**:
-
-    - **Consistent Campaign Names**: Use same campaign parameter across all channels
-    - **Channel-Specific Sources**: Different sources for each platform (facebook, google, email)
-    - **Medium Differentiation**: Distinguish between organic and paid efforts
-    - **Content Variations**: Track different creative approaches within campaigns
-
-    **Strategic Benefits**:
-
-    - Compare performance across different marketing channels
-    - Understand which creative variations work best
-    - Track customer journey across multiple touchpoints
-    - Optimize marketing spend based on UTM attribution data
-  </Accordion>
-</AccordionGroup>
 
 ---
 
@@ -252,49 +91,6 @@ Enhance your marketing campaign tracking with Li2.ai's comprehensive UTM paramet
     **Data Validation**: Verify UTM data appears correctly in Google Analytics for accurate attribution.
   </Card>
 </CardGroup>
-
-### Strategic UTM Planning
-
-<Steps>
-  <Step title="Campaign structure planning">
-    **Before Creating UTM Parameters**:
-
-    - Define campaign objectives and key performance indicators
-    - Plan naming conventions for consistent tracking
-    - Identify which parameters are essential for your analysis
-    - Consider how UTM data will integrate with existing analytics
-  </Step>
-  <Step title="Cross-channel coordination">
-    **Multi-Channel UTM Strategy**:
-
-    - Use consistent campaign names across all marketing channels
-    - Differentiate sources clearly (facebook vs facebook_ads)
-    - Plan medium categories that align with your marketing mix
-    - Design content parameters for meaningful A/B testing
-  </Step>
-  <Step title="Performance monitoring setup">
-    **Analytics Preparation**:
-
-    - Ensure GA4 or GTM integration is properly configured
-    - Set up custom reports for UTM parameter analysis
-    - Plan attribution models that leverage UTM data
-    - Create performance benchmarks for different UTM combinations
-  </Step>
-</Steps>
-
----
-
-## Current vs Future UTM Features
-
-### Available Now
-
-**Current UTM Capabilities**:
-
-- Complete UTM parameter builder with guided suggestions
-- Direct Google Analytics 4 and Google Tag Manager integration
-- Professional UTM construction and validation
-- UTM overwrite settings for flexible campaign management
-- Real-time URL preview with UTM parameters
 
 ### Coming Soon Features
 
