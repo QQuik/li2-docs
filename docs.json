@@ -38,7 +38,7 @@
           {
             "group": "QR Codes & Visual Tools",
             "pages": [
-              "qr-codes/overview",
+              "qr-codes/redirect-qr-codes",
               "qr-codes/generating-qr-codes",
               "qr-codes/customizing-qr-codes",
               "qr-codes/downloading-qr-codes"
