@@ -4,20 +4,20 @@ description: "Với Li2.ai, bạn có thể gắn thẻ UTM để biết chính 
 sidebarTitle: "Gắn UTM Parameters"
 ---
 
-## Cách gắn UTM cho link rút gọn
+## Cách gắn UTM cho link rút gọn và mã QR
 
 UTM Parameters cho phép bạn **theo dõi nguồn, chiến dịch, và nội dung** khi người dùng truy cập link. Có một số cách khác nhau để gắn UTM cho link và mã QR tại Li2. Bạn muốn làm theo cách nào?
 
 1. Gắn UTM cho link rút gọn tạo mới.
 2. Gắn UTM cho link rút gọn và mã QR đã có trong tài khoản
 
-## Cách gắn UTM cho link rút gọn tạo mới
+## Cách gắn UTM cho link rút gọn và mã QR tạo mới
 
 <Steps>
   <Step title="Đăng nhập vào tài khoản Li2 tại app.li2.ai.">
     
   </Step>
-  <Step title="Nhập vào Tạo mới ở góc bên trái, tại tab Rút Gọn Link">
+  <Step title="Nhập vào Tạo mới ở góc bên trái, Chọn tab Link Rút Gọn hoặc Mã QR">
     - Nhập URL bạn muốn rút ngắn vào trường **URL Đích**.
     - Tùy chỉnh Back-half (slug).
     - Thêm **tiêu đề** để dễ tìm kiếm sau này (tùy chọn).
@@ -37,8 +37,8 @@ UTM Parameters cho phép bạn **theo dõi nguồn, chiến dịch, và nội du
   <Step title="Nhấn Lưu để lưu trữ các thông tin UTM">
     Xem ví dụ đường dẫn chuyển hướng ở phần cuối bảng.
   </Step>
-  <Step title="Nhấn Tạo Link ở góc bên phải. ">
-    Link rút gọn của bạn đã được tạo và sẵn sàng để bạn chia sẻ!
+  <Step title="Nhấn Tạo Link hoặc Tạo Mã ở góc bên phải. ">
+    Link rút gọn hay mã QR của bạn đã được tạo và sẵn sàng để bạn chia sẻ!
   </Step>
 </Steps>
 
@@ -52,10 +52,10 @@ UTM Parameters cho phép bạn **theo dõi nguồn, chiến dịch, và nội du
   <Step title="Đăng nhập vào tài khoản Li2 tại app.li2.ai">
     
   </Step>
-  <Step title="Trong menu bên trái, chọn Link Rút Gọn">
+  <Step title="Trong menu bên trái, chọn Link Rút Gọn hoặc Mã QR">
     
   </Step>
-  <Step title="Tìm link cần chỉnh sửa">
+  <Step title="Tìm link/mã QR cần chỉnh sửa">
     Nhấp vào **Tiêu đề** hoặc ô ba chấm chọn biểu tượng <Icon icon="pencil" iconType="light" /> **Sửa.**
 
     ![Cach Gan Umtm Cho Link Rut Gon Li2 Pn](/images/cach-gan-umtm-cho-link-rut-gon-li2.png)
@@ -75,45 +75,3 @@ UTM Parameters cho phép bạn **theo dõi nguồn, chiến dịch, và nội du
     
   </Step>
 </Steps>
-
-## Cách gắn UTM cho mã QR đã có trong tài khoản Li2
-
----
-
-## Troubleshooting UTM Parameters
-
-<AccordionGroup>
-  <Accordion title="UTM data not appearing in analytics">
-    **Common Issues and Solutions**:
-
-    **Missing GA4/GTM ID**:
-
-    - Verify GA4 ID or GTM ID is correctly entered
-    - Ensure ID format matches GTM-XXXXXXX or G-XXXXXXX
-    - Check that GA4 property is active and receiving data
-
-    **URL Construction Problems**:
-
-    - Review Redirect Example to verify UTM parameters are properly appended
-    - Ensure destination URL doesn't already contain UTM parameters
-    - Check Allow UTM Overwrite settings if using dynamic UTMs
-  </Accordion>
-  <Accordion title="UTM parameter formatting">
-    **Best Practice Formatting**:
-
-    - **Use Lowercase**: Avoid mixed case in UTM values
-    - **No Spaces**: Use underscores or hyphens instead of spaces
-    - **Special Characters**: Avoid special characters that might break URLs
-    - **Length Limits**: Keep UTM values concise for better URL management
-
-    **Validation Tips**:
-
-    - Use Li2.ai's built-in suggestions when possible
-    - Test URLs in analytics platforms before large campaigns
-    - Verify UTM data appears correctly in GA4 reports
-  </Accordion>
-</AccordionGroup>
-
----
-
-**Ready to implement UTM tracking?** [Create a touchpoint with UTMs →](https://app.li2.ai/touchpoints/create) or [view your analytics →](https://app.li2.ai/analytics)
