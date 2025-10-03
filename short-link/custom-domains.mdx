@@ -12,9 +12,9 @@ Tên miền tùy chỉnh cho phép bạn sử dụng tên miền có thương hi
 
 ## Thiết Lập **Liên Kết Thương Hiệu** (Custom Domain)
 
-Quy trình này kết hợp thao tác trên tài khoản [**Li2.ai**](http://Li2.ai) và hệ thống quản lý tên miền (DNS) của bạn.
+Quy trình này kết hợp thao tác trên tài khoản **Li2.ai** và hệ thống quản lý tên miền (DNS) của bạn.
 
-### Bước 1: Thêm Tên miền trên Li2.ai
+### Bước 1: Thêm Tên miền trên Li2
 
 <Steps>
   <Step title="Đăng nhập vào tài khoản Li2 tại app.li2.ai">
@@ -22,10 +22,8 @@ Quy trình này kết hợp thao tác trên tài khoản [**Li2.ai**](http://Li2
     2. Nhấp vào **\+ Thêm tên miền**
   </Step>
   <Step title="Nhập Tên miền ">
-    In the "Add domain" dialog: (ví dụ: `links.tencongty.com`).
-
-    1. Nhập tên miền tùy chỉnh của bạn (e.g., `links.yourcompany.com`)
-    2. Nhấp **Tiếp theo **để chuyển sang bước xác minh.
+    - Nhập tên miền tùy chỉnh của bạn (e.g., `links.yourcompany.com`)
+    - Nhấp **Tiếp theo** để chuyển sang bước xác minh.
 
     <Note>
       **Domain Tips**: Use a subdomain like `links.yourcompany.com` or `go.yourcompany.com` rather than your main domain. This keeps your main website separate from your short links.
@@ -40,11 +38,9 @@ Quy trình này kết hợp thao tác trên tài khoản [**Li2.ai**](http://Li2
     Truy cập vào cài đặt DNS của tên miền thông qua nhà đăng ký hoặc nhà cung cấp hosting của bạn.
   </Step>
   <Step title="Thêm bản ghi CNAME">
-    **CNAME Record Setup**:
-
     - **Name**: Nhập tên miền (hoặc tên Subdomain bạn đã chọn).
     - **Target**: `li2.ai`
-    - **TTL**: Giữ nguyên mặc định (thường là 3600 hoặc "Automatic").)
+    - **TTL**: Default (Giữ nguyên mặc định, thường là 3600 hoặc "Automatic").)
 
     Bản ghi này cho phép các trình duyệt biết nơi tìm thấy các liên kết ngắn của bạn.
 
@@ -53,28 +49,19 @@ Quy trình này kết hợp thao tác trên tài khoản [**Li2.ai**](http://Li2
     </Tip>
   </Step>
   <Step title="Thêm bản ghi TXT">
-    **TXT Record Setup**:
-
     - **Name**: `_Li2.ai-shortlink-verification `
     - **Content**: Mã xác minh hiển thị trên **Li2.ai** (dãy ký tự duy nhất). (looks like `b3c0fb26-a4a8-4db5-bfac-97cf5ee6e1cc`)
     - **TTL**: Default
 
     Bản ghi này chứng minh bạn sở hữu tên miền
   </Step>
-  <Step title="Chờ đợi Sự lan truyền DNS (DNS Propagation)">
-    <Warning>
-      **DNS changes can take up to 48 hours** to propagate worldwide. Most changes happen within a few hours, but be patient if verification doesn't work immediately.
-    </Warning>
-    You can check if your DNS changes have propagated using online DNS checker tools.
+  <Step title="Chờ đợi DNS Propagation">
+    Bạn có thể sử dụng các dịch vụ web (như các trang web tra cứu DNS) để xem liệu cấu hình tên miền mới của bạn đã được cập nhật trên toàn bộ mạng internet hay chưa.
   </Step>
   <Step title="Xác minh trong Li2">
-    5. Sau khi thiết lập cả hai bản ghi DNS, quay lại **Li2**.
-    2. Nhấp vào **"Verify" (Xác minh)** trong hộp thoại xác minh tên miền.
-    4. Nếu thành công, tên miền của bạn sẽ hiển thị trạng thái **"Verified" (Đã xác minh)**.
-
-    <Note>
-      **Monitor Verification Status**: You can check your domain's verification status anytime in Settings → Organization Settings → Customize Domain. Domains will show status as "Verifying", "Verified", or "Failed".
-    </Note>
+    - Sau khi thiết lập cả hai bản ghi DNS, quay lại **Li2**.
+    - Nhấp vào **"Verify" (Xác minh)** trong hộp thoại xác minh tên miền.
+    - Nếu thành công, tên miền của bạn sẽ hiển thị trạng thái **"Verified" (Đã xác minh)**.
   </Step>
 </Steps>
 
@@ -228,7 +215,7 @@ Quy trình này kết hợp thao tác trên tài khoản [**Li2.ai**](http://Li2
     **DNS Propagation**:
 
     - **Đợi thêm thời gian** (thay đổi DNS có thể mất đến 48 giờ).
-    - Sau đó, thử xác minh lại. 
+    - Sau đó, thử xác minh lại.
     - Sử dụng các công cụ kiểm tra DNS trực tuyến để xem bản ghi của bạn đã hiển thị  chưa.
   </Accordion>
   <Accordion title="Domain not appearing in dropdown">
