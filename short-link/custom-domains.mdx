@@ -1,51 +1,31 @@
 ---
-title: "Custom Domains"
-description: "Set up custom domains for professional branded short links that build trust and reinforce your brand identity."
+title: "Tên miền Tùy chỉnh"
+description: "Thiết lập tên miền tuỳ chỉnh (custom domains) để tạo ra các link rút gọn có thương hiệu (Brand link), giúp xây dựng lòng tin và củng cố nhận diện thương hiệu của bạn."
+sidebarTitle: " Tùy chỉnh Tên miền"
 ---
 
 # Custom Domains
 
-Custom domains allow you to use your own branded domain for short links instead of the default `li2.ai` domain. This creates professional, trustworthy links that reinforce your brand identity and improve click-through rates.
-
-## Why Use Custom Domains?
-
-<CardGroup cols={2}>
-  <Card title="Professional Branding" icon="badge-check" color="#10B981">
-    Links like `yourbrand.com/summer-sale` look more professional than generic short links.
-  </Card>
-  <Card title="Increased Trust" icon="shield-check" color="#10B981">
-    Users are more likely to click links from domains they recognize and trust.
-  </Card>
-  <Card title="Brand Consistency" icon="palette" color="#10B981">
-    Maintain your brand across all marketing materials and touchpoints.
-  </Card>
-  <Card title="Better Analytics" icon="chart-line" color="#10B981">
-    Custom domains can improve tracking and attribution in your analytics tools.
-  </Card>
-</CardGroup>
-
-**Example**: Instead of `li2.ai/abc123`, you could have `yourbrand.com/product-launch` or `links.yourcompany.com/newsletter`.
+Tên miền tùy chỉnh cho phép bạn sử dụng tên miền có thương hiệu riêng cho các liên kết ngắn thay vì tên miền mặc định `li2.ai`. Việc này tạo ra các liên kết chuyên nghiệp, đáng tin cậy, giúp củng cố nhận diện thương hiệu và cải thiện **Tỷ lệ Nhấp (Click-Through Rates - CTR)**
 
 ---
 
-## Setting Up Custom Domains
+## 4 Bước Thiết Lập **Liên Kết Thương Hiệu** (Custom Domain)
 
-### Step 1: Add Your Domain
+Quy trình này kết hợp thao tác trên tài khoản [**Li2.ai**](http://Li2.ai) và hệ thống quản lý tên miền (DNS) của bạn.
+
+### Bước 1: Thêm Tên miền trên Li2.ai
 
 <Steps>
-  <Step title="Navigate to domain settings">
-    1. Go to **Settings** in the main menu
-    2. Click **Organization Settings** in the left sidebar
-    3. Select **Customize Domain**
-    4. Click **"\+ Add Domain"**
-
-       ![Setting Up Custom Domains Pn](/images/setting-up-custom-domains.png)
+  <Step title="Đăng nhập vào tài khoản Li2 tại app.li2.ai">
+    2. Trong menu bên trái, chọn **Tùy chỉnh tên miền**
+    2. Nhấp vào **\+ Thêm tên miền**
   </Step>
-  <Step title="Enter your domain">
-    In the "Add domain" dialog:
+  <Step title="Nhập Tên miền ">
+    In the "Add domain" dialog: (ví dụ: `links.tencongty.com`).
 
-    1. Enter your custom domain (e.g., `links.yourcompany.com`)
-    2. Click **"Next"** to proceed to verification
+    1. Nhập tên miền tùy chỉnh của bạn (e.g., `links.yourcompany.com`)
+    2. Nhấp **Tiếp theo **để chuyển sang bước xác minh.
 
     <Note>
       **Domain Tips**: Use a subdomain like `links.yourcompany.com` or `go.yourcompany.com` rather than your main domain. This keeps your main website separate from your short links.
@@ -53,45 +33,44 @@ Custom domains allow you to use your own branded domain for short links instead 
   </Step>
 </Steps>
 
-### Step 2: Verify Domain Ownership
+### Bước 2: Xác minh Quyền sở hữu Tên miền (Cấu hình DNS)
 
 <Steps>
-  <Step title="Access DNS settings">
-    You'll need to access your domain's DNS settings through your domain registrar or hosting provider (like GoDaddy, Namecheap, Cloudflare, etc.).
+  <Step title="Truy cập Cài đặt DNS">
+    Truy cập vào cài đặt DNS của tên miền thông qua nhà đăng ký hoặc nhà cung cấp hosting của bạn.
   </Step>
-  <Step title="Add CNAME record">
+  <Step title="Thêm bản ghi CNAME">
     **CNAME Record Setup**:
 
-    - **Name**: `@` (or leave blank for root domain)
+    - **Name**: Nhập tên miền (hoặc tên Subdomain bạn đã chọn).
     - **Target**: `li2.ai`
-    - **TTL**: Default (usually 3600 or "Automatic")
+    - **TTL**: Giữ nguyên mặc định (thường là 3600 hoặc "Automatic").)
 
-    This record tells browsers where to find your short links.
+    Bản ghi này cho phép các trình duyệt biết nơi tìm thấy các liên kết ngắn của bạn.
 
     <Tip>
       If you're using a subdomain like `links.yourcompany.com`, the Name field should be `links` instead of `@`.
     </Tip>
   </Step>
-  <Step title="Add TXT record for verification">
+  <Step title="Thêm bản ghi TXT">
     **TXT Record Setup**:
 
-    - **Name**: `_Li2.ai-shortlink-verification`
-    - **Content**: The verification code shown in Li2.ai (looks like `b3c0fb26-a4a8-4db5-bfac-97cf5ee6e1cc`)
+    - **Name**: `_Li2.ai-shortlink-verification `
+    - **Content**: Mã xác minh hiển thị trên **Li2.ai** (dãy ký tự duy nhất). (looks like `b3c0fb26-a4a8-4db5-bfac-97cf5ee6e1cc`)
     - **TTL**: Default
 
-    This record proves you own the domain.
+    Bản ghi này chứng minh bạn sở hữu tên miền
   </Step>
-  <Step title="Wait for DNS propagation">
+  <Step title="Chờ đợi Sự lan truyền DNS (DNS Propagation)">
     <Warning>
       **DNS changes can take up to 48 hours** to propagate worldwide. Most changes happen within a few hours, but be patient if verification doesn't work immediately.
     </Warning>
     You can check if your DNS changes have propagated using online DNS checker tools.
   </Step>
-  <Step title="Verify in Li2.ai">
-    1. After setting up both DNS records, return to Li2.ai
-    2. Click **"Verify"** in the domain verification dialog
-    3. If successful, your domain will show as "Verified" in your domain list
-    4. If verification fails, double-check your DNS records and try again
+  <Step title="Xác minh trong Li2">
+    5. Sau khi thiết lập cả hai bản ghi DNS, quay lại **Li2**.
+    2. Nhấp vào **"Verify" (Xác minh)** trong hộp thoại xác minh tên miền.
+    4. Nếu thành công, tên miền của bạn sẽ hiển thị trạng thái **"Verified" (Đã xác minh)**.
 
     <Note>
       **Monitor Verification Status**: You can check your domain's verification status anytime in Settings → Organization Settings → Customize Domain. Domains will show status as "Verifying", "Verified", or "Failed".
@@ -228,31 +207,29 @@ Custom domains allow you to use your own branded domain for short links instead 
 
 ---
 
-## Troubleshooting Custom Domains
+## Cách Xử Lý Sự Cố khi cài đặt tên miền
 
-### Common DNS Issues
+### Các Vấn Đề DNS Thường Gặp
 
 <AccordionGroup>
-  <Accordion title="Verification fails">
-    **Check these common issues**:
+  <Accordion title="Xác minh Tên miền Thất bại (Verification fails)">
+    **Lỗi Bản ghi CNAME:**
 
-    **CNAME Record Problems**:
-
-    - Ensure the target is exactly `li2.ai` (no trailing dots or extra characters)
-    - For subdomains, use the subdomain name (e.g., `links`) not `@`
+    - Đảm bảo **Mục tiêu (Target)** phải là **li2.ai** (không có dấu chấm thừa hoặc ký tự bổ sung).
+    - Đối với tên miền phụ (subdomain), trường **Tên (Name)** phải là tên miền phụ đó (ví dụ: `links`), không phải `@`.
     - Some DNS providers require different formats - check their documentation
 
-    **TXT Record Problems**:
+    **Lỗi Bản ghi TXT:**
 
-    - Verify the name is exactly `_Li2.ai-shortlink-verification`
-    - Copy the verification code exactly as shown (no extra spaces)
+    - Đảm bảo **Tên (Name)** của bản ghi phải chính xác là **\_Li2.ai-shortlink-verification**
+    - Sao chép **Mã xác minh (Verification Code)** chính xác, không thừa khoảng trắng.
     - Some providers require quotes around the TXT record value
 
     **DNS Propagation**:
 
-    - Wait longer - DNS changes can take up to 48 hours
-    - Try verification again after a few hours
-    - Use DNS checker tools to verify your records are visible globally
+    - **Đợi thêm thời gian** (thay đổi DNS có thể mất đến 48 giờ).
+    - Sau đó, thử xác minh lại. 
+    - Sử dụng các công cụ kiểm tra DNS trực tuyến để xem bản ghi của bạn đã hiển thị  chưa.
   </Accordion>
   <Accordion title="Domain not appearing in dropdown">
     **Possible causes**:
