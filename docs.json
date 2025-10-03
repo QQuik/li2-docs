@@ -30,8 +30,8 @@
               "short-link/custom-back-half",
               "short-link/delete-disable-links",
               "short-link/destination-url",
-              "touchpoints/custom-domains",
-              "touchpoints/multi-channel-routing"
+              "short-link/custom-domains",
+              "short-link/multi-channel-routing"
             ]
           },
           {
