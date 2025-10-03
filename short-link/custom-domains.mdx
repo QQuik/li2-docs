@@ -65,81 +65,40 @@ Quy trình này kết hợp thao tác trên tài khoản **Li2.ai** và hệ th�
   </Step>
 </Steps>
 
-### Managing Domain Verification
+### Quản lý xác minh tên miền
 
 <Steps>
-  <Step title="Check verification status">
-    Navigate to **Settings** → **Organization Settings** → **Customize Domain** to see all your domains with their current verification status:
+  <Step title="Kiểm tra xác minh">
+    Trong menu bên trái, chọn **Tùy chỉnh tên miền** xem tất cả tên miền và trạng thái 
 
-    - **Verifying**: Domain verification is in progress
-    - **Verified**: Domain is ready to use in touchpoints
-    - **Failed**: Verification failed, DNS records need attention
+    - **Verifying**: tên miền đang chờ xác minh.
+    - **Verified**: tên miền đã xác minh.
+    - **Failed**: xác minh không cần thành công, cần xem xét lại bản ghi DNS.
   </Step>
-  <Step title="Re-verify domains when needed">
-    If a domain verification fails or you need to verify again:
+  <Step title="Xác minh lại tên miền">
+    Tên miền xác minh không thành cần công hoặc cần xác mình lại:
 
-    1. Find your domain in the custom domains list
-    2. Click the **three dots (⋯)** menu next to the domain
-    3. Select **"Verify"** from the action menu
-    4. The system will re-check your DNS records
+    1. Tìm tên miền cần chỉnh trong **Danh sách tên miền tùy chỉnh**
+    2. Nhấp vào ô ba chấm bên cạnh tên miền
+    3. Chọn **Xác Minh** từ menu
+    4. Hệ thống sẽ kiểm tra lại bản ghi DNS.
 
     <Tip>
       **When to re-verify**: After updating DNS records, if verification initially failed, or if a previously verified domain stops working.
     </Tip>
   </Step>
-  <Step title="Delete unused domains">
-    You can also remove domains you no longer need:
+  <Step title="Xóa tên miền ">
+    Bạn cũng có thể xóa tên miền không còn cần thiết:
 
-    1. Click the **three dots (⋯)** menu next to the domain
-    2. Select **"Delete"** from the action menu
-    3. Confirm deletion
+    1. Tìm tên miền cần chỉnh trong **Danh sách tên miền tùy chỉnh**
+    2. Nhấp vào ô ba chấm bên cạnh tên miền, Chọn **Xóa** từ menu
+    3. Xác nhận **Xóa**
 
     <Warning>
-      **Before deleting**: Make sure no active touchpoints are using this domain, as this will break those links.
+      **Trước khi xóa**: Hãy đảm bảo rằng không có link hay mã QR nào đang hoạt động sử dụng tên miền này, vì việc xóa sẽ làm hỏng (vô hiệu hóa) tất cả các liên kết đó.
     </Warning>
   </Step>
 </Steps>
-
----
-
-## Using Custom Domains
-
-### Selecting Domains for Touchpoints
-
-<Steps>
-  <Step title="Domain selection during creation">
-    When creating a new touchpoint:
-
-    1. In the **Short Link** section, you'll see a **Domain** dropdown
-    2. The default selection is `li2.ai`
-    3. Click the dropdown to see your verified custom domains
-    4. Select your preferred domain for this touchpoint
-    5. Complete the rest of your touchpoint setup normally
-  </Step>
-  <Step title="Search for domains">
-    If you have multiple custom domains:
-
-    - Use the search box in the domain dropdown
-    - Type part of your domain name to filter options
-    - Select the appropriate domain for your campaign
-  </Step>
-</Steps>
-
-### Important Domain Limitations
-
-<Warning>
-  **Cannot Change Domains After Creation**: Once you create a touchpoint with a specific domain, you cannot change it to a different domain. You can only edit the back-half of the link (e.g., changing `summer-sale` to `summer-launch`).
-
-  If you need a different domain, you must create a new touchpoint.
-</Warning>
-
-**Planning Considerations**:
-
-- Choose your domain carefully before creating touchpoints
-- Consider which domain best fits each campaign's purpose
-- Plan domain usage strategy across different marketing channels
-
----
 
 ## Domain Management Best Practices
 
@@ -174,23 +133,6 @@ Quy trình này kết hợp thao tác trên tài khoản **Li2.ai** và hệ th�
     - Easier for team members to remember and use
   </Accordion>
 </AccordionGroup>
-
-### DNS Management Tips
-
-<Steps>
-  <Step title="Keep records documented">
-    - Save DNS record details in a secure location
-    - Document which team member has access to DNS settings
-    - Note the domain registrar and hosting provider information
-    - Keep verification codes for future reference
-  </Step>
-  <Step title="Monitor domain health">
-    - Periodically check that your custom domain links are working
-    - Set up monitoring for critical campaign domains
-    - Have a backup plan if DNS issues arise
-    - Keep contact information current with your domain registrar
-  </Step>
-</Steps>
 
 ---
 
@@ -243,25 +185,6 @@ Quy trình này kết hợp thao tác trên tài khoản **Li2.ai** và hệ th�
   </Accordion>
 </AccordionGroup>
 
-### Getting Help with DNS
-
-<CardGroup cols={2}>
-  <Card title="Contact Your DNS Provider" icon="phone" color="#7C3AED">
-    Your domain registrar or hosting provider can help with DNS record setup if you're having trouble.
-  </Card>
-  <Card title="Use DNS Tools" icon="wrench" color="#A855F7">
-    Online DNS checker tools can help verify your records are set up correctly and propagated.
-  </Card>
-  <Card title="Li2.ai Support" icon="life-ring" color="#7C3AED">
-    Contact us if verification isn't working after your DNS records are properly configured.
-  </Card>
-  <Card title="Documentation" icon="book" color="#A855F7">
-    Check your DNS provider's documentation for their specific record setup format.
-  </Card>
-</CardGroup>
-
----
-
 ## Domain Security and Maintenance
 
 ### Security Considerations
@@ -298,26 +221,5 @@ Quy trình này kết hợp thao tác trên tài khoản **Li2.ai** và hệ th�
     - Have contact information for technical support resources
   </Accordion>
 </AccordionGroup>
-
----
-
-## Related Topics
-
-<CardGroup cols={2}>
-  <Card title="Creating Touchpoints" icon="plus-circle" color="#7C3AED" href="/touchpoints/creating-touchpoints">
-    Learn how to create touchpoints with custom domains from the start.
-  </Card>
-  <Card title="Managing Touchpoints" icon="gear" color="#A855F7" href="/touchpoints/managing-touchpoints">
-    Organize and optimize touchpoints across multiple custom domains.
-  </Card>
-  <Card title="Link Versioning" icon="code-branch" color="#7C3AED" href="/touchpoints/link-versioning">
-    Understand how link changes work with custom domains.
-  </Card>
-  <Card title="Analytics Tracking" icon="chart-line" color="#A855F7" href="/analytics/overview">
-    Track performance across different custom domains and campaigns.
-  </Card>
-</CardGroup>
-
----
 
 **Ready to set up your custom domain?** [Go to domain settings →](https://app.li2.ai/) or [contact support for help →](mailto:support@li2.ai)
