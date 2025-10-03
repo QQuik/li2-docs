@@ -35,7 +35,7 @@
             ]
           },
           {
-            "group": "QR Codes & Visual Tools",
+            "group": "QR Codes",
             "pages": [
               "qr-codes/redirect-qr-codes",
               "qr-codes/generating-qr-codes",
