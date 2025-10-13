@@ -16,7 +16,6 @@
           {
             "group": "Getting Started",
             "pages": [
-              "index",
               "creating-account",
               "features-overview",
               "account-setup"
