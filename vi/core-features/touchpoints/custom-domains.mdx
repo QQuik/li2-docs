@@ -1,0 +1,228 @@
+---
+title: Tên miền Tùy chỉnh
+description: >-
+  Thiết lập tên miền tuỳ chỉnh (custom domains) để tạo ra các link rút gọn có
+  thương hiệu (Brand link), giúp xây dựng lòng tin và củng cố nhận diện thương
+  hiệu của bạn.
+sidebarTitle: ' Tùy chỉnh Tên miền'
+---
+
+# Custom Domains
+
+Tên miền tùy chỉnh cho phép bạn sử dụng tên miền có thương hiệu riêng cho các liên kết ngắn thay vì tên miền mặc định `li2.ai`. Việc này tạo ra các liên kết chuyên nghiệp, đáng tin cậy, giúp củng cố nhận diện thương hiệu và cải thiện **Tỷ lệ Nhấp (Click-Through Rates - CTR)**
+
+---
+
+## Thiết Lập **Liên Kết Thương Hiệu** (Custom Domain)
+
+Quy trình này kết hợp thao tác trên tài khoản **Li2.ai** và hệ thống quản lý tên miền (DNS) của bạn.
+
+### Bước 1: Thêm Tên miền trên Li2
+
+<Steps>
+  <Step title="Đăng nhập vào tài khoản Li2 tại app.li2.ai">
+    2. Trong menu bên trái, chọn **Tùy chỉnh tên miền**
+    2. Nhấp vào **\+ Thêm tên miền**
+  </Step>
+  <Step title="Nhập Tên miền ">
+    - Nhập tên miền tùy chỉnh của bạn (e.g., `links.yourcompany.com`)
+    - Nhấp **Tiếp theo** để chuyển sang bước xác minh.
+
+    <Note>
+      **Domain Tips**: Use a subdomain like `links.yourcompany.com` or `go.yourcompany.com` rather than your main domain. This keeps your main website separate from your short links.
+    </Note>
+  </Step>
+</Steps>
+
+### Bước 2: Xác minh Quyền sở hữu Tên miền (Cấu hình DNS)
+
+<Steps>
+  <Step title="Truy cập Cài đặt DNS">
+    Truy cập vào cài đặt DNS của tên miền thông qua nhà đăng ký hoặc nhà cung cấp hosting của bạn.
+  </Step>
+  <Step title="Thêm bản ghi CNAME">
+    - **Name**: Nhập tên miền (hoặc tên Subdomain bạn đã chọn).
+    - **Target**: `li2.ai`
+    - **TTL**: Default (Giữ nguyên mặc định, thường là 3600 hoặc "Automatic").)
+
+    Bản ghi này cho phép các trình duyệt biết nơi tìm thấy các liên kết ngắn của bạn.
+
+    <Tip>
+      If you're using a subdomain like `links.yourcompany.com`, the Name field should be `links` instead of `@`.
+    </Tip>
+  </Step>
+  <Step title="Thêm bản ghi TXT">
+    - **Name**: `_Li2.ai-shortlink-verification `
+    - **Content**: Mã xác minh hiển thị trên **Li2.ai** (dãy ký tự duy nhất). (looks like `b3c0fb26-a4a8-4db5-bfac-97cf5ee6e1cc`)
+    - **TTL**: Default
+
+    Bản ghi này chứng minh bạn sở hữu tên miền
+  </Step>
+  <Step title="Chờ đợi DNS Propagation">
+    Bạn có thể sử dụng các dịch vụ web (như các trang web tra cứu DNS) để xem liệu cấu hình tên miền mới của bạn đã được cập nhật trên toàn bộ mạng internet hay chưa.
+  </Step>
+  <Step title="Xác minh trong Li2">
+    - Sau khi thiết lập cả hai bản ghi DNS, quay lại **Li2**.
+    - Nhấp vào **"Verify" (Xác minh)** trong hộp thoại xác minh tên miền.
+    - Nếu thành công, tên miền của bạn sẽ hiển thị trạng thái **"Verified" (Đã xác minh)**.
+  </Step>
+</Steps>
+
+### Quản lý xác minh tên miền
+
+<Steps>
+  <Step title="Kiểm tra xác minh">
+    Trong menu bên trái, chọn **Tùy chỉnh tên miền** xem tất cả tên miền và trạng thái
+
+    - **Verifying**: tên miền đang chờ xác minh.
+    - **Verified**: tên miền đã xác minh.
+    - **Failed**: xác minh không cần thành công, cần xem xét lại bản ghi DNS.
+  </Step>
+  <Step title="Xác minh lại tên miền">
+    Tên miền xác minh không thành cần công hoặc cần xác mình lại:
+
+    1. Tìm tên miền cần chỉnh trong **Danh sách tên miền tùy chỉnh**
+    2. Nhấp vào ô ba chấm bên cạnh tên miền
+    3. Chọn **Xác Minh** từ menu
+    4. Hệ thống sẽ kiểm tra lại bản ghi DNS.
+
+    <Tip>
+      **When to re-verify**: After updating DNS records, if verification initially failed, or if a previously verified domain stops working.
+    </Tip>
+  </Step>
+  <Step title="Xóa tên miền ">
+    Bạn cũng có thể xóa tên miền không còn cần thiết:
+
+    1. Tìm tên miền cần chỉnh trong **Danh sách tên miền tùy chỉnh**
+    2. Nhấp vào ô ba chấm bên cạnh tên miền, Chọn **Xóa** từ menu
+    3. Xác nhận **Xóa**
+
+    <Warning>
+      **Trước khi xóa**: Hãy đảm bảo rằng không có link hay mã QR nào đang hoạt động sử dụng tên miền này, vì việc xóa sẽ làm hỏng (vô hiệu hóa) tất cả các liên kết đó.
+    </Warning>
+  </Step>
+</Steps>
+
+## Domain Management Best Practices
+
+### Choosing Domain Names
+
+<AccordionGroup>
+  <Accordion title="Subdomain strategies">
+    **Popular subdomain approaches**:
+
+    - `links.yourcompany.com` - Generic and professional
+    - `go.yourcompany.com` - Short and action-oriented
+    - `share.yourcompany.com` - Social media focused
+    - `track.yourcompany.com` - Analytics and tracking focused
+
+    **Benefits of subdomains**:
+
+    - Keeps short links separate from your main website
+    - Easier DNS management and troubleshooting
+    - Professional appearance while maintaining brand
+  </Accordion>
+  <Accordion title="Domain organization">
+    **Multiple domain strategy**:
+
+    - **Campaign-specific**: `events.company.com`, `products.company.com`
+    - **Channel-specific**: `social.company.com`, `email.company.com`
+    - **Team-specific**: `sales.company.com`, `marketing.company.com`
+
+    **Single domain approach**:
+
+    - Simpler to manage and maintain
+    - Consistent branding across all campaigns
+    - Easier for team members to remember and use
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Cách Xử Lý Sự Cố khi cài đặt tên miền
+
+### Các Vấn Đề DNS Thường Gặp
+
+<AccordionGroup>
+  <Accordion title="Xác minh Tên miền Thất bại (Verification fails)">
+    **Lỗi Bản ghi CNAME:**
+
+    - Đảm bảo **Mục tiêu (Target)** phải là **li2.ai** (không có dấu chấm thừa hoặc ký tự bổ sung).
+    - Đối với tên miền phụ (subdomain), trường **Tên (Name)** phải là tên miền phụ đó (ví dụ: `links`), không phải `@`.
+    - Some DNS providers require different formats - check their documentation
+
+    **Lỗi Bản ghi TXT:**
+
+    - Đảm bảo **Tên (Name)** của bản ghi phải chính xác là **\_Li2.ai-shortlink-verification**
+    - Sao chép **Mã xác minh (Verification Code)** chính xác, không thừa khoảng trắng.
+    - Some providers require quotes around the TXT record value
+
+    **DNS Propagation**:
+
+    - **Đợi thêm thời gian** (thay đổi DNS có thể mất đến 48 giờ).
+    - Sau đó, thử xác minh lại.
+    - Sử dụng các công cụ kiểm tra DNS trực tuyến để xem bản ghi của bạn đã hiển thị  chưa.
+  </Accordion>
+  <Accordion title="Domain not appearing in dropdown">
+    **Possible causes**:
+
+    - Domain verification hasn't completed yet
+    - DNS records weren't set up correctly
+    - Browser cache needs to be refreshed
+
+    **Solutions**:
+
+    - Verify domain status in Settings → Organization Settings → Customize Domain
+    - Check that domain shows as "Verified" in your domain list
+    - Refresh your browser and try creating a touchpoint again
+    - Contact support if domain is verified but not appearing
+  </Accordion>
+  <Accordion title="Links not working after setup">
+    **Troubleshooting steps**:
+
+    - Test the link in an incognito/private browser window
+    - Check if the issue is global or regional (DNS propagation)
+    - Verify the CNAME record is pointing to `li2.ai`
+    - Ensure no other DNS records are conflicting
+    - Contact your DNS provider if issues persist
+  </Accordion>
+</AccordionGroup>
+
+## Domain Security and Maintenance
+
+### Security Considerations
+
+<AccordionGroup>
+  <Accordion title="Domain security">
+    **Protect your custom domains**:
+
+    - Use strong passwords for domain registrar accounts
+    - Enable two-factor authentication where available
+    - Keep domain registration and DNS contact information current
+    - Monitor domain expiration dates and renew on time
+
+    **DNS security**:
+
+    - Only give DNS access to trusted team members
+    - Use DNS providers with good security practices
+    - Monitor DNS records for unauthorized changes
+    - Keep records of all legitimate DNS modifications
+  </Accordion>
+  <Accordion title="Backup planning">
+    **Prepare for issues**:
+
+    - Have alternative domains ready if needed
+    - Keep backups of DNS record configurations
+    - Document the process for your team
+    - Plan communication strategy if domains experience issues
+
+    **Business continuity**:
+
+    - Consider what happens if a domain expires
+    - Plan for DNS provider changes if needed
+    - Keep important domain information accessible to your team
+    - Have contact information for technical support resources
+  </Accordion>
+</AccordionGroup>
+
+Bạn đã sẵn sàng biến link rút gọn của mình thành link thương hiệu riêng của mình chưa? [Truy cập tùy chỉnh tên miền →](https://app.li2.ai/) hoặc [Liên hệ để hỗ trợ →](mailto:support@li2.ai)

@@ -1,110 +1,162 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
   "name": "Li2.ai Documentation",
+  "theme": "mint",
   "colors": {
     "primary": "#7C3AED",
     "light": "#A855F7",
     "dark": "#5B21B6"
   },
   "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/shared/logos/logo-light.svg",
+    "dark": "/shared/logos/logo-dark.svg"
+  },
   "navigation": {
-    "tabs": [
+    "languages": [
       {
-        "tab": "User Guide",
-        "groups": [
+        "language": "vi",
+        "default": true,
+        "tabs": [
           {
-            "group": "Getting Started",
-            "pages": [
-              "creating-account",
-              "features-overview",
-              "account-setup"
-            ]
-          },
-          {
-            "group": "Short Link",
-            "pages": [
-              "short-link/overview",
-              "short-link/create-shortlink",
-              "short-link/custom-back-half",
-              "short-link/delete-disable-links",
-              "short-link/destination-url",
-              "short-link/custom-domains",
-              "short-link/multi-channel-routing"
-            ]
-          },
-          {
-            "group": "QR Codes",
-            "pages": [
-              "qr-codes/redirect-qr-codes",
-              "qr-codes/generating-qr-codes",
-              "qr-codes/customizing-qr-codes",
-              "qr-codes/downloading-qr-codes"
-            ]
-          },
-          {
-            "group": "Social Media Optimization",
-            "pages": [
-              "social-media/overview",
-              "social-media/meta-tags"
-            ]
-          },
-          {
-            "group": "Organization & Management",
-            "pages": [
-              "organization/tags"
-            ]
-          },
-          {
-            "group": "Analytics & Tracking",
-            "pages": [
-              "analytics/overview",
-              "analytics/channel-specific-analytics",
-              "analytics/utm-parameters",
-              "analytics/performance-metrics",
-              "analytics/click-tracking",
-              "analytics/reports"
-            ]
-          },
-          {
-            "group": "Account & Settings",
-            "pages": [
-              "settings/profile"
+            "tab": "Hướng Dẫn Sử Dụng",
+            "groups": [
+              {
+                "group": "Bắt Đầu",
+                "pages": [
+                  "vi/getting-started/overview",
+                  "vi/getting-started/account-setup",
+                  "vi/getting-started/organizations",
+                  "vi/getting-started/quick-start",
+                  "vi/getting-started/dashboard"
+                ]
+              },
+              {
+                "group": "Touchpoint (Điểm Chạm)",
+                "pages": [
+                  "vi/core-features/touchpoints/overview",
+                  "vi/core-features/touchpoints/creating",
+                  "vi/core-features/touchpoints/short-links",
+                  "vi/core-features/touchpoints/qr-codes",
+                  "vi/core-features/touchpoints/managing",
+                  "vi/core-features/touchpoints/custom-domains"
+                ]
+              },
+              {
+                "group": "Quản Lý & Tổ Chức",
+                "pages": [
+                  "vi/core-features/collections/overview",
+                  "vi/core-features/tags/overview"
+                ]
+              },
+              {
+                "group": "Phân Tích & Báo Cáo",
+                "pages": [
+                  "vi/analytics/overview",
+                  "vi/analytics/dashboard",
+                  "vi/analytics/demographics",
+                  "vi/analytics/filters"
+                ]
+              }
             ]
           }
         ]
       },
       {
-        "tab": "Integrations & Advanced",
-        "groups": [
+        "language": "en",
+        "tabs": [
           {
-            "group": "Marketing Integrations",
-            "pages": [
-              "integrations/overview",
-              "integrations/parcelvoy",
-              "integrations/journey-entrance-setup",
-              "integrations/mautic",
-              "integrations/hubspot"
+            "tab": "User Guide",
+            "groups": [
+              {
+                "group": "Getting Started",
+                "pages": [
+                  "en/getting-started/overview",
+                  "en/getting-started/account-setup",
+                  "en/getting-started/organizations",
+                  "en/getting-started/quick-start",
+                  "en/getting-started/dashboard"
+                ]
+              },
+              {
+                "group": "Touch-Points",
+                "pages": [
+                  "en/core-features/touchpoints/overview",
+                  "en/core-features/touchpoints/creating",
+                  "en/core-features/touchpoints/short-links",
+                  "en/core-features/touchpoints/qr-codes",
+                  "en/core-features/touchpoints/managing",
+                  "en/core-features/touchpoints/custom-domains"
+                ]
+              },
+              {
+                "group": "Organization",
+                "pages": [
+                  "en/core-features/collections/overview",
+                  "en/core-features/tags/overview"
+                ]
+              },
+              {
+                "group": "Analytics",
+                "pages": [
+                  "en/analytics/overview",
+                  "en/analytics/dashboard",
+                  "en/analytics/demographics",
+                  "en/analytics/filters"
+                ]
+              }
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Support",
-          "href": "mailto:support@li2.ai",
-          "icon": "life-ring"
-        },
-        {
-          "anchor": "Dashboard",
-          "href": "https://app.li2.ai",
-          "icon": "gauge"
-        }
-      ]
-    }
+    ]
   },
+  "redirects": [
+    {
+      "source": "/creating-account",
+      "destination": "/vi/getting-started/account-setup"
+    },
+    {
+      "source": "/account-setup",
+      "destination": "/vi/getting-started/account-setup"
+    },
+    {
+      "source": "/features-overview",
+      "destination": "/vi/getting-started/overview"
+    },
+    {
+      "source": "/short-link/:slug*",
+      "destination": "/vi/core-features/touchpoints/:slug*"
+    },
+    {
+      "source": "/qr-codes/:slug*",
+      "destination": "/vi/core-features/touchpoints/:slug*"
+    },
+    {
+      "source": "/touchpoints/:slug*",
+      "destination": "/vi/core-features/touchpoints/:slug*"
+    },
+    {
+      "source": "/organization/tags",
+      "destination": "/vi/core-features/tags/overview"
+    },
+    {
+      "source": "/analytics/:slug*",
+      "destination": "/vi/analytics/:slug*"
+    },
+    {
+      "source": "/settings/:slug*",
+      "destination": "/vi/settings/:slug*"
+    },
+    {
+      "source": "/social-media/:slug*",
+      "destination": "/vi/social-media/:slug*"
+    },
+    {
+      "source": "/integrations/:slug*",
+      "destination": "/vi/integrations/:slug*"
+    }
+  ],
   "navbar": {
     "links": [
       {
@@ -118,5 +170,12 @@
       "href": "https://app.li2.ai"
     }
   },
-  "footer": {}
+  "footer": {
+    "socials": {
+      "website": "https://li2.ai"
+    }
+  },
+  "search": {
+    "prompt": "Search Li2.ai documentation..."
+  }
 }

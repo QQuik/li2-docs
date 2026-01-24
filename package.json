@@ -1,0 +1,21 @@
+{
+  "name": "li2-docs",
+  "version": "2.0.0",
+  "description": "Li2.ai Bilingual Documentation",
+  "scripts": {
+    "migrate": "node scripts/migrate-content.js",
+    "validate": "npm run validate:refs && npm run validate:i18n && npm run validate:orphans",
+    "validate:refs": "node scripts/validate-docs-references.js",
+    "validate:i18n": "node scripts/validate-i18n-parity.js",
+    "validate:orphans": "node scripts/find-orphaned-files.js",
+    "create:page": "node scripts/create-new-page.js"
+  },
+  "dependencies": {
+    "fs-extra": "^11.2.0",
+    "gray-matter": "^4.0.3",
+    "glob": "^10.3.10"
+  },
+  "devDependencies": {
+    "mintlify": "^4.0.0"
+  }
+}
