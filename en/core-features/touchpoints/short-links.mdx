@@ -1,0 +1,131 @@
+---
+title: "Short Links"
+description: "Create branded, memorable short links with custom domains, AI-generated slugs, and comprehensive link management features."
+sidebarTitle: "Short Links"
+icon: "link"
+---
+
+# Short Links
+
+<Info>
+**What you'll learn**: Master short link creation, customization, and management including custom domains, slug strategies, and link previews.
+</Info>
+
+## Short Link Anatomy
+
+A Li2.ai short link consists of:
+
+**Domain + Slug**
+- Default: `li2.ai/your-slug`
+- Custom domain: `yourbrand.com/your-slug`
+
+## Slug Options
+
+### Random Generation
+Leave slug blank for automatic generation:
+- Format: 6-8 random characters (e.g., `a7Bx9Q`)
+- Pros: Fastest creation, no thinking required
+- Cons: Not memorable, not brandable
+
+### AI-Generated Slugs
+Click **✨ AI Generate** for contextual suggestions:
+- Analyzes destination URL content
+- Suggests relevant, readable slugs
+- Examples: `summer-sale`, `product-guide`, `signup`
+
+### Custom Slugs
+Create your own memorable slugs:
+- **Length**: 3-50 characters
+- **Allowed**: Lowercase letters, numbers, hyphens
+- **Not allowed**: Spaces, special characters, uppercase
+
+**Best Practices**:
+- Keep it short (3-15 characters ideal)
+- Make it memorable
+- Reflect the destination content
+- Use hyphens for readability: `summer-sale` not `summersale`
+
+## Custom Domains
+
+Use your branded domain instead of `li2.ai`:
+
+### Setup Process
+1. **Organization Settings** → **Custom Domains**
+2. **Add Domain**: Enter your domain (e.g., `go.yourbrand.com`)
+3. **Configure DNS**: Add CNAME record: `go.yourbrand.com` → `cname.li2.ai`
+4. **Verify**: Li2.ai confirms DNS configuration (usually 5-15 minutes)
+5. **Activate**: Domain ready for use in touchpoint creation
+
+### Benefits
+- **Brand Trust**: Users see your domain, not a third-party shortener
+- **Consistent Branding**: All links use your brand domain
+- **Link Recognition**: Users know links are from your organization
+- **Professional Appearance**: Essential for enterprise and B2B
+
+## Link Management
+
+### Updating Destinations
+Change where a short link redirects:
+1. Navigate to touchpoint details
+2. Click "Edit Destination"
+3. Enter new URL
+4. Save changes
+
+**Impact**: Immediate - all clicks now go to new destination
+
+**Use Cases**:
+- Seasonal campaigns (update for summer, fall, winter offers)
+- Product launches (pre-launch teaser → purchase page)
+- Event updates (registration → live stream → recording)
+
+### Link Expiration
+Set automatic expiration dates:
+- Link stops redirecting after specified date
+- Useful for limited-time offers
+- Can show custom expiration message
+
+### Link Disabling
+Temporarily disable without deleting:
+- Preserves analytics history
+- Can re-enable anytime
+- Shows "Link disabled" message to users
+
+## Link Preview Optimization
+
+Control how links appear when shared on social media:
+
+### Open Graph Tags
+- **Title**: Custom title for social shares
+- **Description**: Preview text (155-160 characters)
+- **Image**: Featured image (1200×630px recommended)
+
+### Twitter Cards
+- Optimized previews specifically for Twitter
+- Large image cards or summary cards
+- Custom title and description
+
+## Best Practices
+
+<Tip>
+**Test Before Sharing**: Always click your short link to verify correct destination before mass distribution.
+</Tip>
+
+<Tip>
+**Document Your Slugs**: Keep a spreadsheet of slug → destination mappings for team reference.
+</Tip>
+
+<Warning>
+**Slugs are Permanent**: Once created, slugs cannot be changed. Choose wisely or use random generation.
+</Warning>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="QR Codes" icon="qrcode" href="/en/core-features/touchpoints/qr-codes">
+    Generate and customize QR codes for your short links
+  </Card>
+
+  <Card title="Managing Touch-Points" icon="sliders" href="/en/core-features/touchpoints/managing">
+    Update and organize your touchpoints effectively
+  </Card>
+</CardGroup>

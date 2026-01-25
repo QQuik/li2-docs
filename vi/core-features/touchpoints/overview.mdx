@@ -1,0 +1,218 @@
+---
+title: "Tổng Quan Touch-Points"
+description: "Hiểu về touchpoints trong Li2 - tài sản marketing thống nhất kết hợp link ngắn, mã QR và thẻ NFC với phân tích tập trung và kiểm soát điểm đến động."
+sidebarTitle: "Tổng Quan"
+icon: "diamond"
+---
+
+# Tổng Quan Touch-Points
+
+<Info>
+**Bạn sẽ học**: Hiểu khái niệm touchpoint, touchpoint khác với công cụ rút gọn link truyền thống như thế nào, và tại sao chúng quan trọng cho proximity marketing hiện đại.
+</Info>
+
+## Touch-Point là gì?
+
+**Touchpoint** là khái niệm cốt lõi của Li2 - một tài sản marketing thống nhất phục vụ như nguồn thông tin duy nhất để kết nối trải nghiệm offline và online. Khác với công cụ truyền thống coi mã QR, link ngắn và thẻ NFC là các thực thể riêng biệt, Li2 kết hợp chúng thành một touchpoint gắn kết.
+
+Hãy nghĩ về touchpoint như một **cầu nối giữa không gian vật lý và số**:
+- **Cùng điểm đến** có thể truy cập qua nhiều kênh
+- **Phân tích thống nhất** bất kể người dùng truy cập như thế nào
+- **Kiểm soát động** để cập nhật điểm đến mà không thay đổi phân phối
+
+<CardGroup cols={3}>
+  <Card title="Một Điểm Đến" icon="location-dot">
+    Đặt một URL đích duy nhất mà tất cả phương thức truy cập đều trỏ đến
+  </Card>
+
+  <Card title="Nhiều Kênh" icon="arrows-split-up-and-left">
+    Phân phối dưới dạng link ngắn, mã QR hoặc thẻ NFC đồng thời
+  </Card>
+
+  <Card title="Phân Tích Thống Nhất" icon="chart-column">
+    Theo dõi tất cả tương tác trong một dashboard bất kể phương thức truy cập
+  </Card>
+</CardGroup>
+
+## Touch-Points Hoạt Động Như Thế Nào
+
+Khi bạn tạo touchpoint trong Li2:
+
+<Steps>
+  <Step title="Xác Định Điểm Đến">
+    Chỉ định nơi người dùng nên đến (VD: trang sản phẩm, đăng ký sự kiện, menu)
+  </Step>
+
+  <Step title="Tùy Chỉnh Định Danh">
+    Chọn slug dễ nhớ cho link ngắn (VD: `li2.link/khuyen-mai-he`)
+  </Step>
+
+  <Step title="Tạo Ngay Lập Tức">
+    Li2 tạo:
+    - Link ngắn (VD: `li2.link/khuyen-mai-he`)
+    - Mã QR mã hóa link đó
+    - Dữ liệu thẻ NFC (tùy chọn) với cùng chuyển hướng
+
+    Cả ba đều trỏ đến cùng điểm đến và chia sẻ phân tích.
+  </Step>
+
+  <Step title="Phân Phối Tự Do">
+    Sử dụng touchpoint theo nhu cầu:
+    - Đăng link ngắn trên mạng xã hội
+    - In mã QR trên bao bì
+    - Lập trình thẻ NFC vào poster thông minh
+  </Step>
+
+  <Step title="Theo Dõi Hiệu Suất">
+    Xem phân tích thống nhất hiển thị:
+    - Tổng tương tác (click + scan + tap)
+    - Phân tích theo kênh (phương thức nào được dùng)
+    - Dữ liệu địa lý, loại thiết bị, referrer
+  </Step>
+
+  <Step title="Cập Nhật Động">
+    Thay đổi URL đích bất cứ lúc nào mà không cần:
+    - In lại mã QR
+    - Cập nhật link đã xuất bản
+    - Lập trình lại thẻ NFC
+  </Step>
+</Steps>
+
+## Touch-Points vs Công Cụ Rút Gọn Link Truyền Thống
+
+| Tính Năng | Rút Gọn Link Truyền Thống | Li2 Touch-Points |
+|-----------|---------------------------|---------------------|
+| **Output Chính** | Chỉ link ngắn | Link ngắn + mã QR + dữ liệu NFC |
+| **Tạo Mã QR** | Công cụ hoặc dịch vụ riêng | Tích hợp, tự động |
+| **Phân Tích Thống Nhất** | Theo dõi riêng cho link vs QR | Theo dõi thống nhất trên tất cả kênh |
+| **Cập Nhật Điểm Đến** | Tạo link mới | Cập nhật touchpoint hiện có |
+| **Thương Hiệu** | Tùy chỉnh hạn chế | Custom domain, slug, thiết kế QR |
+| **Tham Số UTM** | Thêm thủ công | UTM builder tích hợp |
+| **Theo Dõi Chuyển Đổi** | Cần thiết lập bên ngoài | Mục tiêu chuyển đổi native |
+
+## Thành Phần Touch-Point
+
+### Thành Phần Cốt Lõi
+
+**URL Đích**
+- Trang đích cuối cùng người dùng đến
+- Có thể là bất kỳ URL hợp lệ nào
+- **Động**: Thay đổi bất cứ lúc nào mà không ảnh hưởng slug
+
+**Slug**
+- Định danh duy nhất trong link ngắn (phần sau `li2.link/`)
+- VD: `khuyen-mai-he`, `menu`, `dang-ky-2024`
+- Có thể tùy chỉnh, do AI tạo hoặc ngẫu nhiên
+- **Vĩnh viễn**: Không thể thay đổi sau khi tạo
+
+**Link Ngắn**
+- URL ngắn đầy đủ: `domain/slug` (VD: `li2.link/khuyen-mai-he`)
+- Tự động tạo khi bạn tạo touchpoint
+- Hoạt động với custom domain nếu đã cấu hình
+
+**Mã QR**
+- Tự động tạo mã hóa link ngắn
+- Tải về ở nhiều định dạng (PNG, SVG)
+- Thiết kế tùy chỉnh (màu, nhúng logo, kiểu khung)
+
+### Thành Phần Tùy Chọn
+
+**Tiêu Đề**
+- Tên nội bộ cho mục đích tổ chức
+- Giúp bạn xác định touchpoint trong dashboard
+- Không hiển thị cho người dùng cuối
+
+**Tags**
+- Nhãn linh hoạt để phân loại (VD: `campaign:he`, `channel:instagram`)
+- Lọc và nhóm touchpoint theo tags
+
+**Space**
+- Nhóm touchpoint liên quan vào folder
+- Hữu ích để tổ chức dựa trên chiến dịch
+
+**Tham Số UTM**
+- Theo dõi hiệu suất chiến dịch trong Google Analytics
+- UTM builder tích hợp
+
+## Loại Touch-Points
+
+### Touch-Points Chiến Dịch Marketing
+
+**Mục đích**: Điều hướng traffic đến trang khuyến mãi
+**Ví dụ**: Brand bán lẻ tạo `li2.link/khuyen-mai-le` link đến trang khuyến mãi lễ. Mã QR trên biển hiệu trong cửa hàng, link ngắn trên Instagram.
+
+### Touch-Points Bao Bì Sản Phẩm
+
+**Mục đích**: Kết nối sản phẩm vật lý với trải nghiệm số
+**Ví dụ**: Nhà sản xuất điện tử in `li2.link/huong-dan` trên bao bì. Ban đầu link đến hướng dẫn thiết lập, sau bản cập nhật firmware, họ đổi link đến hướng dẫn cập nhật—không cần in lại.
+
+### Touch-Points Sự Kiện
+
+**Mục đích**: Hướng dẫn người tham dự và theo dõi tương tác
+**Ví dụ**: Hội nghị tạo `li2.link/wifi` cho WiFi venue, `li2.link/lich-trinh` cho chương trình.
+
+### Touch-Points Menu & Nhà Hàng
+
+**Mục đích**: Menu số và đặt hàng không tiếp xúc
+**Ví dụ**: Nhà hàng tạo mã QR `li2.link/menu` trên bảng bàn. Khi cập nhật menu theo mùa, họ chỉ đổi URL đích—mã QR ở lại bàn cả năm.
+
+### Touch-Points Mạng Xã Hội
+
+**Mục đích**: Chia sẻ nội dung trên các nền tảng với theo dõi
+**Ví dụ**: Nhà sáng tạo nội dung dùng `li2.link/moi-nhat` trong bio Instagram, cập nhật đích hàng tuần đến video hoặc bài blog mới nhất.
+
+## Chu Trình Touchpoint
+
+### 1. Tạo
+Tạo touchpoint qua dashboard UI, quick create, bulk import hoặc API
+
+### 2. Phân Phối
+Chia sẻ qua kênh số, tài liệu in, bao bì sản phẩm, hiển thị vật lý, thiết bị thông minh
+
+### 3. Phân Tích & Tối Ưu
+Theo dõi dashboard thời gian thực, phân tích địa lý, device intelligence, A/B testing
+
+### 4. Cập Nhật & Bảo Trì
+Thay đổi đích, quản lý tag, gán space, lưu trữ, xóa
+
+## Best Practices
+
+<Tip>
+**Đặt tên rõ ràng**: Dùng tiêu đề và slug mô tả có ý nghĩa cả tháng sau. Tương lai bạn sẽ cảm ơn hiện tại bạn.
+</Tip>
+
+<Tip>
+**Lập kế hoạch cập nhật**: Ngay cả khi không dự định đổi đích, thiết kế touchpoint như thể bạn có thể. Tính linh hoạt này là siêu năng lực của touchpoint.
+</Tip>
+
+<Tip>
+**Tag nhất quán**: Thiết lập quy ước tag sớm (`channel:`, `campaign:`, `type:`) và tuân thủ nó trên tất cả touchpoint.
+</Tip>
+
+<Warning>
+**Tránh slug chung chung**: Slug như `link1`, `qr2`, `test` trở nên vô nghĩa khi có hàng trăm touchpoint. Hãy cụ thể: `khuyen-mai-he-instagram-2024`.
+</Warning>
+
+## Bước Tiếp Theo
+
+<CardGroup cols={2}>
+  <Card title="Tạo Touch-Points" icon="plus" href="/vi/core-features/touchpoints/creating">
+    Hướng dẫn từng bước tạo touchpoint với tùy chọn nâng cao
+  </Card>
+
+  <Card title="Tùy Chỉnh Mã QR" icon="qrcode" href="/vi/core-features/touchpoints/qr-codes">
+    Tùy chỉnh thiết kế mã QR phù hợp với thương hiệu
+  </Card>
+
+  <Card title="Quản Lý Link Ngắn" icon="link" href="/vi/core-features/touchpoints/short-links">
+    Làm chủ tính năng link ngắn bao gồm custom domain và slug
+  </Card>
+
+  <Card title="Quản Lý Touch-Points" icon="sliders" href="/vi/core-features/touchpoints/managing">
+    Cập nhật, tổ chức và lưu trữ touchpoint hiệu quả
+  </Card>
+</CardGroup>
+
+---
+
+**Sẵn sàng tạo touchpoint đầu tiên?** Làm theo [Hướng Dẫn Nhanh](/vi/getting-started/quick-start).

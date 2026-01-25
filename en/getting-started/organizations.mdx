@@ -1,0 +1,373 @@
+---
+title: "Organizations"
+description: "Learn about Li2.ai organizations, how to create and manage workspaces, invite team members, and collaborate on touchpoints across your company."
+sidebarTitle: "Organizations"
+icon: "users"
+---
+
+# Organizations
+
+<Info>
+**What you'll learn**: Understand what organizations are, how to create and manage them, invite team members, switch between workspaces, and set up effective team collaboration.
+</Info>
+
+## What is an Organization?
+
+An **organization** in Li2.ai is a shared workspace where team members can collaborate on touchpoints, campaigns, and analytics. Think of it as a container that groups related touchpoints, team members, and settings together.
+
+Organizations enable:
+- **Team Collaboration**: Multiple team members working on the same touchpoints
+- **Workspace Separation**: Keep personal projects separate from work projects
+- **Centralized Analytics**: View performance across all touchpoints in one organization
+- **Shared Resources**: Custom domains, collections, and tags available to all members
+- **Access Control**: Role-based permissions to manage who can create, edit, or view touchpoints
+
+<CardGroup cols={2}>
+  <Card title="Personal Organizations" icon="user">
+    Automatically created when you sign up. Perfect for individual use, freelancers, and personal projects.
+  </Card>
+
+  <Card title="Team Organizations" icon="users">
+    Created manually for companies, departments, clients, or specific campaigns. Supports multiple members with different roles.
+  </Card>
+</CardGroup>
+
+## Your Personal Organization
+
+When you create your Li2.ai account, a **personal organization** is automatically created for you. This is your private workspace where you can:
+
+- Create and manage your own touchpoints
+- Experiment with features
+- Run personal side projects
+- Test campaigns before moving them to team organizations
+
+Your personal organization is named after your account (typically your email or name) and only you have access to it by default.
+
+<Note>
+**Personal vs Team Organizations**: Your personal organization is perfect for individual work, but for team collaboration, you should create a separate team organization to keep work organized and enable proper access control.
+</Note>
+
+## Creating a New Organization
+
+Creating an organization is simple and takes less than a minute:
+
+<Steps>
+  <Step title="Access Organization Switcher">
+    In the top navigation bar, click on your current organization name (located next to your profile avatar)
+  </Step>
+
+  <Step title="Click Create New Organization">
+    At the bottom of the organization dropdown, click **+ Create New Organization**
+  </Step>
+
+  <Step title="Enter Organization Details">
+    Provide the following information:
+    - **Organization Name**: A clear, descriptive name (e.g., "Acme Marketing Team", "Product Launch Campaign")
+    - **Organization Description** (optional): Brief description of the organization's purpose
+    - **Slug** (optional): A URL-friendly identifier for the organization
+  </Step>
+
+  <Step title="Configure Initial Settings">
+    Set initial preferences:
+    - **Default Language**: Vietnamese or English for this organization
+    - **Timezone**: Organization timezone for analytics reporting
+  </Step>
+
+  <Step title="Create Organization">
+    Click **Create** to finalize your new organization. You'll be automatically switched to the new organization workspace.
+  </Step>
+</Steps>
+
+<Tip>
+**Naming Convention**: Use clear, specific names for organizations. Instead of "Marketing", use "2024 Product Marketing" or "APAC Marketing Team". This makes it easier to identify the right workspace when you have multiple organizations.
+</Tip>
+
+## Switching Between Organizations
+
+Li2.ai makes it easy to work across multiple organizations:
+
+1. Click the **organization name** in the top navigation bar
+2. A dropdown menu shows all organizations you have access to
+3. Click any organization to switch to that workspace
+4. All touchpoints, analytics, and settings will update to reflect the selected organization
+
+<Note>
+**Context Switching**: When you switch organizations, everything changes – the touchpoints you see, analytics data, collections, tags, and settings are all specific to the selected organization. This ensures complete workspace isolation.
+</Note>
+
+## Inviting Team Members
+
+To collaborate with others, invite them to your organization:
+
+<Steps>
+  <Step title="Navigate to Organization Settings">
+    Click **Organization Name** → **Settings** → **Members** tab
+  </Step>
+
+  <Step title="Click Invite Member">
+    Click the **+ Invite Member** button in the Members section
+  </Step>
+
+  <Step title="Enter Email Address">
+    Provide the email address of the person you want to invite
+  </Step>
+
+  <Step title="Select Role">
+    Choose the appropriate role for this team member:
+    - **Owner**: Full control including billing, settings, and member management
+    - **Admin**: Can manage touchpoints, settings, but not billing or owner transfers
+    - **Editor**: Can create, edit, and delete touchpoints and campaigns
+    - **Viewer**: Read-only access to view touchpoints and analytics
+
+    Learn more about [roles and permissions](#roles-and-permissions) below.
+  </Step>
+
+  <Step title="Send Invitation">
+    Click **Send Invite**. The recipient will receive an email invitation with a link to join the organization.
+  </Step>
+
+  <Step title="Invitation Acceptance">
+    The invitee clicks the link in the email, signs into Li2.ai (or creates an account if they don't have one), and is automatically added to your organization with the assigned role.
+  </Step>
+</Steps>
+
+<Warning>
+**Email Must Match**: The invitation is sent to a specific email address. The recipient must sign into Li2.ai with that exact email address to accept the invitation. If they use a different email or Google Sign-In with a different account, they won't see the invitation.
+</Warning>
+
+## Roles and Permissions
+
+Li2.ai uses a role-based permission system to control what team members can do within an organization:
+
+### Owner
+
+- **Full Control**: Complete access to all organization features
+- **Member Management**: Add, remove, and change roles of all members
+- **Billing Access**: Manage subscriptions, payment methods, and invoices
+- **Organization Settings**: Change organization name, delete organization, transfer ownership
+- **Touchpoint Management**: Create, edit, delete all touchpoints
+
+<Warning>
+**Only One Owner**: An organization can only have one owner at a time. To transfer ownership, the current owner must explicitly transfer it to another member.
+</Warning>
+
+### Admin
+
+- **Touchpoint Management**: Create, edit, delete all touchpoints
+- **Settings Access**: Modify organization settings (except billing and ownership)
+- **Member Invitations**: Invite new members and remove members (cannot change owner or other admins)
+- **Domain Management**: Add and configure custom domains
+- **No Billing Access**: Cannot view or modify billing information
+
+### Editor
+
+- **Create Touchpoints**: Generate new short links, QR codes, and NFC tags
+- **Edit Own Touchpoints**: Modify touchpoints they created
+- **Edit Shared Touchpoints**: Modify touchpoints created by others in the organization
+- **View Analytics**: Access full analytics for all touchpoints
+- **No Settings Access**: Cannot change organization settings or invite members
+- **No Billing Access**: Cannot view billing information
+
+### Viewer
+
+- **View Only**: Can see all touchpoints and analytics
+- **No Editing**: Cannot create, modify, or delete touchpoints
+- **No Settings**: Cannot access organization settings
+- **No Invitations**: Cannot invite new members
+- **Use Case**: Perfect for stakeholders, clients, or executives who need visibility but shouldn't make changes
+
+## Managing Team Members
+
+### Viewing Current Members
+
+1. Go to **Organization Settings** → **Members** tab
+2. See a list of all current members, their roles, and join dates
+3. View pending invitations that haven't been accepted yet
+
+### Changing Member Roles
+
+1. In the **Members** tab, find the member whose role you want to change
+2. Click the **Role** dropdown next to their name
+3. Select the new role
+4. The change takes effect immediately
+
+<Note>
+**Only Owner and Admin** can change member roles. Editors and Viewers cannot modify permissions.
+</Note>
+
+### Removing Members
+
+1. In the **Members** tab, find the member you want to remove
+2. Click the **Remove** button (trash icon) next to their name
+3. Confirm the removal
+4. The member immediately loses access to the organization
+
+<Warning>
+**Removed Member's Touchpoints**: When you remove a member, their touchpoints remain in the organization. Ownership transfers to the organization itself, and other members can continue managing those touchpoints.
+</Warning>
+
+### Canceling Pending Invitations
+
+If someone hasn't accepted their invitation yet, you can cancel it:
+
+1. In the **Members** tab, scroll to **Pending Invitations**
+2. Click **Cancel** next to the invitation
+3. The invitation link becomes invalid and cannot be used
+
+## Use Cases for Multiple Organizations
+
+### Scenario 1: Agency Managing Multiple Clients
+
+**Problem**: A marketing agency manages touchpoints for 10 different clients. Each client needs separate analytics and shouldn't see other clients' data.
+
+**Solution**: Create one organization per client:
+- "Client - ABC Corporation"
+- "Client - XYZ Retail"
+- "Client - DEF Services"
+
+**Benefits**:
+- Complete data isolation between clients
+- Invite client stakeholders as Viewers to their specific organization
+- Generate client-specific reports without mixing data
+- Separate custom domains for each client
+
+### Scenario 2: Company with Multiple Departments
+
+**Problem**: A large company has Marketing, Sales, and Product teams all using Li2.ai, but campaigns should be organized by department.
+
+**Solution**: Create one organization per department:
+- "Acme - Marketing Team"
+- "Acme - Sales Team"
+- "Acme - Product Team"
+
+**Benefits**:
+- Each department manages their own touchpoints
+- Department-specific analytics and reporting
+- Cross-functional collaboration possible by adding members to multiple organizations
+- IT/Admin can be Owner across all departments for oversight
+
+### Scenario 3: Freelancer with Personal and Client Work
+
+**Problem**: A freelance marketer uses Li2.ai for personal projects and client work. Needs to separate personal experiments from professional deliverables.
+
+**Solution**: Use personal organization for individual work, create separate organizations for each client project.
+
+**Benefits**:
+- Clear separation between personal and client work
+- Ability to transfer organization ownership to client when project completes
+- Professional appearance when inviting clients to review work
+
+### Scenario 4: Seasonal Campaigns
+
+**Problem**: A retail brand runs distinct campaigns for Summer Sale, Black Friday, and Holiday Season. Each campaign has hundreds of touchpoints and different team members.
+
+**Solution**: Create campaign-specific organizations:
+- "Brand - Summer 2024 Campaign"
+- "Brand - Black Friday 2024"
+- "Brand - Holiday 2024"
+
+**Benefits**:
+- Campaign-specific analytics without filtering
+- Different team compositions for different campaigns
+- Archive old campaign organizations for historical reference
+
+## Organization Settings
+
+Each organization has its own settings panel accessible from **Organization Name** → **Settings**:
+
+### General Settings
+
+- **Organization Name**: Update the display name
+- **Description**: Add or edit the organization description
+- **Default Language**: Set the default interface language for the organization
+- **Timezone**: Configure timezone for analytics and reporting
+
+### Custom Domains
+
+- Add custom domains for branded short links
+- Configure DNS settings
+- Manage SSL certificates
+- Learn more in [Custom Domains](/en/core-features/touchpoints/custom-domains)
+
+### Danger Zone
+
+- **Transfer Ownership**: Transfer organization ownership to another member
+- **Delete Organization**: Permanently delete the organization and all its touchpoints
+
+<Warning>
+**Delete is Permanent**: Deleting an organization cannot be undone. All touchpoints, QR codes, analytics data, and settings are permanently deleted. Make sure to export any data you need before deletion.
+</Warning>
+
+## Best Practices
+
+<Tip>
+**Use Descriptive Names**: Name organizations clearly and specifically. "Acme Corp - APAC Marketing Q1 2024" is better than "Marketing Team".
+</Tip>
+
+<Tip>
+**Start with Fewer Organizations**: It's tempting to create many organizations, but start conservative. You can always create more later. Too many organizations creates context-switching overhead.
+</Tip>
+
+<Tip>
+**Invite with Minimal Permissions**: Follow the principle of least privilege. Start team members with Viewer or Editor roles, and only promote to Admin/Owner when necessary.
+</Tip>
+
+<Tip>
+**Regular Permission Audits**: Periodically review your organization members list and remove people who no longer need access. This maintains security and keeps the member list clean.
+</Tip>
+
+## Transferring Organization Ownership
+
+If you need to transfer organization ownership (e.g., leaving a company, handing off a client project):
+
+<Steps>
+  <Step title="Ensure Recipient is a Member">
+    The new owner must already be a member of the organization. Invite them first if they aren't already a member.
+  </Step>
+
+  <Step title="Navigate to Danger Zone">
+    Go to **Organization Settings** → scroll to **Danger Zone** section
+  </Step>
+
+  <Step title="Click Transfer Ownership">
+    Click **Transfer Ownership** button
+  </Step>
+
+  <Step title="Select New Owner">
+    Choose the member who will become the new owner from the dropdown list
+  </Step>
+
+  <Step title="Confirm Transfer">
+    Type the organization name to confirm, then click **Transfer**
+  </Step>
+
+  <Step title="Ownership Transferred">
+    The selected member becomes the Owner, and you become an Admin. The new owner can then adjust your role or remove you if needed.
+  </Step>
+</Steps>
+
+## Next Steps
+
+Now that you understand organizations, you're ready to explore the dashboard and start creating touchpoints:
+
+<CardGroup cols={2}>
+  <Card title="Dashboard Overview" icon="chart-mixed" href="/en/getting-started/dashboard">
+    Learn how to navigate the Li2.ai dashboard and access key features
+  </Card>
+
+  <Card title="Quick Start Guide" icon="rocket" href="/en/getting-started/quick-start">
+    Create your first touchpoint with a step-by-step tutorial
+  </Card>
+
+  <Card title="Team Collaboration" icon="handshake" href="/en/core-features/collections/overview">
+    Organize touchpoints with collections for better team workflows
+  </Card>
+
+  <Card title="Custom Domains" icon="globe-pointer" href="/en/core-features/touchpoints/custom-domains">
+    Set up branded domains for professional short links
+  </Card>
+</CardGroup>
+
+---
+
+**Need help with organization setup?** Contact our support team at [support@li2.ai](mailto:support@li2.ai)

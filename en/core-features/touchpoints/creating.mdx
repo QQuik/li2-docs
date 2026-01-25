@@ -1,0 +1,387 @@
+---
+title: "Creating Touch-Points"
+description: "Master touchpoint creation with advanced features including UTM parameters, conversion tracking, link previews, and bulk creation methods."
+sidebarTitle: "Creating"
+icon: "plus"
+---
+
+# Creating Touch-Points
+
+<Info>
+**What you'll learn**: Advanced touchpoint creation techniques including UTM parameters, conversion goals, link preview customization, and bulk import methods.
+</Info>
+
+## Creation Methods
+
+Li2.ai offers multiple ways to create touchpoints depending on your workflow:
+
+<CardGroup cols={2}>
+  <Card title="Dashboard UI" icon="browser">
+    Full-featured form with all options accessible
+  </Card>
+
+  <Card title="Quick Create" icon="bolt">
+    Minimal fields for rapid touchpoint generation
+  </Card>
+
+  <Card title="Bulk Import" icon="file-csv">
+    CSV upload for creating hundreds of touchpoints at once
+  </Card>
+
+  <Card title="API" icon="code">
+    Programmatic creation for integrations and automations
+  </Card>
+</CardGroup>
+
+## Standard Creation (Dashboard UI)
+
+Access the full touchpoint creation form from the dashboard:
+
+<Steps>
+  <Step title="Open Creation Form">
+    Click **+ Create Touchpoint** from the dashboard or press `Cmd/Ctrl + N`
+  </Step>
+
+  <Step title="Complete Required Fields">
+    **Destination URL** (Required)
+    - The final landing page where users will arrive
+    - Must include protocol: `https://example.com` not `example.com`
+    - Can be any valid URL: websites, social media, PDFs, Google Forms, YouTube videos
+
+    **Slug** (Optional but recommended)
+    - Leave blank for random generation (e.g., `a7Bx9Q`)
+    - Click **✨ AI Generate** for contextual suggestions based on your destination
+    - Enter custom slug (3-50 characters, lowercase letters, numbers, hyphens only)
+
+    **Title** (Optional but recommended)
+    - Internal name visible only to you and your team
+    - Descriptive titles make management easier: "Summer Campaign - Instagram Bio Link"
+  </Step>
+
+  <Step title="Configure Optional Features">
+    **Tags**
+    - Add multiple tags for organization: `campaign:summer`, `channel:instagram`, `type:promo`
+    - Tags enable filtering and bulk operations
+
+    **Collection**
+    - Assign to existing collection or create new one
+    - Collections group related touchpoints for aggregated analytics
+
+    **UTM Parameters** (see Advanced Features below)
+
+    **Conversion Goal** (see Advanced Features below)
+
+    **Link Preview** (see Advanced Features below)
+  </Step>
+
+  <Step title="Create Touchpoint">
+    Click **Create** to generate your touchpoint with short link and QR code
+  </Step>
+</Steps>
+
+## Quick Create
+
+For rapid touchpoint generation with minimal friction:
+
+1. Access via **Quick Actions** menu or keyboard shortcut
+2. Enter only destination URL and slug (or leave slug blank)
+3. Click **Create** - touchpoint is generated instantly
+4. Add tags, collections, and other metadata later from the touchpoint detail page
+
+**Best for**: Creating multiple touchpoints quickly during campaigns or events
+
+## Advanced Features
+
+### UTM Parameters
+
+UTM parameters track campaign performance in Google Analytics and other analytics platforms.
+
+**Built-in UTM Builder**:
+<Steps>
+  <Step title="Expand UTM Section">
+    In the creation form, expand the "UTM Parameters" section
+  </Step>
+
+  <Step title="Fill UTM Fields">
+    **utm_source** (Required): Where traffic originates
+    - Examples: `instagram`, `email`, `qrcode-flyer`
+
+    **utm_medium** (Required): Marketing medium
+    - Examples: `social`, `email`, `offline`, `referral`
+
+    **utm_campaign** (Required): Campaign name
+    - Examples: `summer-sale-2024`, `product-launch`, `black-friday`
+
+    **utm_term** (Optional): Paid search keywords
+    - Example: `running shoes`, `summer dress`
+
+    **utm_content** (Optional): Differentiate similar content
+    - Examples: `cta-button`, `header-banner`, `sidebar-link`
+  </Step>
+
+  <Step title="Auto-Append">
+    Li2.ai automatically appends UTM parameters to your destination URL
+    - Original: `https://example.com/product`
+    - With UTM: `https://example.com/product?utm_source=instagram&utm_medium=social&utm_campaign=summer-2024`
+  </Step>
+</Steps>
+
+**UTM Best Practices**:
+- Use consistent naming conventions across campaigns
+- Keep parameter values lowercase for consistency
+- Use hyphens instead of underscores or spaces
+- Be specific but concise
+
+<Tip>
+**Campaign Tracking**: Create one touchpoint per channel/source combo (e.g., `summer-sale-instagram`, `summer-sale-email`) to compare channel performance in Google Analytics.
+</Tip>
+
+### Conversion Goals
+
+Track when users complete desired actions after clicking your touchpoint.
+
+**Setting Up Conversion Goals**:
+<Steps>
+  <Step title="Define Goal">
+    In the creation form, expand "Conversion Tracking"
+
+    **Goal Name**: Descriptive name (e.g., "Add to Cart", "Form Submission", "Purchase")
+
+    **Goal Type**:
+    - **Page Visit**: User reaches a specific URL (e.g., thank-you page)
+    - **Event**: User triggers a custom event (requires script installation)
+  </Step>
+
+  <Step title="Configure Goal">
+    **For Page Visit Goals**:
+    - Enter the goal completion URL (e.g., `https://example.com/thank-you`)
+    - Li2.ai tracks when users reach this page after clicking your touchpoint
+
+    **For Event Goals**:
+    - Copy the tracking script provided
+    - Install on your website where the event occurs (button click, form submit, etc.)
+  </Step>
+
+  <Step title="View Conversion Data">
+    Once configured, view conversion metrics in the touchpoint analytics:
+    - Total conversions
+    - Conversion rate (conversions / clicks)
+    - Revenue (if configured)
+    - Time to conversion
+  </Step>
+</Steps>
+
+**Conversion Goal Examples**:
+- E-commerce: Track purchases, add-to-cart, checkout starts
+- Lead generation: Track form submissions, demo requests, email signups
+- Events: Track registration completions, ticket purchases
+- Content: Track video plays, PDF downloads, article reads
+
+### Link Preview Customization
+
+Control how your touchpoint appears when shared on social media (Open Graph and Twitter Cards).
+
+<Steps>
+  <Step title="Expand Link Preview Section">
+    In the creation form, find "Link Preview Customization"
+  </Step>
+
+  <Step title="Configure Preview">
+    **Preview Title**:
+    - Override the default page title
+    - 60 characters or less for optimal display
+    - Example: "Get 30% Off Summer Collection | YourBrand"
+
+    **Preview Description**:
+    - Brief description shown in social shares
+    - 155-160 characters optimal
+    - Example: "Limited time offer: Save 30% on all summer styles. Free shipping on orders over $50. Shop now!"
+
+    **Preview Image**:
+    - Upload image or provide image URL
+    - Recommended: 1200×630px for optimal social media display
+    - Formats: JPG, PNG
+    - Size: Under 5MB
+  </Step>
+
+  <Step title="Preview & Adjust">
+    Use the preview pane to see how your link appears on:
+    - Facebook
+    - Twitter
+    - LinkedIn
+    - Messaging apps
+
+    Adjust fields until the preview looks ideal.
+  </Step>
+</Steps>
+
+<Note>
+**Default Behavior**: If you don't customize link preview, Li2.ai will attempt to fetch Open Graph data from your destination URL. Custom previews override this automatic detection.
+</Note>
+
+### Custom Domains
+
+Use your branded domain instead of `li2.ai`:
+
+1. **Add Domain**: Go to Organization Settings → Custom Domains → Add Domain
+2. **Configure DNS**: Add the required DNS records to your domain provider
+3. **Verify Domain**: Li2.ai confirms DNS configuration
+4. **Select During Creation**: Choose your custom domain when creating touchpoints
+
+Result: `yourbrand.com/summer-sale` instead of `li2.ai/summer-sale`
+
+Learn more in [Custom Domains](/en/core-features/touchpoints/custom-domains).
+
+## Bulk Creation
+
+Create hundreds of touchpoints at once using CSV import:
+
+<Steps>
+  <Step title="Prepare CSV File">
+    Create a CSV with these columns:
+    - `destination_url` (required)
+    - `slug` (optional, leave blank for auto-generation)
+    - `title` (optional)
+    - `tags` (optional, comma-separated)
+    - `collection` (optional, collection name)
+
+    **Example CSV**:
+    ```csv
+    destination_url,slug,title,tags,collection
+    https://example.com/product1,summer-product1,Summer Product 1,campaign:summer;type:product,Summer Campaign
+    https://example.com/product2,summer-product2,Summer Product 2,campaign:summer;type:product,Summer Campaign
+    ```
+  </Step>
+
+  <Step title="Upload CSV">
+    1. Go to Touchpoints → Bulk Actions → Import CSV
+    2. Upload your CSV file
+    3. Map columns if headers don't match exactly
+  </Step>
+
+  <Step title="Review & Confirm">
+    - Li2.ai shows preview of touchpoints to be created
+    - Validates all URLs and checks for duplicate slugs
+    - Shows any errors that need correction
+  </Step>
+
+  <Step title="Create in Bulk">
+    Click **Create All** to generate all touchpoints
+
+    - Creation happens in background for large imports
+    - You'll receive email notification when complete
+    - Failed rows exported to CSV for correction and retry
+  </Step>
+</Steps>
+
+**Bulk Creation Use Cases**:
+- Product catalog: Create touchpoint for each SKU
+- Event venues: Create touchpoints for each table, booth, or room
+- Real estate: Touchpoints for each property listing
+- Retail: Touchpoints for each store location
+
+## API Creation
+
+For developers integrating Li2.ai into applications or workflows:
+
+**Endpoint**: `POST https://api.li2.ai/v1/touchpoints`
+
+**Authentication**: Bearer token (get from Settings → API Access)
+
+**Request Example**:
+```json
+{
+  "destination_url": "https://example.com/product",
+  "slug": "summer-sale",
+  "title": "Summer Sale Landing Page",
+  "tags": ["campaign:summer", "channel:instagram"],
+  "utm_parameters": {
+    "source": "instagram",
+    "medium": "social",
+    "campaign": "summer-2024"
+  }
+}
+```
+
+**Response**:
+```json
+{
+  "id": "tp_abc123",
+  "short_url": "https://li2.ai/summer-sale",
+  "qr_code_url": "https://li2.ai/qr/tp_abc123.png",
+  "created_at": "2024-06-15T10:30:00Z"
+}
+```
+
+See [API Documentation](/en/api/overview) for complete reference.
+
+## Validation & Error Handling
+
+Li2.ai validates all touchpoints during creation:
+
+**Common Validation Errors**:
+
+| Error | Cause | Solution |
+|-------|-------|----------|
+| "Invalid URL" | Missing protocol or malformed URL | Add `https://` to destination URL |
+| "Slug already exists" | Duplicate slug in organization | Choose different slug or use auto-generation |
+| "Slug contains invalid characters" | Special characters or spaces in slug | Use only lowercase letters, numbers, hyphens |
+| "Destination URL unreachable" | Target website is down | Verify destination exists and is accessible |
+
+**Handling Failed Creations**:
+- Li2.ai shows specific error message
+- Original form data is preserved
+- Fix the error and resubmit
+- For bulk imports, failed rows are exported for correction
+
+## Post-Creation Actions
+
+After creating a touchpoint:
+
+1. **Test Immediately**: Click the short link and scan the QR code to verify correct redirect
+2. **Download QR Code**: Get QR code in needed format and size for distribution
+3. **Copy Short Link**: Copy link for sharing on social media or emails
+4. **Add to Collection**: Organize into relevant collection if not done during creation
+5. **Share with Team**: Invite team members to the organization if collaborating
+
+## Tips for Efficient Creation
+
+<Tip>
+**Use Templates**: Save common configurations (UTM patterns, tag conventions) as templates for faster creation
+</Tip>
+
+<Tip>
+**Batch Similar Touchpoints**: Create all Instagram touchpoints at once, all email touchpoints at once - easier to apply consistent tagging
+</Tip>
+
+<Tip>
+**AI Slug Generation**: When creating many touchpoints, let AI generate slugs for speed, then manually customize important ones
+</Tip>
+
+<Warning>
+**Test Before Mass Distribution**: Always test a single touchpoint before creating hundreds via bulk import. Catch configuration errors early.
+</Warning>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Customize QR Codes" icon="qrcode" href="/en/core-features/touchpoints/qr-codes">
+    Design branded QR codes with custom colors, logos, and frames
+  </Card>
+
+  <Card title="Manage Touch-Points" icon="sliders" href="/en/core-features/touchpoints/managing">
+    Update, organize, and optimize existing touchpoints
+  </Card>
+
+  <Card title="View Analytics" icon="chart-line" href="/en/analytics/overview">
+    Track touchpoint performance with detailed analytics
+  </Card>
+
+  <Card title="Custom Domains" icon="globe-pointer" href="/en/core-features/touchpoints/custom-domains">
+    Set up branded domains for professional short links
+  </Card>
+</CardGroup>
+
+---
+
+**Ready to create advanced touchpoints?** Head to your [dashboard](https://app.li2.ai) and click **+ Create Touchpoint**.

@@ -1,0 +1,312 @@
+---
+title: "Dashboard Overview"
+description: "Navigate the Li2.ai dashboard to create touchpoints, view analytics, manage collections, and access organization settings."
+sidebarTitle: "Dashboard"
+icon: "chart-mixed"
+---
+
+# Dashboard Overview
+
+<Info>
+**What you'll learn**: How to navigate the Li2.ai dashboard, understand key sections, access features, and efficiently manage your touchpoints and campaigns.
+</Info>
+
+## Dashboard Layout
+
+The Li2.ai dashboard at `app.li2.ai/org/` is your central hub for all touchpoint management and analytics. The layout is organized into several key sections:
+
+<CardGroup cols={2}>
+  <Card title="Top Navigation Bar" icon="bars">
+    Organization switcher, search, notifications, and profile menu
+  </Card>
+
+  <Card title="Sidebar Navigation" icon="sidebar">
+    Quick access to Touchpoints, Analytics, Collections, Tags, and Settings
+  </Card>
+
+  <Card title="Main Content Area" icon="table-cells-large">
+    Primary workspace showing touchpoint lists, analytics dashboards, or forms
+  </Card>
+
+  <Card title="Quick Actions" icon="bolt">
+    Floating action button for creating new touchpoints from anywhere
+  </Card>
+</CardGroup>
+
+## Top Navigation Bar
+
+### Organization Switcher
+
+Located in the top left, displays your current organization name. Click to:
+- View all organizations you have access to
+- Switch between personal and team organizations
+- Create new organizations
+- Access organization settings
+
+### Global Search
+
+The search bar (🔍) allows you to:
+- Find touchpoints by title, slug, or destination URL
+- Search by tags or collections
+- Filter by date created or last modified
+- Use keyboard shortcut: `Cmd/Ctrl + K`
+
+### Notifications
+
+Bell icon (🔔) shows:
+- Team activity (touchpoints created, edited, deleted)
+- System updates and new features
+- Analytics milestones (e.g., "Touchpoint reached 1,000 clicks")
+- Security alerts
+
+### Profile Menu
+
+Click your avatar to access:
+- **Profile Settings**: Update name, avatar, language, timezone
+- **Billing**: Manage subscriptions and payment methods (Owner only)
+- **API Access**: Generate API keys for integrations
+- **Sign Out**: End your session
+
+## Sidebar Navigation
+
+### Dashboard (Home)
+
+The main dashboard shows:
+- **Organization Overview**: Total touchpoints, clicks/scans this month, active campaigns
+- **Recent Activity**: Latest touchpoints created or modified by your team
+- **Top Performing Touchpoints**: Sorted by clicks/scans in the last 30 days
+- **Quick Stats**: Visual charts showing traffic trends and geographic distribution
+
+### Touchpoints
+
+View and manage all touchpoints in the current organization:
+- **List View**: Sortable table with columns for title, slug, clicks, created date
+- **Grid View**: Card-based layout with QR code previews
+- **Filter Options**: By tags, collections, date range, or creator
+- **Bulk Actions**: Select multiple touchpoints to delete, tag, or move to collections
+
+Click any touchpoint to view:
+- Full analytics dashboard
+- QR code download options
+- Edit destination, title, tags
+- Sharing options
+
+### Analytics
+
+Organization-wide analytics showing:
+- **Total Clicks/Scans**: Aggregate across all touchpoints
+- **Geographic Distribution**: Interactive world map with click heatmaps
+- **Traffic Sources**: Breakdown by referrer, social platform, direct scans
+- **Device Analytics**: Mobile vs desktop, operating systems, browsers
+- **Time-Series Charts**: Traffic trends by hour, day, week, month
+- **Conversion Tracking**: Goal completions and conversion rates
+
+Learn more in [Analytics Overview](/en/analytics/overview).
+
+### Collections
+
+Organize touchpoints into folders/collections:
+- **View All Collections**: See all collections in your organization
+- **Create Collection**: Group related touchpoints by campaign, client, or purpose
+- **Collection Analytics**: View aggregated performance for all touchpoints in a collection
+
+Learn more in [Collections Overview](/en/core-features/collections/overview).
+
+### Tags
+
+Manage tags for flexible organization:
+- **Tag Library**: View all tags used across touchpoints
+- **Tag Performance**: See which tags have the most associated touchpoints
+- **Color Coding**: Assign colors to tags for visual organization
+- **Tag Filtering**: Click any tag to show all touchpoints with that tag
+
+Learn more in [Tags Overview](/en/core-features/tags/overview).
+
+### Settings
+
+Access organization and account settings:
+- **Organization Settings**: Name, description, timezone, language
+- **Custom Domains**: Add and configure branded domains
+- **Team Members**: Invite, remove, and manage roles
+- **Integrations**: Connect to HubSpot, Google Analytics, Zapier
+- **Billing**: Subscription management (Owner only)
+
+## Main Content Area
+
+### Touchpoints List
+
+The default view shows all touchpoints in a sortable table:
+
+**Columns**:
+- **Title**: Descriptive name (click to view details)
+- **Short Link**: The li2.ai/slug URL with copy button
+- **Destination**: Where the touchpoint redirects (truncated)
+- **Clicks**: Total click/scan count
+- **Created**: Date created
+- **Actions**: Quick actions (edit, analytics, delete)
+
+**Sorting**: Click column headers to sort by any field
+
+**Search**: Use the search box above the table to filter by keyword
+
+### Touchpoint Details Page
+
+Clicking a touchpoint opens its detail page showing:
+
+**Overview Section**:
+- Short link with copy button
+- QR code with download options (PNG, SVG, multiple sizes)
+- Destination URL with edit button
+- Tags and collection assignment
+
+**Analytics Section**:
+- Click/scan count with sparkline chart
+- Geographic breakdown (countries, cities)
+- Device types (mobile, desktop, tablet)
+- Referrer sources
+- Recent activity timeline
+
+**Management Section**:
+- Edit destination URL
+- Update title and tags
+- Move to different collection
+- Delete touchpoint (with confirmation)
+
+## Quick Actions
+
+### Create Touchpoint Button
+
+The **+ Create Touchpoint** button is available:
+- In the top right of the navigation bar
+- As a floating action button in the bottom right corner
+- Keyboard shortcut: `Cmd/Ctrl + N`
+
+Clicking opens the touchpoint creation form (covered in [Quick Start](/en/getting-started/quick-start)).
+
+### Bulk Operations
+
+Select multiple touchpoints using checkboxes to perform bulk actions:
+- **Add Tags**: Apply tags to all selected touchpoints at once
+- **Move to Collection**: Organize multiple touchpoints into a collection
+- **Delete**: Remove multiple touchpoints (requires confirmation)
+- **Export**: Download touchpoint data as CSV
+
+## Keyboard Shortcuts
+
+Li2.ai supports keyboard shortcuts for efficient navigation:
+
+| Shortcut | Action |
+|----------|--------|
+| `Cmd/Ctrl + K` | Open global search |
+| `Cmd/Ctrl + N` | Create new touchpoint |
+| `/` | Focus search in touchpoints list |
+| `Esc` | Close modals/dialogs |
+| `?` | Show all keyboard shortcuts |
+| `G + D` | Go to Dashboard |
+| `G + T` | Go to Touchpoints |
+| `G + A` | Go to Analytics |
+
+Press `?` anywhere in the dashboard to see the full shortcuts reference.
+
+## Dashboard Widgets
+
+### Recent Touchpoints
+
+Shows the 5 most recently created or modified touchpoints:
+- Quick access to touchpoints you're actively working on
+- Click to jump directly to details page
+- Hover to see quick stats (clicks, created date)
+
+### Top Performers
+
+Displays the top 5 touchpoints by click/scan count in the last 30 days:
+- Identify your most successful campaigns
+- Click to analyze what's driving traffic
+- Use insights to optimize underperforming touchpoints
+
+### Traffic Overview Chart
+
+Interactive time-series chart showing:
+- Total clicks/scans over time
+- Customizable date range (7 days, 30 days, 90 days, all time)
+- Compare multiple touchpoints or collections
+- Export data as CSV
+
+### Geographic Heatmap
+
+Visual representation of where clicks/scans are coming from:
+- Interactive world map
+- Hover over countries to see click counts
+- Zoom into regions for city-level data
+- Useful for targeting regional campaigns
+
+## Mobile Dashboard
+
+Access the dashboard on mobile devices at `app.li2.ai`:
+- Responsive design adapts to phone and tablet screens
+- Simplified navigation menu
+- Touch-optimized controls
+- Create touchpoints on the go
+- View real-time analytics
+- Download QR codes directly to your device
+
+## Dashboard Customization
+
+Customize your dashboard experience:
+
+**View Preferences**:
+- Toggle between list and grid view for touchpoints
+- Adjust items per page (10, 25, 50, 100)
+- Show/hide columns in touchpoint tables
+
+**Default Filters**:
+- Save frequently used filters for quick access
+- Set default date ranges for analytics
+
+**Language & Timezone**:
+- Switch interface language (English, Vietnamese)
+- Configure timezone for accurate time-series data
+
+## Tips for Effective Dashboard Use
+
+<Tip>
+**Pin Your Most-Used Collections**: Use collections to organize touchpoints by campaign or client, then bookmark collection URLs for quick access.
+</Tip>
+
+<Tip>
+**Use Tags Strategically**: Create a consistent tagging system (e.g., `channel:instagram`, `type:promo`, `year:2024`) to make filtering and reporting easier.
+</Tip>
+
+<Tip>
+**Check Top Performers Weekly**: Review your top-performing touchpoints each week to identify trends and replicate successful strategies.
+</Tip>
+
+<Tip>
+**Set Up Browser Bookmarks**: Bookmark frequently accessed pages like your main touchpoints list or analytics dashboard for faster navigation.
+</Tip>
+
+## Next Steps
+
+Now that you understand the dashboard, explore specific features:
+
+<CardGroup cols={2}>
+  <Card title="Create Touch-Points" icon="qrcode" href="/en/core-features/touchpoints/creating">
+    Learn advanced touchpoint creation with UTM parameters and conversion tracking
+  </Card>
+
+  <Card title="View Analytics" icon="chart-line" href="/en/analytics/overview">
+    Deep dive into analytics capabilities and reporting features
+  </Card>
+
+  <Card title="Organize with Collections" icon="folder-tree" href="/en/core-features/collections/overview">
+    Group related touchpoints for better campaign management
+  </Card>
+
+  <Card title="Use Tags Effectively" icon="tag" href="/en/core-features/tags/overview">
+    Master the tagging system for flexible organization
+  </Card>
+</CardGroup>
+
+---
+
+**Need help navigating?** Contact support at [support@li2.ai](mailto:support@li2.ai)

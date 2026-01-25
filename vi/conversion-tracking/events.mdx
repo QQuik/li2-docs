@@ -1,0 +1,694 @@
+---
+title: "Hướng Dẫn Track Events"
+description: "Hướng dẫn chi tiết cách track lead events (khách hàng tiềm năng) và sale events (giao dịch) với Li2 Analytics SDK."
+sidebarTitle: "Track Events"
+icon: "chart-mixed"
+---
+
+# Hướng Dẫn Track Events
+
+<Info>
+**Trong hướng dẫn này**: Bạn sẽ học cách sử dụng Li2 Analytics SDK để track lead events (signup, form submissions) và sale events (purchases, subscriptions) với các ví dụ thực tế.
+</Info>
+
+## Yêu Cầu
+
+Trước khi track events, đảm bảo bạn đã:
+
+<CardGroup cols={2}>
+  <Card title="Cài Đặt SDK" icon="code">
+    Đã hoàn thành [Setup Guide](./setup) và cài đặt Li2 Analytics SDK
+  </Card>
+  <Card title="Enable Tracking" icon="toggle-on">
+    Đã bật conversion tracking cho touchpoint trong Settings
+  </Card>
+</CardGroup>
+
+---
+
+## Lead Tracking
+
+**Lead event** đánh dấu khi khách hàng **thể hiện sự quan tâm** đến sản phẩm/dịch vụ của bạn. Đây là bước trung gian quan trọng giữa visit và sale.
+
+### Khi Nào Track Lead?
+
+<AccordionGroup>
+  <Accordion title="Form Submissions">
+    Khi khách hàng điền form liên hệ, đăng ký nhận tư vấn, hoặc request demo.
+
+    **Ví dụ**: Form "Liên hệ chúng tôi", "Đặt lịch demo", "Nhận báo giá"
+  </Accordion>
+
+  <Accordion title="Account Signups">
+    Khi khách hàng tạo tài khoản mới hoặc đăng ký trial.
+
+    **Ví dụ**: Đăng ký Free plan, Start trial, Tạo account
+  </Accordion>
+
+  <Accordion title="Newsletter Subscriptions">
+    Khi khách hàng subscribe newsletter hoặc email updates.
+
+    **Ví dụ**: Đăng ký nhận tin tức, Subscribe blog updates
+  </Accordion>
+
+  <Accordion title="High-Intent Actions">
+    Khi khách hàng thực hiện hành động có ý định cao.
+
+    **Ví dụ**: Add to cart, Download whitepaper, Xem pricing page
+  </Accordion>
+</AccordionGroup>
+
+### Cách Track Lead
+
+<Tabs>
+  <Tab title="Client-Side (Browser)" icon="browser">
+    **Sử dụng khi**: Track trực tiếp trong browser sau khi user submit form hoặc signup.
+
+    ```javascript
+    // Sau khi user submit form thành công
+    li2Analytics.trackLead({
+      eventName: "Contact Form Submitted",
+      customerExternalId: "user_12345", // Your internal user ID
+      customerEmail: "customer@example.com",
+      customerName: "Nguyễn Văn A",
+      metadata: {
+        formType: "contact",
+        message: "Interested in premium plan",
+        source: "landing_page"
+      }
+    })
+    .then(result => {
+      if (result.success) {
+        console.log('Lead tracked!', result.customerId);
+      } else {
+        console.error('Failed:', result.message);
+      }
+    });
+    ```
+
+    <Note>
+    **Click ID tự động**: SDK tự động lấy click ID từ cookie `li_cid`, bạn không cần truyền thủ công.
+    </Note>
+  </Tab>
+
+  <Tab title="Server-Side (Node.js)" icon="server">
+    **Sử dụng khi**: Track từ server sau webhook hoặc async processing.
+
+    ```javascript
+    import { initServer } from '@li2/analytics';
+
+    const li2 = initServer({
+      apiKey: process.env.LI2_SECRET_KEY // li2_sk_...
+    });
+
+    // Track lead từ server
+    const result = await li2.trackLead({
+      clickId: "cm3w...", // REQUIRED - lấy từ client
+      eventName: "Trial Signup",
+      customerExternalId: "user_12345",
+      customerEmail: "customer@example.com",
+      customerName: "Nguyễn Văn A",
+      metadata: {
+        plan: "pro_trial",
+        referrer: "google_ads"
+      }
+    });
+
+    if (result.success) {
+      console.log('Lead tracked:', result.customerId);
+    }
+    ```
+
+    <Warning>
+    **Click ID Required**: Server không thể auto-detect click ID. Bạn phải capture click ID từ client và gửi lên server.
+
+    ```javascript
+    // Client-side: capture click ID
+    const clickId = li2Analytics.getClickId();
+
+    // Gửi lên server cùng form data
+    fetch('/api/submit-form', {
+      method: 'POST',
+      body: JSON.stringify({ clickId, ...formData })
+    });
+    ```
+    </Warning>
+  </Tab>
+</Tabs>
+
+### Lead Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `eventName` | string | ✅ | Tên lead event (VD: "Signup", "Contact Form") |
+| `customerExternalId` | string | ✅ | ID khách hàng trong hệ thống của bạn |
+| `customerEmail` | string | ⚪ | Email khách hàng (khuyến nghị) |
+| `customerName` | string | ⚪ | Tên khách hàng |
+| `customerAvatar` | string | ⚪ | URL avatar |
+| `metadata` | object | ⚪ | Dữ liệu bổ sung (max 10,000 chars) |
+| `clickId` | string | Server only | Click ID (chỉ cần khi track từ server) |
+
+<Tip>
+**Best Practice cho customerExternalId**: Sử dụng ID persistent và unique:
+- ✅ User ID từ database: `"user_12345"`
+- ✅ Email nếu chưa có account: `"customer@example.com"`
+- ❌ Session ID (không persistent): `"sess_abc123"`
+
+ID này dùng để link lead → sale events của cùng một khách hàng.
+</Tip>
+
+---
+
+## Sale Tracking
+
+**Sale event** đánh dấu **conversion thành công** - khách hàng đã hoàn thành giao dịch mua hàng.
+
+### Khi Nào Track Sale?
+
+<AccordionGroup>
+  <Accordion title="E-commerce Purchases">
+    Khi khách hàng hoàn thành thanh toán và order được confirm.
+
+    **Timing**: Sau khi payment processor confirm success (webhook từ Stripe, PayPal, etc.)
+  </Accordion>
+
+  <Accordion title="Subscription Payments">
+    Khi khách hàng subscribe plan trả phí (monthly/annual).
+
+    **Timing**: Sau khi first payment thành công hoặc trial convert to paid
+  </Accordion>
+
+  <Accordion title="One-time Services">
+    Khi khách hàng thanh toán dịch vụ (consulting, booking, etc.).
+
+    **Timing**: Sau khi payment confirmed hoặc booking confirmed with payment
+  </Accordion>
+</AccordionGroup>
+
+### Cách Track Sale
+
+<Tabs>
+  <Tab title="Client-Side (Browser)" icon="browser">
+    **Sử dụng khi**: Track ngay sau checkout success trên thank-you page.
+
+    ```javascript
+    // Trên Thank You Page sau khi checkout thành công
+    li2Analytics.trackSale({
+      customerExternalId: "user_12345",
+      amount: 4999, // $49.99 in cents
+      eventName: "Product Purchase",
+      currency: "usd",
+      invoiceId: "inv_abc123", // Unique invoice ID
+      paymentProcessor: "stripe",
+      customerEmail: "customer@example.com",
+      customerName: "Nguyễn Văn A",
+      metadata: {
+        productId: "prod_premium",
+        productName: "Premium Plan - Annual",
+        discount: "SAVE20"
+      }
+    })
+    .then(result => {
+      if (result.success) {
+        console.log('Sale tracked!', result.saleEventId);
+      }
+    });
+    ```
+
+    <Warning>
+    **Amount Format**: LUÔN sử dụng **smallest currency unit** (cents, xu, etc.)
+    - ✅ `4999` (nghĩa là $49.99)
+    - ❌ `49.99` (sẽ được hiểu là $0.4999)
+    </Warning>
+  </Tab>
+
+  <Tab title="Server-Side (Webhook)" icon="webhook">
+    **Sử dụng khi**: Track từ payment webhook để đảm bảo accuracy.
+
+    ```javascript
+    // Next.js API Route - Stripe Webhook Handler
+    import { initServer } from '@li2/analytics';
+    import Stripe from 'stripe';
+
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    const li2 = initServer({ apiKey: process.env.LI2_SECRET_KEY });
+
+    export async function POST(request) {
+      const sig = request.headers.get('stripe-signature');
+      const event = stripe.webhooks.constructEvent(
+        await request.text(),
+        sig,
+        process.env.STRIPE_WEBHOOK_SECRET
+      );
+
+      if (event.type === 'checkout.session.completed') {
+        const session = event.data.object;
+
+        // Lấy click ID từ session metadata (đã lưu khi tạo checkout)
+        const clickId = session.metadata.clickId;
+
+        await li2.trackSale({
+          clickId: clickId, // REQUIRED for server-side
+          customerExternalId: session.customer,
+          amount: session.amount_total,
+          currency: session.currency,
+          invoiceId: session.payment_intent,
+          paymentProcessor: "stripe",
+          eventName: "Subscription Purchase",
+          metadata: {
+            planId: session.metadata.planId,
+            interval: session.metadata.interval
+          }
+        });
+      }
+
+      return Response.json({ received: true });
+    }
+    ```
+
+    <Tip>
+    **Lưu Click ID vào Payment Session**:
+
+    ```javascript
+    // Client: khi tạo Stripe checkout session
+    const clickId = li2Analytics.getClickId();
+
+    fetch('/api/create-checkout', {
+      method: 'POST',
+      body: JSON.stringify({
+        clickId, // Gửi lên server
+        planId: 'premium'
+      })
+    });
+
+    // Server: lưu vào Stripe session metadata
+    const session = await stripe.checkout.sessions.create({
+      metadata: {
+        clickId: clickId, // Lưu để dùng trong webhook
+        planId: planId
+      },
+      // ...other params
+    });
+    ```
+    </Tip>
+  </Tab>
+</Tabs>
+
+### Sale Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `customerExternalId` | string | ✅ | ID khách hàng (phải giống với lead event) |
+| `amount` | number | ✅ | Số tiền (smallest unit: cents, xu) |
+| `eventName` | string | ⚪ | Tên sale event (default: "Purchase") |
+| `currency` | string | ⚪ | Mã tiền tệ (default: "usd") |
+| `invoiceId` | string | ⚪ | Invoice/transaction ID (dùng để dedupe) |
+| `paymentProcessor` | string | ⚪ | Payment processor ("stripe", "paypal", etc.) |
+| `customerEmail` | string | ⚪ | Email (auto-create customer nếu chưa có) |
+| `customerName` | string | ⚪ | Tên khách hàng |
+| `metadata` | object | ⚪ | Dữ liệu bổ sung (max 10,000 chars) |
+| `clickId` | string | Server only | Click ID (chỉ cần khi track từ server) |
+
+<Note>
+**Multi-currency Support**: Li2 hiện hỗ trợ tracking revenue trong 2 loại tiền tệ:
+- **USD** (US Dollar): `currency: "usd"`
+- **VND** (Vietnamese Dong): `currency: "vnd"`
+- Li2 tự động convert sang default currency của organization để tính tổng revenue
+- Original currency được lưu giữ trong event data
+</Note>
+
+---
+
+## Common Use Cases
+
+<Tabs>
+  <Tab title="SaaS Signup → Subscription">
+    ### Funnel: Visit → Trial Signup → Paid Subscription
+
+    **Step 1: User clicks touchpoint link**
+    ```
+    Li2 tự động capture click ID và lưu vào cookie
+    ```
+
+    **Step 2: User signs up for trial (Lead Event)**
+    ```javascript
+    // Sau khi signup form submit thành công
+    li2Analytics.trackLead({
+      eventName: "Trial Signup",
+      customerExternalId: newUser.id,
+      customerEmail: newUser.email,
+      customerName: newUser.name,
+      metadata: {
+        plan: "pro_trial",
+        trialDays: 14
+      }
+    });
+    ```
+
+    **Step 3: User subscribes after trial (Sale Event)**
+    ```javascript
+    // Trong Stripe webhook handler
+    await li2.trackSale({
+      clickId: savedClickId, // Đã lưu khi signup
+      customerExternalId: user.id,
+      amount: 2900, // $29/month
+      currency: "usd",
+      eventName: "Subscription Started",
+      paymentProcessor: "stripe",
+      invoiceId: invoice.id,
+      metadata: {
+        plan: "pro_monthly",
+        billingInterval: "month"
+      }
+    });
+    ```
+  </Tab>
+
+  <Tab title="E-commerce: Product Purchase">
+    ### Funnel: Visit → Add to Cart → Checkout → Purchase
+
+    **Step 1: User adds to cart (Optional Lead)**
+    ```javascript
+    // Track add-to-cart như high-intent lead
+    li2Analytics.trackLead({
+      eventName: "Add to Cart",
+      customerExternalId: user.id || user.email,
+      customerEmail: user.email,
+      metadata: {
+        productId: product.id,
+        productName: product.name,
+        cartValue: product.price
+      }
+    });
+    ```
+
+    **Step 2: User completes purchase (Sale Event)**
+    ```javascript
+    // Trên order confirmation page
+    li2Analytics.trackSale({
+      customerExternalId: order.customerId,
+      amount: order.total, // Already in cents
+      currency: "vnd",
+      eventName: "Order Completed",
+      invoiceId: order.id,
+      paymentProcessor: "momo",
+      customerEmail: order.email,
+      metadata: {
+        items: order.items.map(i => ({
+          id: i.id,
+          name: i.name,
+          quantity: i.quantity
+        })),
+        shippingMethod: order.shippingMethod
+      }
+    });
+    ```
+  </Tab>
+
+  <Tab title="Lead Gen: Form → Consultation Booking">
+    ### Funnel: Visit → Contact Form → Paid Consultation
+
+    **Step 1: User submits contact form (Lead Event)**
+    ```javascript
+    li2Analytics.trackLead({
+      eventName: "Contact Form Submitted",
+      customerExternalId: formData.email, // Dùng email nếu chưa có user ID
+      customerEmail: formData.email,
+      customerName: formData.name,
+      metadata: {
+        message: formData.message,
+        interestedService: formData.service,
+        preferredContactMethod: formData.contactMethod
+      }
+    });
+    ```
+
+    **Step 2: User books paid consultation (Sale Event)**
+    ```javascript
+    // Sau khi booking & payment thành công
+    li2Analytics.trackSale({
+      customerExternalId: customer.email, // Phải giống lead event
+      amount: 15000000, // 15,000,000 VND = 15000000 (không có decimal)
+      currency: "vnd",
+      eventName: "Consultation Booked",
+      invoiceId: booking.id,
+      paymentProcessor: "vnpay",
+      metadata: {
+        consultationType: "premium",
+        duration: "60_minutes",
+        scheduledDate: booking.date
+      }
+    });
+    ```
+
+    <Warning>
+    **VND Currency**: VND không có subunit (không có xu), nên `amount` là số nguyên:
+    - ✅ `15000000` = 15 triệu VND
+    - ❌ `15000000.00` không cần .00
+    </Warning>
+  </Tab>
+</Tabs>
+
+---
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="1. Consistent customerExternalId Across Events">
+    **QUAN TRỌNG**: Sử dụng CÙNG MỘT `customerExternalId` cho cả lead và sale events của cùng khách hàng.
+
+    ```javascript
+    // ✅ ĐÚNG: Cùng ID
+    trackLead({ customerExternalId: "user_123", ... })
+    trackSale({ customerExternalId: "user_123", ... })
+
+    // ❌ SAI: Khác ID
+    trackLead({ customerExternalId: "user_123", ... })
+    trackSale({ customerExternalId: "order_456", ... }) // Li2 không link được
+    ```
+
+    **Tại sao**: Li2 dùng `customerExternalId` để link lead → sale và aggregate metrics.
+  </Accordion>
+
+  <Accordion title="2. Track Sale Từ Server-Side (Recommended)">
+    **Lý do nên track sale từ server**:
+    - ✅ Chống fraud: User không thể fake sale event
+    - ✅ Accuracy: Webhook confirms payment thực sự thành công
+    - ✅ Reliability: Không bị ảnh hưởng bởi ad blockers hoặc network issues
+
+    **Timing**: Track trong payment webhook handler (Stripe, PayPal, etc.)
+  </Accordion>
+
+  <Accordion title="3. Sử dụng invoiceId Để Handle Webhook Retries">
+    Khi webhook được retry (Stripe, PayPal thường retry khi timeout), `invoiceId` giúp Li2 tránh duplicate trong vòng **7 ngày**:
+
+    ```javascript
+    trackSale({
+      invoiceId: "inv_abc123", // Unique per transaction
+      amount: 4999,
+      // ...
+    });
+    ```
+
+    **Cách hoạt động**:
+    - **Trong 7 ngày**: Li2 cache và trả về response cũ, không tạo duplicate
+    - **Sau 7 ngày**: Cache expire, có thể tạo sale event mới nếu gửi lại
+
+    **Use case**: Đủ để handle webhook retries phổ biến (Stripe retry trong 72h). Không phải permanent deduplication.
+  </Accordion>
+
+  <Accordion title="4. Metadata Cho Reporting & Analysis">
+    Lưu thông tin bổ sung vào `metadata` để phân tích sau:
+
+    ```javascript
+    metadata: {
+      // Campaign tracking
+      utm_source: "facebook",
+      utm_campaign: "summer_sale",
+
+      // Product details
+      productCategory: "electronics",
+      sku: "PROD-123",
+
+      // Customer insights
+      isReturningCustomer: true,
+      customerSegment: "vip"
+    }
+    ```
+
+    <Note>
+    Metadata limit: 10,000 characters (JSON stringified)
+    </Note>
+  </Accordion>
+
+  <Accordion title="5. Handle Errors Gracefully">
+    Tracking failures không nên block user experience:
+
+    ```javascript
+    try {
+      const result = await li2Analytics.trackSale({...});
+      if (!result.success) {
+        // Log error nhưng KHÔNG show lỗi cho user
+        console.error('Tracking failed:', result.message);
+        // Optionally: retry hoặc log to error tracking service
+      }
+    } catch (error) {
+      console.error('Tracking error:', error);
+      // User vẫn thấy success message của purchase
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Utility Functions
+
+Li2 Analytics SDK cung cấp các helper functions:
+
+### isTrackingAvailable()
+
+Kiểm tra xem click ID có available hay không (user có đến từ tracked link không):
+
+```javascript
+if (li2Analytics.isTrackingAvailable()) {
+  // User came from a Li2 touchpoint
+  trackLead({...});
+} else {
+  // User came from direct traffic or other sources
+  // Skip tracking hoặc handle differently
+}
+```
+
+### getClickId()
+
+Lấy click ID hiện tại (useful khi cần gửi lên server):
+
+```javascript
+const clickId = li2Analytics.getClickId();
+
+if (clickId) {
+  // Gửi lên server để track sau
+  await fetch('/api/save-lead', {
+    method: 'POST',
+    body: JSON.stringify({ clickId, ...formData })
+  });
+}
+```
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Lead/Sale không xuất hiện trong dashboard?">
+    **Check list**:
+
+    1. **Verify response**: Check console hoặc Network tab
+       ```javascript
+       const result = await trackLead({...});
+       console.log(result); // { success: true/false, message: ... }
+       ```
+
+    2. **Click ID available?**
+       ```javascript
+       console.log('Click ID:', li2Analytics.getClickId());
+       // Nếu null → user không đến từ tracked link
+       ```
+
+    3. **Touchpoint có enable conversion tracking?**
+       - Vào touchpoint Settings → Conversion Tracking phải ON
+
+    4. **Allowed hostnames configured?**
+       - Settings → Analytics → Allowed Hostnames phải có domain hiện tại
+
+    5. **Publishable key đúng?**
+       - Verify key trong script tag khớp với Settings → Analytics
+  </Accordion>
+
+  <Accordion title="Error: 'customerExternalId is required'">
+    ```javascript
+    // ❌ Missing customerExternalId
+    trackLead({
+      eventName: "Signup"
+      // customerExternalId: ... <- THIẾU
+    });
+
+    // ✅ Fixed
+    trackLead({
+      eventName: "Signup",
+      customerExternalId: user.id // REQUIRED
+    });
+    ```
+  </Accordion>
+
+  <Accordion title="Sale không link được với Lead?">
+    **Nguyên nhân phổ biến**: `customerExternalId` không match.
+
+    ```javascript
+    // Lead event
+    trackLead({ customerExternalId: "user_123", ... })
+
+    // Sale event - PHẢI DÙNG CÙNG ID
+    trackSale({ customerExternalId: "user_123", ... }) // ✅
+    trackSale({ customerExternalId: "order_456", ... }) // ❌
+    ```
+
+    **Verify**: Check customer profile trong dashboard xem có cả lead và sale events không.
+  </Accordion>
+
+  <Accordion title="Revenue không đúng?">
+    **Check amount format**: Phải dùng **smallest currency unit**
+
+    ```javascript
+    // ❌ SAI
+    trackSale({ amount: 49.99, currency: "usd" }) // → $0.49 (!!)
+
+    // ✅ ĐÚNG
+    trackSale({ amount: 4999, currency: "usd" }) // → $49.99
+    ```
+
+    **VND Example**:
+    ```javascript
+    // ✅ ĐÚNG
+    trackSale({ amount: 500000, currency: "vnd" }) // → 500,000 VND
+    ```
+  </Accordion>
+
+  <Accordion title="Server-side tracking: 'clickId is required'">
+    Server không thể auto-detect click ID. Bạn PHẢI capture từ client:
+
+    ```javascript
+    // ❌ SAI: Server-side tracking without clickId
+    li2.trackLead({
+      eventName: "Signup",
+      customerExternalId: "user_123"
+      // clickId: ... <- THIẾU
+    });
+
+    // ✅ ĐÚNG: Capture từ client, gửi lên server
+    // Client:
+    const clickId = li2Analytics.getClickId();
+    fetch('/api/signup', {
+      body: JSON.stringify({ clickId, ...data })
+    });
+
+    // Server:
+    li2.trackLead({
+      clickId: clickId, // From client
+      eventName: "Signup",
+      customerExternalId: "user_123"
+    });
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={1}>
+  <Card title="Configure Goals" icon="bullseye-arrow" href="./goals">
+    Thiết lập conversion goals và target KPIs
+  </Card>
+</CardGroup>

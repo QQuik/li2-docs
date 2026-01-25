@@ -1,0 +1,688 @@
+---
+title: "Events Tracking Guide"
+description: "Detailed guide on tracking lead events (potential customers) and sale events (transactions) with the Li2 Analytics SDK."
+sidebarTitle: "Track Events"
+icon: "chart-mixed"
+---
+
+# Events Tracking Guide
+
+<Info>
+**In this guide**: Learn how to use the Li2 Analytics SDK to track lead events (signups, form submissions) and sale events (purchases, subscriptions) with real-world examples.
+</Info>
+
+## Prerequisites
+
+Before tracking events, ensure you have:
+
+<CardGroup cols={2}>
+  <Card title="SDK Installed" icon="code">
+    Completed the [Setup Guide](./setup) and installed Li2 Analytics SDK
+  </Card>
+  <Card title="Tracking Enabled" icon="toggle-on">
+    Enabled conversion tracking for your touchpoint in Settings
+  </Card>
+</CardGroup>
+
+---
+
+## Lead Tracking
+
+A **lead event** marks when a customer **shows genuine interest** in your product or service. This is a critical middle step between visit and sale.
+
+### When to Track Leads?
+
+<AccordionGroup>
+  <Accordion title="Form Submissions">
+    When customers fill out contact forms, request consultations, or ask for demos.
+
+    **Examples**: "Contact us" forms, "Schedule demo" forms, "Get a quote"
+  </Accordion>
+
+  <Accordion title="Account Signups">
+    When customers create new accounts or sign up for trials.
+
+    **Examples**: Free plan signup, Start trial, Create account
+  </Accordion>
+
+  <Accordion title="Newsletter Subscriptions">
+    When customers subscribe to newsletters or email updates.
+
+    **Examples**: Subscribe to newsletter, Get blog updates
+  </Accordion>
+
+  <Accordion title="High-Intent Actions">
+    When customers perform high-intent actions.
+
+    **Examples**: Add to cart, Download whitepaper, View pricing page
+  </Accordion>
+</AccordionGroup>
+
+### How to Track Leads
+
+<Tabs>
+  <Tab title="Client-Side (Browser)" icon="browser">
+    **Use when**: Tracking directly in the browser after user submits a form or signs up.
+
+    ```javascript
+    // After user successfully submits a form
+    li2Analytics.trackLead({
+      eventName: "Contact Form Submitted",
+      customerExternalId: "user_12345", // Your internal user ID
+      customerEmail: "customer@example.com",
+      customerName: "John Doe",
+      metadata: {
+        formType: "contact",
+        message: "Interested in premium plan",
+        source: "landing_page"
+      }
+    })
+    .then(result => {
+      if (result.success) {
+        console.log('Lead tracked!', result.customerId);
+      } else {
+        console.error('Failed:', result.message);
+      }
+    });
+    ```
+
+    <Note>
+    **Automatic Click ID**: The SDK automatically retrieves the click ID from the `li_cid` cookie - you don't need to pass it manually.
+    </Note>
+  </Tab>
+
+  <Tab title="Server-Side (Node.js)" icon="server">
+    **Use when**: Tracking from the server after webhooks or async processing.
+
+    ```javascript
+    import { initServer } from '@li2/analytics';
+
+    const li2 = initServer({
+      apiKey: process.env.LI2_SECRET_KEY // li2_sk_...
+    });
+
+    // Track lead from server
+    const result = await li2.trackLead({
+      clickId: "cm3w...", // REQUIRED - captured from client
+      eventName: "Trial Signup",
+      customerExternalId: "user_12345",
+      customerEmail: "customer@example.com",
+      customerName: "John Doe",
+      metadata: {
+        plan: "pro_trial",
+        referrer: "google_ads"
+      }
+    });
+
+    if (result.success) {
+      console.log('Lead tracked:', result.customerId);
+    }
+    ```
+
+    <Warning>
+    **Click ID Required**: The server cannot auto-detect the click ID. You must capture the click ID from the client and send it to your server.
+
+    ```javascript
+    // Client-side: capture click ID
+    const clickId = li2Analytics.getClickId();
+
+    // Send to server with form data
+    fetch('/api/submit-form', {
+      method: 'POST',
+      body: JSON.stringify({ clickId, ...formData })
+    });
+    ```
+    </Warning>
+  </Tab>
+</Tabs>
+
+### Lead Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `eventName` | string | ✅ | Name of the lead event (e.g., "Signup", "Contact Form") |
+| `customerExternalId` | string | ✅ | Customer ID in your system |
+| `customerEmail` | string | ⚪ | Customer email (recommended) |
+| `customerName` | string | ⚪ | Customer name |
+| `customerAvatar` | string | ⚪ | Avatar URL |
+| `metadata` | object | ⚪ | Additional data (max 10,000 chars) |
+| `clickId` | string | Server only | Click ID (only needed for server-side tracking) |
+
+<Tip>
+**Best Practice for customerExternalId**: Use a persistent and unique ID:
+- ✅ User ID from database: `"user_12345"`
+- ✅ Email if no account yet: `"customer@example.com"`
+- ❌ Session ID (not persistent): `"sess_abc123"`
+
+This ID is used to link lead → sale events for the same customer.
+</Tip>
+
+---
+
+## Sale Tracking
+
+A **sale event** marks **successful conversion** - the customer has completed a purchase transaction.
+
+### When to Track Sales?
+
+<AccordionGroup>
+  <Accordion title="E-commerce Purchases">
+    When customers complete payment and the order is confirmed.
+
+    **Timing**: After payment processor confirms success (webhook from Stripe, PayPal, etc.)
+  </Accordion>
+
+  <Accordion title="Subscription Payments">
+    When customers subscribe to a paid plan (monthly/annual).
+
+    **Timing**: After first payment succeeds or trial converts to paid
+  </Accordion>
+
+  <Accordion title="One-time Services">
+    When customers pay for services (consulting, booking, etc.).
+
+    **Timing**: After payment confirmed or booking confirmed with payment
+  </Accordion>
+</AccordionGroup>
+
+### How to Track Sales
+
+<Tabs>
+  <Tab title="Client-Side (Browser)" icon="browser">
+    **Use when**: Tracking immediately after checkout success on thank-you page.
+
+    ```javascript
+    // On Thank You Page after successful checkout
+    li2Analytics.trackSale({
+      customerExternalId: "user_12345",
+      amount: 4999, // $49.99 in cents
+      eventName: "Product Purchase",
+      currency: "usd",
+      invoiceId: "inv_abc123", // Unique invoice ID
+      paymentProcessor: "stripe",
+      customerEmail: "customer@example.com",
+      customerName: "John Doe",
+      metadata: {
+        productId: "prod_premium",
+        productName: "Premium Plan - Annual",
+        discount: "SAVE20"
+      }
+    })
+    .then(result => {
+      if (result.success) {
+        console.log('Sale tracked!', result.saleEventId);
+      }
+    });
+    ```
+
+    <Warning>
+    **Amount Format**: ALWAYS use the **smallest currency unit** (cents, pence, etc.)
+    - ✅ `4999` (means $49.99)
+    - ❌ `49.99` (will be interpreted as $0.4999)
+    </Warning>
+  </Tab>
+
+  <Tab title="Server-Side (Webhook)" icon="webhook">
+    **Use when**: Tracking from payment webhooks to ensure accuracy.
+
+    ```javascript
+    // Next.js API Route - Stripe Webhook Handler
+    import { initServer } from '@li2/analytics';
+    import Stripe from 'stripe';
+
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    const li2 = initServer({ apiKey: process.env.LI2_SECRET_KEY });
+
+    export async function POST(request) {
+      const sig = request.headers.get('stripe-signature');
+      const event = stripe.webhooks.constructEvent(
+        await request.text(),
+        sig,
+        process.env.STRIPE_WEBHOOK_SECRET
+      );
+
+      if (event.type === 'checkout.session.completed') {
+        const session = event.data.object;
+
+        // Retrieve click ID from session metadata (saved during checkout creation)
+        const clickId = session.metadata.clickId;
+
+        await li2.trackSale({
+          clickId: clickId, // REQUIRED for server-side
+          customerExternalId: session.customer,
+          amount: session.amount_total,
+          currency: session.currency,
+          invoiceId: session.payment_intent,
+          paymentProcessor: "stripe",
+          eventName: "Subscription Purchase",
+          metadata: {
+            planId: session.metadata.planId,
+            interval: session.metadata.interval
+          }
+        });
+      }
+
+      return Response.json({ received: true });
+    }
+    ```
+
+    <Tip>
+    **Save Click ID in Payment Session**:
+
+    ```javascript
+    // Client: when creating Stripe checkout session
+    const clickId = li2Analytics.getClickId();
+
+    fetch('/api/create-checkout', {
+      method: 'POST',
+      body: JSON.stringify({
+        clickId, // Send to server
+        planId: 'premium'
+      })
+    });
+
+    // Server: save in Stripe session metadata
+    const session = await stripe.checkout.sessions.create({
+      metadata: {
+        clickId: clickId, // Save to use in webhook
+        planId: planId
+      },
+      // ...other params
+    });
+    ```
+    </Tip>
+  </Tab>
+</Tabs>
+
+### Sale Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `customerExternalId` | string | ✅ | Customer ID (must match lead event) |
+| `amount` | number | ✅ | Amount (smallest unit: cents, pence) |
+| `eventName` | string | ⚪ | Sale event name (default: "Purchase") |
+| `currency` | string | ⚪ | Currency code (default: "usd") |
+| `invoiceId` | string | ⚪ | Invoice/transaction ID (for deduplication) |
+| `paymentProcessor` | string | ⚪ | Payment processor ("stripe", "paypal", etc.) |
+| `customerEmail` | string | ⚪ | Email (auto-creates customer if not found) |
+| `customerName` | string | ⚪ | Customer name |
+| `metadata` | object | ⚪ | Additional data (max 10,000 chars) |
+| `clickId` | string | Server only | Click ID (only needed for server-side tracking) |
+
+<Note>
+**Multi-currency Support**: Li2 currently supports revenue tracking in 2 currencies:
+- **USD** (US Dollar): `currency: "usd"`
+- **VND** (Vietnamese Dong): `currency: "vnd"`
+- Li2 automatically converts to your organization's default currency for total revenue calculation
+- Original currency is preserved in event data
+</Note>
+
+---
+
+## Common Use Cases
+
+<Tabs>
+  <Tab title="SaaS Signup → Subscription">
+    ### Funnel: Visit → Trial Signup → Paid Subscription
+
+    **Step 1: User clicks touchpoint link**
+    ```
+    Li2 automatically captures click ID and saves to cookie
+    ```
+
+    **Step 2: User signs up for trial (Lead Event)**
+    ```javascript
+    // After signup form successfully submits
+    li2Analytics.trackLead({
+      eventName: "Trial Signup",
+      customerExternalId: newUser.id,
+      customerEmail: newUser.email,
+      customerName: newUser.name,
+      metadata: {
+        plan: "pro_trial",
+        trialDays: 14
+      }
+    });
+    ```
+
+    **Step 3: User subscribes after trial (Sale Event)**
+    ```javascript
+    // In Stripe webhook handler
+    await li2.trackSale({
+      clickId: savedClickId, // Saved during signup
+      customerExternalId: user.id,
+      amount: 2900, // $29/month
+      currency: "usd",
+      eventName: "Subscription Started",
+      paymentProcessor: "stripe",
+      invoiceId: invoice.id,
+      metadata: {
+        plan: "pro_monthly",
+        billingInterval: "month"
+      }
+    });
+    ```
+  </Tab>
+
+  <Tab title="E-commerce: Product Purchase">
+    ### Funnel: Visit → Add to Cart → Checkout → Purchase
+
+    **Step 1: User adds to cart (Optional Lead)**
+    ```javascript
+    // Track add-to-cart as high-intent lead
+    li2Analytics.trackLead({
+      eventName: "Add to Cart",
+      customerExternalId: user.id || user.email,
+      customerEmail: user.email,
+      metadata: {
+        productId: product.id,
+        productName: product.name,
+        cartValue: product.price
+      }
+    });
+    ```
+
+    **Step 2: User completes purchase (Sale Event)**
+    ```javascript
+    // On order confirmation page
+    li2Analytics.trackSale({
+      customerExternalId: order.customerId,
+      amount: order.total, // Already in cents
+      currency: "usd",
+      eventName: "Order Completed",
+      invoiceId: order.id,
+      paymentProcessor: "stripe",
+      customerEmail: order.email,
+      metadata: {
+        items: order.items.map(i => ({
+          id: i.id,
+          name: i.name,
+          quantity: i.quantity
+        })),
+        shippingMethod: order.shippingMethod
+      }
+    });
+    ```
+  </Tab>
+
+  <Tab title="Lead Gen: Form → Consultation Booking">
+    ### Funnel: Visit → Contact Form → Paid Consultation
+
+    **Step 1: User submits contact form (Lead Event)**
+    ```javascript
+    li2Analytics.trackLead({
+      eventName: "Contact Form Submitted",
+      customerExternalId: formData.email, // Use email if no user ID yet
+      customerEmail: formData.email,
+      customerName: formData.name,
+      metadata: {
+        message: formData.message,
+        interestedService: formData.service,
+        preferredContactMethod: formData.contactMethod
+      }
+    });
+    ```
+
+    **Step 2: User books paid consultation (Sale Event)**
+    ```javascript
+    // After booking & payment succeeds
+    li2Analytics.trackSale({
+      customerExternalId: customer.email, // Must match lead event
+      amount: 19900, // $199 consultation
+      currency: "usd",
+      eventName: "Consultation Booked",
+      invoiceId: booking.id,
+      paymentProcessor: "stripe",
+      metadata: {
+        consultationType: "premium",
+        duration: "60_minutes",
+        scheduledDate: booking.date
+      }
+    });
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="1. Consistent customerExternalId Across Events">
+    **CRITICAL**: Use the SAME `customerExternalId` for both lead and sale events for the same customer.
+
+    ```javascript
+    // ✅ CORRECT: Same ID
+    trackLead({ customerExternalId: "user_123", ... })
+    trackSale({ customerExternalId: "user_123", ... })
+
+    // ❌ WRONG: Different IDs
+    trackLead({ customerExternalId: "user_123", ... })
+    trackSale({ customerExternalId: "order_456", ... }) // Li2 can't link them
+    ```
+
+    **Why**: Li2 uses `customerExternalId` to link lead → sale and aggregate metrics.
+  </Accordion>
+
+  <Accordion title="2. Track Sales Server-Side (Recommended)">
+    **Why track sales from server**:
+    - ✅ Fraud prevention: Users can't fake sale events
+    - ✅ Accuracy: Webhook confirms payment actually succeeded
+    - ✅ Reliability: Not affected by ad blockers or network issues
+
+    **Timing**: Track in payment webhook handler (Stripe, PayPal, etc.)
+  </Accordion>
+
+  <Accordion title="3. Use invoiceId to Handle Webhook Retries">
+    When webhooks retry (Stripe, PayPal typically retry on timeout), `invoiceId` helps Li2 prevent duplicates within a **7-day window**:
+
+    ```javascript
+    trackSale({
+      invoiceId: "inv_abc123", // Unique per transaction
+      amount: 4999,
+      // ...
+    });
+    ```
+
+    **How it works**:
+    - **Within 7 days**: Li2 caches and returns the old response, no duplicate created
+    - **After 7 days**: Cache expires, may create a new sale event if sent again
+
+    **Use case**: Sufficient to handle common webhook retries (Stripe retries within 72h). Not permanent deduplication.
+  </Accordion>
+
+  <Accordion title="4. Metadata for Reporting & Analysis">
+    Store additional information in `metadata` for later analysis:
+
+    ```javascript
+    metadata: {
+      // Campaign tracking
+      utm_source: "facebook",
+      utm_campaign: "summer_sale",
+
+      // Product details
+      productCategory: "electronics",
+      sku: "PROD-123",
+
+      // Customer insights
+      isReturningCustomer: true,
+      customerSegment: "vip"
+    }
+    ```
+
+    <Note>
+    Metadata limit: 10,000 characters (JSON stringified)
+    </Note>
+  </Accordion>
+
+  <Accordion title="5. Handle Errors Gracefully">
+    Tracking failures shouldn't block user experience:
+
+    ```javascript
+    try {
+      const result = await li2Analytics.trackSale({...});
+      if (!result.success) {
+        // Log error but DON'T show to user
+        console.error('Tracking failed:', result.message);
+        // Optionally: retry or log to error tracking service
+      }
+    } catch (error) {
+      console.error('Tracking error:', error);
+      // User still sees purchase success message
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Utility Functions
+
+Li2 Analytics SDK provides helper functions:
+
+### isTrackingAvailable()
+
+Check if a click ID is available (did the user come from a tracked link):
+
+```javascript
+if (li2Analytics.isTrackingAvailable()) {
+  // User came from a Li2 touchpoint
+  trackLead({...});
+} else {
+  // User came from direct traffic or other sources
+  // Skip tracking or handle differently
+}
+```
+
+### getClickId()
+
+Get the current click ID (useful when you need to send it to your server):
+
+```javascript
+const clickId = li2Analytics.getClickId();
+
+if (clickId) {
+  // Send to server for later tracking
+  await fetch('/api/save-lead', {
+    method: 'POST',
+    body: JSON.stringify({ clickId, ...formData })
+  });
+}
+```
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Lead/Sale not showing in dashboard?">
+    **Checklist**:
+
+    1. **Verify response**: Check console or Network tab
+       ```javascript
+       const result = await trackLead({...});
+       console.log(result); // { success: true/false, message: ... }
+       ```
+
+    2. **Click ID available?**
+       ```javascript
+       console.log('Click ID:', li2Analytics.getClickId());
+       // If null → user didn't come from tracked link
+       ```
+
+    3. **Touchpoint has conversion tracking enabled?**
+       - Go to touchpoint Settings → Conversion Tracking must be ON
+
+    4. **Allowed hostnames configured?**
+       - Settings → Analytics → Allowed Hostnames must include current domain
+
+    5. **Publishable key correct?**
+       - Verify key in script tag matches Settings → Analytics
+  </Accordion>
+
+  <Accordion title="Error: 'customerExternalId is required'">
+    ```javascript
+    // ❌ Missing customerExternalId
+    trackLead({
+      eventName: "Signup"
+      // customerExternalId: ... <- MISSING
+    });
+
+    // ✅ Fixed
+    trackLead({
+      eventName: "Signup",
+      customerExternalId: user.id // REQUIRED
+    });
+    ```
+  </Accordion>
+
+  <Accordion title="Sale not linked to Lead?">
+    **Common cause**: `customerExternalId` doesn't match.
+
+    ```javascript
+    // Lead event
+    trackLead({ customerExternalId: "user_123", ... })
+
+    // Sale event - MUST USE SAME ID
+    trackSale({ customerExternalId: "user_123", ... }) // ✅
+    trackSale({ customerExternalId: "order_456", ... }) // ❌
+    ```
+
+    **Verify**: Check customer profile in dashboard to see if it has both lead and sale events.
+  </Accordion>
+
+  <Accordion title="Revenue is incorrect?">
+    **Check amount format**: Must use **smallest currency unit**
+
+    ```javascript
+    // ❌ WRONG
+    trackSale({ amount: 49.99, currency: "usd" }) // → $0.49 (!!)
+
+    // ✅ CORRECT
+    trackSale({ amount: 4999, currency: "usd" }) // → $49.99
+    ```
+
+    **VND Example**:
+    ```javascript
+    // ✅ CORRECT
+    trackSale({ amount: 500000, currency: "vnd" }) // → 500,000 VND
+    ```
+  </Accordion>
+
+  <Accordion title="Server-side tracking: 'clickId is required'">
+    Server cannot auto-detect click ID. You MUST capture it from the client:
+
+    ```javascript
+    // ❌ WRONG: Server-side tracking without clickId
+    li2.trackLead({
+      eventName: "Signup",
+      customerExternalId: "user_123"
+      // clickId: ... <- MISSING
+    });
+
+    // ✅ CORRECT: Capture from client, send to server
+    // Client:
+    const clickId = li2Analytics.getClickId();
+    fetch('/api/signup', {
+      body: JSON.stringify({ clickId, ...data })
+    });
+
+    // Server:
+    li2.trackLead({
+      clickId: clickId, // From client
+      eventName: "Signup",
+      customerExternalId: "user_123"
+    });
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={1}>
+  <Card title="Configure Goals" icon="bullseye-arrow" href="./goals">
+    Set up conversion goals and target KPIs
+  </Card>
+</CardGroup>

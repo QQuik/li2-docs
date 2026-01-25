@@ -1,0 +1,375 @@
+---
+title: "Conversion Goals (In Development)"
+description: "Set up conversion goals and KPI targets to measure marketing campaign performance - feature currently in development."
+sidebarTitle: "Conversion Goals"
+icon: "bullseye-arrow"
+---
+
+# Conversion Goals
+
+<Warning>
+**Feature In Development**: Conversion Goals is a feature currently being developed for Li2. This documentation page describes the concept and how the feature will work when released.
+</Warning>
+
+<Info>
+**In this guide**: Learn about Conversion Goals - how to set targets, track progress, and optimize marketing performance based on data-driven insights.
+</Info>
+
+---
+
+## What are Conversion Goals?
+
+**Conversion Goals** are a system that allows you to set and track specific KPIs for marketing campaigns and touchpoints.
+
+Instead of just viewing raw metrics (visits, leads, sales), Goals help you:
+- Set clear objectives for each campaign
+- Track progress in real-time
+- Receive alerts when hitting or missing targets
+- Compare performance across touchpoints/campaigns
+
+<CardGroup cols={3}>
+  <Card title="Target-Based Tracking" icon="crosshairs">
+    Set specific goals: "100 leads/month" or "$10K revenue/week"
+  </Card>
+
+  <Card title="Progress Monitoring" icon="chart-line-up">
+    Track progress against targets in real-time dashboard
+  </Card>
+
+  <Card title="Automated Alerts" icon="bell">
+    Get notified when hitting milestones or underperforming
+  </Card>
+</CardGroup>
+
+---
+
+## Why Do You Need Conversion Goals?
+
+### Current Situation
+
+Currently with Li2 Analytics, you can:
+- ✅ View total leads and sales
+- ✅ Track conversion rates
+- ✅ Analyze customer journey
+
+But you CANNOT:
+- ❌ Set specific targets and track progress
+- ❌ Compare performance against targets
+- ❌ Receive alerts when campaigns underperform
+
+### Solution: Conversion Goals
+
+Conversion Goals add a "target planning" layer to existing analytics:
+
+```
+Current: "Touchpoint A generated 50 leads this month"
+With Goals: "Touchpoint A achieved 50/100 leads (50% of goal)"
+```
+
+---
+
+## Goal Types (Planned)
+
+<Tabs>
+  <Tab title="Lead Goals" icon="user-plus">
+    ### Lead Volume Goals
+
+    Set targets for lead generation from touchpoints or campaigns.
+
+    **Examples**:
+    - "Facebook Ads campaign needs to generate 200 leads/month"
+    - "Landing Page QR code needs 50 signups/week"
+
+    **Parameters**:
+    - Target metric: Lead count
+    - Time period: Daily, Weekly, Monthly, Custom
+    - Scope: Specific touchpoint, Space, or Organization-wide
+    - Filters: Lead event names (e.g., only count "Trial Signup", not "Newsletter")
+  </Tab>
+
+  <Tab title="Revenue Goals" icon="sack-dollar">
+    ### Revenue Targets
+
+    Set revenue targets from conversions.
+
+    **Examples**:
+    - "This campaign needs to generate $100K revenue in Q1"
+    - "Email marketing needs to hit $5,000 sales/month"
+
+    **Parameters**:
+    - Target metric: Revenue amount
+    - Currency: USD, EUR, GBP, etc.
+    - Time period: Daily, Weekly, Monthly, Quarterly, Annual
+    - Scope: Touchpoint, Space, Organization
+    - Filters: Sale event names, product categories
+  </Tab>
+
+  <Tab title="Conversion Rate Goals" icon="percent">
+    ### Conversion Rate Optimization
+
+    Set target conversion rates between stages.
+
+    **Examples**:
+    - "Visit → Lead rate must reach 15%"
+    - "Lead → Sale rate must be above 25%"
+
+    **Parameters**:
+    - Target metric: Conversion rate percentage
+    - Funnel stage: Visit→Lead, Lead→Sale, Visit→Sale
+    - Time period: Rolling 7/30/90 days
+    - Scope: Specific touchpoint or campaign
+  </Tab>
+
+  <Tab title="Time-Based Goals" icon="clock">
+    ### Time-to-Conversion Goals
+
+    Optimize conversion speed.
+
+    **Examples**:
+    - "Lead → Sale average time must be < 7 days"
+    - "80% of conversions must happen within 48h of visit"
+
+    **Parameters**:
+    - Target metric: Average time or percentile
+    - Measurement: Hours, Days, Weeks
+    - Funnel stage: Visit→Lead, Lead→Sale
+  </Tab>
+</Tabs>
+
+---
+
+## How It Works (Planned)
+
+### 1. Create Goal
+
+```typescript
+// Conceptual API (not yet implemented)
+const goal = await createGoal({
+  name: "Q1 Lead Generation Target",
+  type: "lead_count",
+  target: 500, // 500 leads
+  period: "quarterly",
+  startDate: "2026-01-01",
+  endDate: "2026-03-31",
+  scope: {
+    type: "space",
+    spaceId: "space_abc123"
+  },
+  filters: {
+    eventNames: ["Trial Signup", "Demo Request"]
+  },
+  alerts: {
+    milestones: [25, 50, 75, 100], // Alert at 25%, 50%, 75%, 100%
+    underperformance: {
+      threshold: 20, // Alert if < 20% progress at 50% timeline
+      enabled: true
+    }
+  }
+});
+```
+
+### 2. Track Progress
+
+Dashboard displays:
+- **Current vs Target**: 327/500 leads (65%)
+- **Progress Timeline**: On track / Behind / Ahead
+- **Projection**: "At current rate, will reach 480 leads (96% of goal)"
+- **Days Remaining**: 45 days left
+
+### 3. Automated Alerts
+
+Notifications when:
+- ✅ Hitting milestones (25%, 50%, 75%, 100%)
+- ⚠️ Behind schedule (e.g., 50% of time elapsed but only 30% of target)
+- 🎯 Goal completed ahead of schedule
+- 📊 Weekly/daily digest reports
+
+### 4. Optimization Insights
+
+AI-powered recommendations:
+- "Touchpoint A performing 30% above goal - consider increasing budget"
+- "Touchpoint B behind target - conversion rate dropped from 15% to 8% this week"
+- "Similar campaigns achieved goals by optimizing landing page CTA"
+
+---
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="SaaS: Monthly Recurring Revenue (MRR) Target">
+    **Scenario**: SaaS company needs to achieve $50,000 MRR growth each quarter.
+
+    **Goals Setup**:
+    - **Type**: Revenue Goal
+    - **Target**: $50,000 MRR
+    - **Period**: Quarterly
+    - **Scope**: All paid subscription events
+    - **Alerts**:
+      - Weekly progress update
+      - Alert if behind >20% mid-quarter
+
+    **Benefits**:
+    - Track progress real-time: "$32,000 / $50,000 (64%)"
+    - Identify top-performing acquisition channels
+    - Adjust marketing spend based on data
+  </Accordion>
+
+  <Accordion title="E-commerce: Campaign Revenue Target">
+    **Scenario**: Black Friday campaign with $500K revenue target over 3 days.
+
+    **Goals Setup**:
+    - **Type**: Revenue Goal
+    - **Target**: $500,000
+    - **Period**: Custom (Nov 24-26)
+    - **Scope**: Touchpoints tagged "black_friday_2026"
+    - **Alerts**:
+      - Hourly updates during campaign
+      - Alert if average hourly rate < target rate
+
+    **Benefits**:
+    - Monitor campaign performance in real-time
+    - Quick pivot if underperforming
+    - Compare with previous years' campaigns
+  </Accordion>
+
+  <Accordion title="Lead Gen: Conversion Rate Improvement">
+    **Scenario**: Landing page has 8% visit→lead rate, target is 12%.
+
+    **Goals Setup**:
+    - **Type**: Conversion Rate Goal
+    - **Target**: 12% visit→lead rate
+    - **Period**: Rolling 30 days
+    - **Scope**: Specific landing page touchpoint
+    - **Alerts**:
+      - Weekly performance summary
+      - Alert when rate > 10% (improvement detected)
+
+    **Benefits**:
+    - A/B test different CTAs and track impact
+    - Data-driven optimization decisions
+    - Clear success metrics for marketing team
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Roadmap & Timeline
+
+<Steps>
+  <Step title="Phase 1: Basic Goals (Planned Q2 2026)">
+    - Lead count goals
+    - Revenue goals
+    - Simple progress tracking dashboard
+    - Manual goal creation
+  </Step>
+
+  <Step title="Phase 2: Advanced Features (Planned Q3 2026)">
+    - Conversion rate goals
+    - Time-based goals
+    - Automated alerts & notifications
+    - Goal templates
+  </Step>
+
+  <Step title="Phase 3: AI & Automation (Planned Q4 2026)">
+    - AI-powered goal recommendations
+    - Automatic goal adjustment based on trends
+    - Predictive analytics
+    - Integration with planning tools
+  </Step>
+</Steps>
+
+---
+
+## Temporary Workarounds
+
+While waiting for the Goals feature, you can:
+
+### 1. Manual Goal Tracking with Spreadsheet
+
+Track progress manually:
+
+```
+Touchpoint: Facebook Ads Campaign
+Goal: 200 leads/month
+Current: 127 leads (Week 3)
+Progress: 63.5%
+On Track: Yes (projected: 220 leads)
+```
+
+### 2. Use Analytics Dashboard
+
+- View conversion metrics in [Analytics Dashboard](/en/analytics/overview)
+- Export data weekly and compare against targets
+- Set up custom queries to filter specific event types
+
+### 3. External Tools Integration
+
+Integrate Li2 data with tools like:
+- **Google Sheets**: Export conversion data and track vs targets
+- **Notion/Airtable**: Build custom goal tracking boards
+- **BI Tools**: Power BI, Tableau to visualize progress
+
+---
+
+## Join Beta Testing
+
+<Info>
+**Interested in Goals Feature?**
+
+If you want to participate in beta testing when Goals feature is ready:
+1. Contact support team via email: support@li2.ai
+2. Describe your use case and requirements
+3. Get early access when feature releases
+
+Early testers will receive:
+- ✅ Free access during beta period
+- ✅ Direct line to product team for feedback
+- ✅ Influence roadmap and feature priorities
+</Info>
+
+---
+
+## Frequently Asked Questions
+
+<AccordionGroup>
+  <Accordion title="When will Goals feature be available?">
+    Goals feature is currently in planning phase. Expected release: Q2-Q3 2026.
+
+    To receive updates, subscribe to announcement channel or contact support team.
+  </Accordion>
+
+  <Accordion title="Will Goals cost extra?">
+    Goals will be part of **Premium plan** and above, no additional charge.
+
+    If you're on Premium plan, you'll automatically get access to Goals when released.
+  </Accordion>
+
+  <Accordion title="Can I request custom goal types?">
+    Yes! We're collecting requirements from users.
+
+    Email: product@li2.ai with:
+    - Use case description
+    - Goal type you need
+    - Success metrics
+  </Accordion>
+
+  <Accordion title="Do Goals support multi-touchpoint tracking?">
+    Yes. Goals will support:
+    - Single touchpoint goals
+    - Space-level goals (all touchpoints in space)
+    - Organization-wide goals
+    - Custom groups (tag-based filtering)
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Updates & Follow Along
+
+To receive the latest information about Goals feature:
+
+<CardGroup cols={1}>
+  <Card title="Support" icon="life-ring" href="mailto:support@li2.ai">
+    Contact support team to learn more
+  </Card>
+</CardGroup>

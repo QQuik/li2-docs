@@ -1,300 +1,131 @@
 ---
-description: >-
-  Understanding touchpoints - the foundation of professional marketing campaigns
-  with multi-channel distribution, advanced analytics, and smart optimization.
-title: Touchpoints Overview
+title: "Liên Kết Rút Gọn"
+description: "Tạo liên kết rút gọn đẹp mắt với tên miền riêng, slug tự động bằng AI, và tính năng quản lý liên kết toàn diện."
+sidebarTitle: "Liên Kết Rút Gọn"
+icon: "link"
 ---
 
-# Touchpoints Overview
+# Liên Kết Rút Gọn
 
-Touchpoints are the heart of Li2.ai's marketing platform. Far more than simple shortened links, touchpoints are comprehensive marketing assets that enable sophisticated campaign distribution, tracking, and optimization across multiple channels.
+<Info>
+**Bạn sẽ học**: Cách tạo, tùy chỉnh và quản lý liên kết rút gọn bao gồm tên miền riêng, chiến lược slug và tối ưu hiển thị link.
+</Info>
 
-## What Are Touchpoints?
+## Cấu Trúc Liên Kết Rút Gọn
 
-A **touchpoint** is a professional marketing asset that connects your audience to your content through multiple distribution channels. Each touchpoint includes:
+Một liên kết rút gọn Li2.ai gồm:
 
-- **Smart Link Management** - Branded short URLs with versioning and change tracking
-- **Multi-Channel Distribution** - Links, QR codes, and upcoming WiFi/NFC options
-- **Independent Routing** - Different destinations per channel for advanced testing
-- **Advanced Analytics** - Comprehensive tracking and performance measurement
-- **Social Optimization** - Custom meta tags and images for perfect social sharing
-- **Campaign Organization** - Tags, search, and filtering for professional management
+**Tên Miền + Slug**
+- Mặc định: `li2.ai/slug-cua-ban`
+- Tên miền riêng: `thuonghieu.com/slug-cua-ban`
 
-<Note>
-  **Think of touchpoints as marketing campaigns, not just links.** Each touchpoint represents a complete strategy for reaching your audience across digital and physical channels.
-</Note>
+## Tùy Chọn Slug
 
----
+### Tạo Tự Động Ngẫu Nhiên
+Để trống slug để hệ thống tự động tạo:
+- Định dạng: 6-8 ký tự ngẫu nhiên (ví dụ: `a7Bx9Q`)
+- Ưu điểm: Tạo nhanh nhất, không cần suy nghĩ
+- Nhược điểm: Khó nhớ, không thể hiện thương hiệu
 
-## Key Touchpoint Capabilities
+### Slug Tự Động Bằng AI
+Nhấn **✨ AI Generate** để nhận gợi ý slug phù hợp:
+- Phân tích nội dung URL đích
+- Đề xuất slug liên quan, dễ đọc
+- Ví dụ: `khuyen-mai-he`, `huong-dan-sp`, `dang-ky`
 
-### Smart Link Management ✅
+### Slug Tùy Chỉnh
+Tạo slug riêng dễ nhớ:
+- **Độ dài**: 3-50 ký tự
+- **Cho phép**: Chữ thường, số, dấu gạch ngang
+- **Không cho phép**: Khoảng trắng, ký tự đặc biệt, chữ hoa
 
-Create professional, branded short links that enhance your marketing presence and provide detailed tracking insights.
+**Thực Hành Tốt**:
+- Giữ ngắn gọn (lý tưởng 3-15 ký tự)
+- Dễ nhớ
+- Phản ánh nội dung đích
+- Dùng dấu gạch ngang: `khuyen-mai-he` thay vì `khuyenmaihe`
+
+## Tên Miền Riêng
+
+Sử dụng tên miền thương hiệu thay vì `li2.ai`:
+
+### Quy Trình Cài Đặt
+1. **Cài Đặt Organization** → **Custom Domains**
+2. **Thêm Tên Miền**: Nhập tên miền (ví dụ: `go.thuonghieu.com`)
+3. **Cấu Hình DNS**: Thêm bản ghi CNAME: `go.thuonghieu.com` → `cname.li2.ai`
+4. **Xác Minh**: Li2.ai xác nhận cấu hình DNS (thường 5-15 phút)
+5. **Kích Hoạt**: Tên miền sẵn sàng sử dụng khi tạo touchpoint
+
+### Lợi Ích
+- **Uy Tín Thương Hiệu**: Người dùng thấy tên miền của bạn, không phải bên thứ ba
+- **Thương Hiệu Nhất Quán**: Tất cả link đều dùng tên miền thương hiệu
+- **Nhận Diện Link**: Người dùng biết link từ tổ chức của bạn
+- **Hình Ảnh Chuyên Nghiệp**: Cần thiết cho doanh nghiệp và B2B
+
+## Quản Lý Liên Kết
+
+### Cập Nhật Điểm Đến
+Thay đổi nơi liên kết rút gọn chuyển hướng:
+1. Vào chi tiết touchpoint
+2. Nhấn "Chỉnh Sửa Điểm Đến"
+3. Nhập URL mới
+4. Lưu thay đổi
+
+**Hiệu Lực**: Ngay lập tức - tất cả click sẽ đến điểm đến mới
+
+**Ứng Dụng**:
+- Chiến dịch theo mùa (cập nhật cho ưu đãi hè, thu, đông)
+- Ra mắt sản phẩm (teaser trước ra mắt → trang mua hàng)
+- Cập nhật sự kiện (đăng ký → livestream → bản ghi)
+
+### Hết Hạn Liên Kết
+Đặt ngày hết hạn tự động:
+- Link ngừng chuyển hướng sau ngày xác định
+- Hữu ích cho ưu đãi có thời hạn
+- Có thể hiển thị thông báo hết hạn tùy chỉnh
+
+### Vô Hiệu Hóa Liên Kết
+Tạm ngừng mà không xóa:
+- Giữ lại lịch sử phân tích
+- Có thể kích hoạt lại bất kỳ lúc nào
+- Hiển thị thông báo "Link đã vô hiệu hóa" cho người dùng
+
+## Tối Ưu Hiển Thị Liên Kết
+
+Kiểm soát cách link hiển thị khi chia sẻ trên mạng xã hội:
+
+### Thẻ Open Graph
+- **Tiêu Đề**: Tiêu đề tùy chỉnh cho chia sẻ mạng xã hội
+- **Mô Tả**: Văn bản xem trước (155-160 ký tự)
+- **Hình Ảnh**: Hình ảnh nổi bật (khuyến nghị 1200×630px)
+
+### Twitter Cards
+- Xem trước tối ưu riêng cho Twitter
+- Thẻ hình ảnh lớn hoặc thẻ tóm tắt
+- Tiêu đề và mô tả tùy chỉnh
+
+## Thực Hành Tốt
+
+<Tip>
+**Kiểm Tra Trước Khi Chia Sẻ**: Luôn nhấn vào link rút gọn để xác minh điểm đến đúng trước khi phân phối rộng rãi.
+</Tip>
+
+<Tip>
+**Ghi Chép Slug Của Bạn**: Giữ bảng tính ánh xạ slug → điểm đến để nhóm tham khảo.
+</Tip>
+
+<Warning>
+**Slug Là Vĩnh Viễn**: Sau khi tạo, slug không thể thay đổi. Hãy chọn cẩn thận hoặc dùng tạo ngẫu nhiên.
+</Warning>
+
+## Bước Tiếp Theo
 
 <CardGroup cols={2}>
-  <Card title="Custom Domains" icon="globe" color="#10B981">
-    Brand your links with your own domain for professional appearance and increased trust.
+  <Card title="Mã QR" icon="qrcode" href="/vi/core-features/touchpoints/qr-codes">
+    Tạo và tùy chỉnh mã QR cho liên kết rút gọn
   </Card>
-  <Card title="Link Versioning" icon="clock-rotate-left" color="#10B981">
-    Track changes and manage link history with up to 5 modifications per touchpoint.
-  </Card>
-  <Card title="Memorable URLs" icon="link" color="#10B981">
-    Create easy-to-remember custom back-halves for offline and verbal marketing.
-  </Card>
-  <Card title="Change Tracking" icon="list-timeline" color="#10B981">
-    Monitor link evolution with complete history and performance comparison.
+
+  <Card title="Quản Lý Touchpoints" icon="sliders" href="/vi/core-features/touchpoints/managing">
+    Cập nhật và tổ chức touchpoints hiệu quả
   </Card>
 </CardGroup>
-
-### Multi-Channel Distribution ✅
-
-Reach your audience wherever they are with consistent tracking and independent routing capabilities.
-
-<AccordionGroup>
-  <Accordion title="LINK Channel ✅">
-    **Digital Distribution**
-
-    - Social media posts and advertisements
-    - Email marketing campaigns
-    - Website buttons and CTAs
-    - Digital advertising and retargeting
-
-    **Features**: Instant activation, click tracking, geographic analytics
-  </Accordion>
-  <Accordion title="QR Code Channel ✅">
-    **Physical Distribution**
-
-    - Print advertisements and brochures
-    - Product packaging and labels
-    - Business cards and networking materials
-    - Event signage and displays
-
-    **Features**: Branded design, download options, scan analytics, customization tools
-  </Accordion>
-  <Accordion title="WiFi Sharing Channel 🔄">
-    **Network Distribution** _(Coming Soon)_
-
-    - Guest WiFi access with branded landing pages
-    - Event and venue network sharing
-    - Customer engagement through WiFi portals
-    - Location-based marketing opportunities
-  </Accordion>
-  <Accordion title="NFC Channel 🔄">
-    **Tap-to-Access Distribution** _(Coming Soon)_
-
-    - Business cards with instant contact sharing
-    - Product information and reviews
-    - Event check-ins and networking
-    - Interactive displays and kiosks
-  </Accordion>
-</AccordionGroup>
-
-### Advanced Routing & Testing ✅
-
-**Multi-Channel Routing**: Each distribution channel can direct users to different destinations, enabling sophisticated A/B testing and audience segmentation.
-
-**Example Use Cases**:
-
-- **A/B Testing**: Send QR code scanners to one landing page, link clickers to another
-- **Audience Segmentation**: Route social media traffic differently than email traffic
-- **Regional Targeting**: Different destinations based on distribution channel
-- **Campaign Optimization**: Test messaging across physical vs. digital channels
-
----
-
-## Practical Use Cases
-
-### Marketing Campaign Examples
-
-<CardGroup cols={2}>
-  <Card title="Product Launch Campaign" icon="rocket" color="#7C3AED">
-    **LINK**: Social media and email promotion
-    **QR**: Print ads and product packaging
-    **Goal**: Track digital vs. physical engagement
-  </Card>
-  <Card title="Event Promotion" icon="calendar" color="#A855F7">
-    **LINK**: Website registration buttons
-    **QR**: Flyers and event signage
-    **Goal**: Monitor registration sources
-  </Card>
-  <Card title="Content Marketing" icon="newspaper" color="#7C3AED">
-    **LINK**: Blog posts and newsletters
-    **QR**: Business cards and presentations
-    **Goal**: Track content engagement channels
-  </Card>
-  <Card title="Lead Generation" icon="user-plus" color="#A855F7">
-    **LINK**: Digital advertising campaigns
-    **QR**: Trade show materials
-    **Goal**: Optimize lead quality by source
-  </Card>
-</CardGroup>
-
-### Industry Applications
-
-<AccordionGroup>
-  <Accordion title="E-commerce & Retail">
-    - Product page promotion across channels
-    - In-store QR codes for online reviews
-    - Social media shopping campaigns
-    - Email cart abandonment recovery
-  </Accordion>
-  <Accordion title="Professional Services">
-    - Consultation booking pages
-    - Case study and portfolio sharing
-    - Networking and referral tracking
-    - Client onboarding processes
-  </Accordion>
-  <Accordion title="Content Creators">
-    - Social media bio link optimization
-    - Newsletter signup campaigns
-    - Merchandise and product promotion
-    - Event and workshop registration
-  </Accordion>
-  <Accordion title="B2B Marketing">
-    - Webinar registration campaigns
-    - Whitepaper and resource downloads
-    - Demo request optimization
-    - Conference and trade show follow-up
-  </Accordion>
-</AccordionGroup>
-
----
-
-## Campaign Management & Organization
-
-### Professional Organization ✅
-
-<CardGroup cols={3}>
-  <Card title="Smart Tagging" icon="tags" color="#10B981">
-    Organize touchpoints by campaign, channel, team, or any custom category for easy management.
-  </Card>
-  <Card title="Advanced Search" icon="magnifying-glass" color="#10B981">
-    Find specific touchpoints quickly with powerful filtering and search capabilities.
-  </Card>
-  <Card title="Bulk Operations" icon="list-check" color="#F59E0B">
-    Manage multiple touchpoints simultaneously _(Coming Soon)_
-  </Card>
-</CardGroup>
-
-### Analytics & Performance ✅
-
-**Comprehensive Tracking**:
-
-- **Channel-Specific Analytics**: Separate performance data for each distribution method
-- **Real-Time Reporting**: Live click and scan tracking with geographic insights
-- **UTM Integration**: Advanced campaign parameter management and tracking
-- **Performance Comparison**: Compare touchpoint performance across campaigns
-
-**Optimization Insights**:
-
-- Identify best-performing distribution channels
-- Optimize messaging based on channel engagement
-- Track campaign ROI and conversion rates
-- Monitor geographic and demographic trends
-
----
-
-## Advanced Features
-
-### Social Media Optimization ✅
-
-Transform how your content appears when shared across social platforms:
-
-- **Custom Meta Tags**: Titles, descriptions, and images optimized for each platform
-- **Live Preview**: See exactly how your content will appear before sharing
-- **Platform-Specific Optimization**: Tailored for Facebook, Twitter, LinkedIn, and more
-- **Brand Consistency**: Maintain professional appearance across all social channels
-
-[**Learn More About Social Optimization →**](/social-media/overview)
-
-### Marketing Integrations ✅
-
-Connect touchpoints with your existing marketing stack:
-
-- **Parcelvoy Integration**: Automated email marketing and journey triggers
-- **UTM Parameter Management**: Advanced campaign tracking and attribution
-- **Webhook Support**: Real-time event notifications _(Coming Soon)_
-- **API Access**: Custom integrations and automation _(Coming Soon)_
-
-[**Explore Marketing Integrations →**](/integrations/overview)
-
----
-
-## Getting Started with Touchpoints
-
-### For New Users
-
-<CardGroup cols={2}>
-  <Card title="Create Your First Touchpoint" icon="plus" color="#7C3AED" href="/first-touchpoint">
-    Step-by-step guide to creating your first professional marketing touchpoint.
-  </Card>
-  <Card title="Quick Start Guide" icon="rocket" color="#A855F7" href="/quickstart">
-    Complete walkthrough including multi-channel setup and analytics.
-  </Card>
-</CardGroup>
-
-### For Experienced Users
-
-<CardGroup cols={2}>
-  <Card title="Advanced Touchpoint Management" icon="gear" color="#7C3AED" href="/core-features/touchpoints/managing">
-    Professional organization, bulk operations, and optimization strategies.
-  </Card>
-  <Card title="Multi-Channel Routing" icon="route" color="#A855F7" href="/touchpoints/multi-channel-routing">
-    Advanced distribution strategies and A/B testing with independent channel routing.
-  </Card>
-</CardGroup>
-
----
-
-## Detailed Touchpoint Documentation
-
-Explore specific aspects of touchpoint management:
-
-<CardGroup cols={3}>
-  <Card title="Creating Touchpoints" icon="plus-circle" href="/touchpoints/creating-touchpoints">
-    Detailed creation process and configuration options
-  </Card>
-  <Card title="Managing Touchpoints" icon="list-tree" href="/core-features/touchpoints/managing">
-    Organization, editing, and optimization techniques
-  </Card>
-  <Card title="Link Versioning" icon="code-branch" href="/touchpoints/link-versioning">
-    Understanding change tracking and version management
-  </Card>
-  <Card title="Custom Domains" icon="globe" href="/touchpoints/custom-domains">
-    Setting up branded domains for professional links
-  </Card>
-  <Card title="Multi-Channel Routing" icon="route" href="/touchpoints/multi-channel-routing">
-    Advanced distribution and testing strategies
-  </Card>
-  <Card title="QR Code Management" icon="qrcode" href="/qr-codes/overview">
-    Professional QR code creation and customization
-  </Card>
-</CardGroup>
-
-## Best Practices Summary
-
-<AccordionGroup>
-  <Accordion title="Naming & Organization">
-    - Use descriptive names that identify campaign and purpose
-    - Implement consistent tagging strategy across campaigns
-    - Plan for scale with logical organization structure
-    - Regular cleanup and archiving of old campaigns
-  </Accordion>
-  <Accordion title="Multi-Channel Strategy">
-    - Consider your audience's preferred interaction methods
-    - Plan distribution channels based on campaign goals
-    - Use independent routing for advanced testing
-    - Monitor channel performance and optimize accordingly
-  </Accordion>
-  <Accordion title="Performance Optimization">
-    - Regular review of analytics and performance metrics
-    - A/B testing with different destinations per channel
-    - UTM parameter strategy for detailed tracking
-    - Integration with existing marketing tools and workflows
-  </Accordion>
-</AccordionGroup>
-
----
-
-**Ready to create your next professional marketing campaign?** [Start creating touchpoints →](https://app.li2.ai) or [get detailed guidance →](/touchpoints/creating-touchpoints)

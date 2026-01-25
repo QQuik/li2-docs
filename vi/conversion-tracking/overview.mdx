@@ -1,0 +1,250 @@
+---
+title: "Tổng Quan Đo Lường Chuyển Đổi"
+description: "Hiểu về conversion tracking trong Li2 - theo dõi hành trình khách hàng từ click đầu tiên đến giao dịch hoàn tất với attribution chính xác và báo cáo USD/VND."
+sidebarTitle: "Tổng Quan"
+icon: "chart-line-up"
+---
+
+# Tổng Quan Đo Lường Chuyển Đổi
+
+<Info>
+**Bạn sẽ học**: Hiểu conversion tracking là gì, cách Li2 theo dõi hành trình khách hàng từ touchpoint đến chuyển đổi, và tại sao điều này quan trọng cho việc đo lường ROI marketing.
+</Info>
+
+## Conversion Tracking là gì?
+
+**Conversion Tracking** (Đo lường chuyển đổi) là hệ thống theo dõi hành trình hoàn chỉnh của khách hàng từ lần tương tác đầu tiên với touchpoint (qua link ngắn, QR code, hoặc NFC tag) cho đến khi họ thực hiện hành động có giá trị như đăng ký (lead) hoặc mua hàng (sale).
+
+Khác với analytics thông thường chỉ đo lượt **visits** (tổng hợp các tương tác: click link, scan QR, tap NFC), conversion tracking giúp bạn **hiểu chính xác touchpoint nào tạo ra khách hàng thực sự và doanh thu thực tế**.
+
+<CardGroup cols={3}>
+  <Card title="Attribution Chính Xác" icon="bullseye-arrow">
+    Xác định touchpoint nào dẫn đến chuyển đổi thành công
+  </Card>
+
+  <Card title="Hành Trình Khách Hàng" icon="route">
+    Theo dõi từ lần tương tác đầu tiên đến giao dịch hoàn tất
+  </Card>
+
+  <Card title="ROI Thực Tế" icon="sack-dollar">
+    Đo lường doanh thu thực sự từ từng touchpoint và chiến dịch
+  </Card>
+</CardGroup>
+
+## Conversion Tracking Hoạt Động Như Thế Nào
+
+Li2 sử dụng mô hình **visit-based attribution** để theo dõi toàn bộ hành trình khách hàng:
+
+<Steps>
+  <Step title="Khách Hàng Tương Tác với Touchpoint">
+    Khách hàng tương tác với touchpoint thông qua một trong các cách:
+    - **Click** link ngắn
+    - **Scan** mã QR code
+    - **Tap** NFC tag
+
+    Li2 tạo một **click ID** duy nhất để theo dõi người dùng này và ghi nhận **visit** (lượt truy cập).
+  </Step>
+
+  <Step title="Lưu Thông Tin Visit">
+    Hệ thống lưu lại thông tin visit:
+    - Touchpoint nào được sử dụng
+    - Kênh tương tác (link/QR/NFC)
+    - Click ID để nhận diện người dùng
+    - Thời gian, thiết bị, vị trí địa lý
+    - Nguồn giới thiệu (referrer)
+  </Step>
+
+  <Step title="Lead Event - Khách Hàng Thể Hiện Quan Tâm">
+    Khi khách hàng thực hiện hành động có giá trị như:
+    - Đăng ký tài khoản
+    - Điền form liên hệ
+    - Đăng ký nhận thông tin
+
+    Hệ thống tạo **Lead Event** và liên kết với click ID (từ visit ban đầu), biết chính xác touchpoint nào tạo ra lead này.
+  </Step>
+
+  <Step title="Sale Event - Chuyển Đổi Thành Công">
+    Khi khách hàng hoàn tất giao dịch mua hàng, Li2 ghi nhận:
+    - Số tiền giao dịch (hỗ trợ USD và VND)
+    - Liên kết với lead event trước đó
+    - Attribution về touchpoint gốc
+
+    Bạn biết chính xác **touchpoint nào tạo ra doanh thu bao nhiêu**.
+  </Step>
+
+  <Step title="Customer Profile Tổng Hợp">
+    Li2 tự động tạo và cập nhật **Customer Profile** với:
+    - Tổng số leads và sales
+    - Tổng doanh thu
+    - Touchpoint đầu tiên họ tương tác (first-touch attribution)
+    - Timeline đầy đủ các sự kiện
+  </Step>
+
+  <Step title="Xem Analytics & Insights">
+    Truy cập dashboard conversion để xem:
+    - Funnel chuyển đổi: Visits → Leads → Sales
+    - Tỷ lệ chuyển đổi từng giai đoạn
+    - Attribution theo touchpoint
+    - Doanh thu theo touchpoint/chiến dịch
+    - Customer journey chi tiết
+  </Step>
+</Steps>
+
+## Các Khái Niệm Quan Trọng
+
+### Lead Event (Sự Kiện Khách Hàng Tiềm Năng)
+
+Lead event đánh dấu khi khách hàng **thể hiện quan tâm thực sự** đến sản phẩm/dịch vụ của bạn.
+
+**Ví dụ Lead Events:**
+- Đăng ký tài khoản mới
+- Điền form "Liên hệ tư vấn"
+- Đăng ký nhận newsletter
+- Yêu cầu demo sản phẩm
+- Thêm sản phẩm vào giỏ hàng
+
+<Note>
+**Tại sao phải track lead?** Lead event giúp bạn phân biệt giữa "người chỉ xem" và "người thực sự quan tâm". Đây là bước quan trọng để tính tỷ lệ chuyển đổi từ visit → lead → sale.
+</Note>
+
+### Sale Event (Sự Kiện Giao Dịch)
+
+Sale event đánh dấu **chuyển đổi thành công** - khách hàng đã hoàn tất giao dịch mua hàng.
+
+**Thông tin được lưu:**
+- Số tiền giao dịch (amount)
+- Loại tiền tệ (USD hoặc VND)
+- Mã hóa đơn (invoice ID) để tránh duplicate
+- Payment processor (Stripe, PayPal, v.v.)
+- Liên kết với lead event trước đó
+
+<Note>
+**Hỗ trợ đa tiền tệ**: Li2 hiện hỗ trợ USD và VND. Hệ thống lưu đúng loại tiền tệ của từng giao dịch và tự động quy đổi về đồng tiền mặc định của tổ chức khi tính tổng doanh thu.
+</Note>
+
+### Customer Profile (Hồ Sơ Khách Hàng)
+
+Mỗi khách hàng có một profile tổng hợp tất cả hoạt động:
+
+**Thông tin nhận diện:**
+- Email (duy nhất trong tổ chức)
+- Tên, số điện thoại
+- External ID (để liên kết với hệ thống bên ngoài)
+
+**Thông tin attribution:**
+- First touchpoint: Touchpoint đầu tiên họ tương tác
+- First click ID: Click ID của lần tương tác đầu tiên
+
+**Metrics tổng hợp:**
+- Tổng số lead events
+- Tổng số sale events
+- Tổng doanh thu (đã quy đổi về đồng tiền mặc định)
+
+## Conversion Tracking vs Analytics Thông Thường
+
+| Tính Năng | Analytics Cơ Bản | Conversion Tracking |
+|-----------|------------------|---------------------|
+| **Đo lường** | Visits (clicks, scans, taps) | Leads, sales, revenue |
+| **Attribution** | Biết touchpoint nào có nhiều visits | Biết touchpoint nào tạo ra doanh thu |
+| **Customer Journey** | Không theo dõi sau visit | Theo dõi từ visit → lead → sale |
+| **ROI Measurement** | Ước tính gián tiếp | Đo lường chính xác doanh thu |
+| **Customer Profiles** | Không có | Hồ sơ đầy đủ từng khách hàng |
+| **Funnel Analysis** | Không hỗ trợ | Tỷ lệ chuyển đổi từng giai đoạn |
+| **Multi-currency** | Không áp dụng | Hỗ trợ USD và VND với quy đổi tự động |
+
+## Các Trường Hợp Sử Dụng
+
+<AccordionGroup>
+  <Accordion title="E-commerce / Thương mại điện tử">
+    **Kịch bản**: Bạn chạy chiến dịch Facebook Ads với nhiều mã QR khác nhau trên catalog sản phẩm.
+
+    **Conversion tracking giúp**:
+    - Biết mã QR nào (sản phẩm nào) tạo ra nhiều đơn hàng nhất
+    - Tính chính xác ROI của từng touchpoint
+    - Tổng doanh thu từ mỗi chiến dịch (hỗ trợ cả USD và VND)
+    - Nhận diện khách hàng VIP (nhiều giao dịch, giá trị cao)
+  </Accordion>
+
+  <Accordion title="SaaS / Subscription Services">
+    **Kịch bản**: Bạn phân phối link ngắn qua email marketing và post mạng xã hội để thu hút người dùng đăng ký dùng thử.
+
+    **Conversion tracking giúp**:
+    - Đo lường tỷ lệ chuyển đổi từ visit → trial signup → paid subscription
+    - Attribution: Kênh nào (email vs social) tạo ra paying customers
+    - Customer lifetime value tracking
+    - Tối ưu hóa marketing spend dựa trên actual revenue
+  </Accordion>
+
+  <Accordion title="Lead Generation Campaigns">
+    **Kịch bản**: Bạn chạy offline campaign với QR codes trên poster/flyer tại nhiều địa điểm.
+
+    **Conversion tracking giúp**:
+    - Biết địa điểm nào tạo ra nhiều leads chất lượng
+    - Tỷ lệ chuyển đổi từ visit (scan QR) → form submission → consultation booking
+    - ROI của từng địa điểm đặt poster
+    - Phân tích customer journey: từ visit đầu tiên đến trở thành khách hàng mất bao lâu
+  </Accordion>
+
+  <Accordion title="Event Registration & Ticket Sales">
+    **Kịch bản**: Bạn tổ chức sự kiện và phân phối QR codes qua nhiều kênh (social media, email, partners).
+
+    **Conversion tracking giúp**:
+    - Đo doanh thu vé từ từng kênh marketing
+    - Attribution chính xác: partner referral nào hiệu quả nhất
+    - Early bird vs regular ticket conversion rates
+    - Customer insights: ai đăng ký sớm, ai đăng ký muộn
+  </Accordion>
+</AccordionGroup>
+
+## Lợi Ích Chính
+
+<CardGroup cols={2}>
+  <Card title="Attribution Chính Xác" icon="crosshairs">
+    Biết chính xác touchpoint nào, chiến dịch nào tạo ra khách hàng và doanh thu thực sự, không phải chỉ visits.
+  </Card>
+
+  <Card title="Tối Ưu Marketing Budget" icon="chart-mixed-up-circle-dollar">
+    Tập trung ngân sách vào touchpoints và kênh có ROI cao nhất dựa trên dữ liệu thực tế.
+  </Card>
+
+  <Card title="Hiểu Customer Journey" icon="map-location-dot">
+    Xem timeline đầy đủ từ lần tương tác đầu tiên (visit) đến khi khách hàng mua hàng - thời gian chuyển đổi là bao lâu?
+  </Card>
+
+  <Card title="Funnel Optimization" icon="filter">
+    Xác định "tắc nghẽn" trong funnel: tỷ lệ visit→lead thấp? hay lead→sale thấp? Tối ưu đúng chỗ.
+  </Card>
+
+  <Card title="Customer Profiling" icon="user-group">
+    Xây dựng hồ sơ đầy đủ từng khách hàng: họ tương tác với touchpoint nào, mua bao nhiêu lần, giá trị bao nhiêu.
+  </Card>
+
+  <Card title="Multi-currency Support" icon="globe">
+    Li2 hỗ trợ tracking doanh thu với USD và VND, tự động quy đổi về đồng tiền mặc định của organization.
+  </Card>
+</CardGroup>
+
+## Quyền Truy Cập & Bảo Mật
+
+<Warning>
+**Permission-based Filtering**: Conversion data được lọc theo quyền truy cập của user.
+
+- **Organization Owner/Manager**: Xem tất cả conversions của tổ chức
+- **Editor/Member**: Chỉ xem conversions từ touchpoints trong spaces họ có quyền truy cập
+
+Đảm bảo dữ liệu nhạy cảm (doanh thu, customer info) chỉ được xem bởi người có thẩm quyền.
+</Warning>
+
+## Bắt Đầu với Conversion Tracking
+
+Để sử dụng conversion tracking, bạn cần:
+
+1. **Bật conversion tracking** cho touchpoint cần theo dõi (trong Touchpoint Settings)
+2. **Tích hợp tracking code** vào website/app của bạn
+3. **Track lead events** khi khách hàng đăng ký/thể hiện quan tâm
+4. **Track sale events** khi khách hàng hoàn tất giao dịch
+5. **Xem analytics** trong Conversion Dashboard
+
+<Card title="Tiếp Theo: Hướng Dẫn Cài Đặt" icon="arrow-right" href="./setup">
+  Tìm hiểu cách bật conversion tracking cho touchpoints và tích hợp tracking SDK vào hệ thống của bạn.
+</Card>

@@ -1,0 +1,375 @@
+---
+title: "Conversion Goals (Đang Phát Triển)"
+description: "Thiết lập conversion goals và KPI targets để đo lường hiệu suất marketing campaigns - tính năng đang được phát triển."
+sidebarTitle: "Conversion Goals"
+icon: "bullseye-arrow"
+---
+
+# Conversion Goals
+
+<Warning>
+**Tính Năng Đang Phát Triển**: Conversion Goals là tính năng đang được phát triển cho Li2. Trang documentation này mô tả concept và cách thức hoạt động của tính năng khi được release.
+</Warning>
+
+<Info>
+**Trong hướng dẫn này**: Tìm hiểu về Conversion Goals - cách thiết lập mục tiêu, theo dõi progress, và optimize marketing performance dựa trên data-driven insights.
+</Info>
+
+---
+
+## Conversion Goals là gì?
+
+**Conversion Goals** (Mục Tiêu Chuyển Đổi) là hệ thống cho phép bạn thiết lập và theo dõi các KPI cụ thể cho marketing campaigns và touchpoints.
+
+Thay vì chỉ xem số liệu thô (visits, leads, sales), Goals giúp bạn:
+- Đặt mục tiêu rõ ràng cho từng campaign
+- Theo dõi progress theo thời gian thực
+- Nhận alerts khi đạt hoặc không đạt targets
+- So sánh performance giữa các touchpoints/campaigns
+
+<CardGroup cols={3}>
+  <Card title="Target-Based Tracking" icon="crosshairs">
+    Đặt mục tiêu cụ thể: "100 leads/tháng" hoặc "10M VND revenue/tuần"
+  </Card>
+
+  <Card title="Progress Monitoring" icon="chart-line-up">
+    Theo dõi progress so với target trong real-time dashboard
+  </Card>
+
+  <Card title="Automated Alerts" icon="bell">
+    Nhận thông báo khi đạt milestone hoặc cảnh báo khi underperforming
+  </Card>
+</CardGroup>
+
+---
+
+## Tại Sao Cần Conversion Goals?
+
+### Vấn Đề Hiện Tại
+
+Hiện tại với Li2 Analytics, bạn có thể:
+- ✅ Xem tổng leads và sales
+- ✅ Theo dõi conversion rates
+- ✅ Phân tích customer journey
+
+Nhưng bạn KHÔNG THỂ:
+- ❌ Đặt mục tiêu cụ thể và track progress
+- ❌ So sánh performance với targets
+- ❌ Nhận alerts khi campaigns không đạt kỳ vọng
+
+### Giải Pháp: Conversion Goals
+
+Conversion Goals bổ sung layer "target planning" lên analytics hiện tại:
+
+```
+Current: "Touchpoint A có 50 leads tháng này"
+With Goals: "Touchpoint A đã đạt 50/100 leads (50% of goal)"
+```
+
+---
+
+## Các Loại Goals (Planned)
+
+<Tabs>
+  <Tab title="Lead Goals" icon="user-plus">
+    ### Lead Volume Goals
+
+    Đặt target số lượng leads từ touchpoints hoặc campaigns.
+
+    **Ví dụ**:
+    - "Facebook Ads campaign cần generate 200 leads/tháng"
+    - "Landing Page QR code cần có 50 signups/tuần"
+
+    **Parameters**:
+    - Target metric: Lead count
+    - Time period: Daily, Weekly, Monthly, Custom
+    - Scope: Specific touchpoint, Space, hoặc Organization-wide
+    - Filters: Lead event names (e.g., chỉ đếm "Trial Signup", không đếm "Newsletter")
+  </Tab>
+
+  <Tab title="Revenue Goals" icon="sack-dollar">
+    ### Revenue Targets
+
+    Đặt target doanh thu từ conversions.
+
+    **Ví dụ**:
+    - "Campaign này cần generate 100M VND revenue trong Q1"
+    - "Email marketing cần đạt $5,000 sales/tháng"
+
+    **Parameters**:
+    - Target metric: Revenue amount
+    - Currency: VND, USD, EUR, etc.
+    - Time period: Daily, Weekly, Monthly, Quarterly, Annual
+    - Scope: Touchpoint, Space, Organization
+    - Filters: Sale event names, product categories
+  </Tab>
+
+  <Tab title="Conversion Rate Goals" icon="percent">
+    ### Conversion Rate Optimization
+
+    Đặt target conversion rates giữa các stages.
+
+    **Ví dụ**:
+    - "Visit → Lead rate phải đạt 15%"
+    - "Lead → Sale rate phải trên 25%"
+
+    **Parameters**:
+    - Target metric: Conversion rate percentage
+    - Funnel stage: Visit→Lead, Lead→Sale, Visit→Sale
+    - Time period: Rolling 7/30/90 days
+    - Scope: Specific touchpoint or campaign
+  </Tab>
+
+  <Tab title="Time-Based Goals" icon="clock">
+    ### Time-to-Conversion Goals
+
+    Optimize tốc độ conversion.
+
+    **Ví dụ**:
+    - "Lead → Sale average time phải < 7 ngày"
+    - "80% conversions phải xảy ra trong 48h sau visit"
+
+    **Parameters**:
+    - Target metric: Average time hoặc percentile
+    - Measurement: Hours, Days, Weeks
+    - Funnel stage: Visit→Lead, Lead→Sale
+  </Tab>
+</Tabs>
+
+---
+
+## Cách Thức Hoạt Động (Planned)
+
+### 1. Create Goal
+
+```typescript
+// Conceptual API (chưa implement)
+const goal = await createGoal({
+  name: "Q1 Lead Generation Target",
+  type: "lead_count",
+  target: 500, // 500 leads
+  period: "quarterly",
+  startDate: "2026-01-01",
+  endDate: "2026-03-31",
+  scope: {
+    type: "space",
+    spaceId: "space_abc123"
+  },
+  filters: {
+    eventNames: ["Trial Signup", "Demo Request"]
+  },
+  alerts: {
+    milestones: [25, 50, 75, 100], // Alert at 25%, 50%, 75%, 100%
+    underperformance: {
+      threshold: 20, // Alert nếu < 20% progress tại 50% timeline
+      enabled: true
+    }
+  }
+});
+```
+
+### 2. Track Progress
+
+Dashboard hiển thị:
+- **Current vs Target**: 327/500 leads (65%)
+- **Progress Timeline**: On track / Behind / Ahead
+- **Projection**: "At current rate, will reach 480 leads (96% of goal)"
+- **Days Remaining**: 45 days left
+
+### 3. Automated Alerts
+
+Notifications khi:
+- ✅ Đạt milestone (25%, 50%, 75%, 100%)
+- ⚠️ Behind schedule (ví dụ: đã 50% thời gian nhưng chỉ đạt 30% target)
+- 🎯 Goal completed sớm hơn dự kiến
+- 📊 Weekly/daily digest reports
+
+### 4. Optimization Insights
+
+AI-powered recommendations:
+- "Touchpoint A performing 30% above goal - consider increasing budget"
+- "Touchpoint B behind target - conversion rate dropped from 15% to 8% this week"
+- "Similar campaigns achieved goals by optimizing landing page CTA"
+
+---
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="SaaS: Monthly Recurring Revenue (MRR) Target">
+    **Scenario**: SaaS company cần đạt $50,000 MRR growth mỗi quý.
+
+    **Goals Setup**:
+    - **Type**: Revenue Goal
+    - **Target**: $50,000 MRR
+    - **Period**: Quarterly
+    - **Scope**: All paid subscription events
+    - **Alerts**:
+      - Weekly progress update
+      - Alert nếu behind >20% mid-quarter
+
+    **Benefits**:
+    - Track progress real-time: "$32,000 / $50,000 (64%)"
+    - Identify top-performing acquisition channels
+    - Adjust marketing spend based on data
+  </Accordion>
+
+  <Accordion title="E-commerce: Campaign Revenue Target">
+    **Scenario**: Black Friday campaign với target 500M VND doanh thu trong 3 ngày.
+
+    **Goals Setup**:
+    - **Type**: Revenue Goal
+    - **Target**: 500,000,000 VND
+    - **Period**: Custom (Nov 24-26)
+    - **Scope**: Touchpoints tagged "black_friday_2026"
+    - **Alerts**:
+      - Hourly updates during campaign
+      - Alert nếu average hourly rate < target rate
+
+    **Benefits**:
+    - Monitor campaign performance in real-time
+    - Quick pivot nếu underperforming
+    - Compare với previous years' campaigns
+  </Accordion>
+
+  <Accordion title="Lead Gen: Conversion Rate Improvement">
+    **Scenario**: Landing page có 8% visit→lead rate, target là 12%.
+
+    **Goals Setup**:
+    - **Type**: Conversion Rate Goal
+    - **Target**: 12% visit→lead rate
+    - **Period**: Rolling 30 days
+    - **Scope**: Specific landing page touchpoint
+    - **Alerts**:
+      - Weekly performance summary
+      - Alert khi rate > 10% (improvement detected)
+
+    **Benefits**:
+    - A/B test different CTAs và track impact
+    - Data-driven optimization decisions
+    - Clear success metrics for marketing team
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Roadmap & Timeline
+
+<Steps>
+  <Step title="Phase 1: Basic Goals (Planned Q2 2026)">
+    - Lead count goals
+    - Revenue goals
+    - Simple progress tracking dashboard
+    - Manual goal creation
+  </Step>
+
+  <Step title="Phase 2: Advanced Features (Planned Q3 2026)">
+    - Conversion rate goals
+    - Time-based goals
+    - Automated alerts & notifications
+    - Goal templates
+  </Step>
+
+  <Step title="Phase 3: AI & Automation (Planned Q4 2026)">
+    - AI-powered goal recommendations
+    - Automatic goal adjustment based on trends
+    - Predictive analytics
+    - Integration với planning tools
+  </Step>
+</Steps>
+
+---
+
+## Temporary Workarounds
+
+Trong khi chờ Goals feature, bạn có thể:
+
+### 1. Manual Goal Tracking với Spreadsheet
+
+Track progress thủ công:
+
+```
+Touchpoint: Facebook Ads Campaign
+Goal: 200 leads/tháng
+Current: 127 leads (Week 3)
+Progress: 63.5%
+On Track: Yes (projected: 220 leads)
+```
+
+### 2. Sử dụng Analytics Dashboard
+
+- Xem conversion metrics trong [Analytics Dashboard](/vi/analytics/overview)
+- Export data weekly và compare với targets
+- Set up custom queries để filter specific event types
+
+### 3. External Tools Integration
+
+Integrate Li2 data với tools như:
+- **Google Sheets**: Export conversion data và track vs targets
+- **Notion/Airtable**: Build custom goal tracking boards
+- **BI Tools**: Power BI, Tableau để visualize progress
+
+---
+
+## Tham Gia Beta Testing
+
+<Info>
+**Quan Tâm Đến Goals Feature?**
+
+Nếu bạn muốn tham gia beta testing khi Goals feature sẵn sàng:
+1. Contact support team qua email: support@li2.ai
+2. Mô tả use case và requirements của bạn
+3. Nhận early access khi feature release
+
+Early testers sẽ nhận:
+- ✅ Free access trong beta period
+- ✅ Direct line to product team cho feedback
+- ✅ Influence roadmap và feature priorities
+</Info>
+
+---
+
+## Frequently Asked Questions
+
+<AccordionGroup>
+  <Accordion title="Khi nào Goals feature sẽ available?">
+    Goals feature đang trong planning phase. Expected release: Q2-Q3 2026.
+
+    Để nhận updates, subscribe tại announcement channel hoặc contact support team.
+  </Accordion>
+
+  <Accordion title="Goals có tính phí thêm không?">
+    Goals sẽ là part của **Premium plan** trở lên, không tính phí bổ sung.
+
+    Nếu bạn đang dùng Premium plan, bạn sẽ tự động access Goals khi release.
+  </Accordion>
+
+  <Accordion title="Tôi có thể request custom goal types?">
+    Có! Chúng tôi đang thu thập requirements từ users.
+
+    Email: product@li2.ai với:
+    - Use case mô tả
+    - Goal type bạn cần
+    - Success metrics
+  </Accordion>
+
+  <Accordion title="Goals có support multi-touchpoint không?">
+    Có. Goals sẽ support:
+    - Single touchpoint goals
+    - Space-level goals (all touchpoints trong space)
+    - Organization-wide goals
+    - Custom groups (tag-based filtering)
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Cập Nhật Và Theo Dõi
+
+Để nhận thông tin mới nhất về Goals feature:
+
+<CardGroup cols={1}>
+  <Card title="Support" icon="life-ring" href="mailto:support@li2.ai">
+    Contact support team để tìm hiểu thêm
+  </Card>
+</CardGroup>

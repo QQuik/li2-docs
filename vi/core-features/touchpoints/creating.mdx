@@ -1,0 +1,278 @@
+---
+title: "Tạo Touch-Points"
+description: "Làm chủ tạo touchpoint với tính năng nâng cao bao gồm tham số UTM, theo dõi chuyển đổi, link preview và phương thức tạo hàng loạt."
+sidebarTitle: "Tạo"
+icon: "plus"
+---
+
+# Tạo Touch-Points
+
+<Info>
+**Bạn sẽ học**: Kỹ thuật tạo touchpoint nâng cao bao gồm tham số UTM, mục tiêu chuyển đổi, tùy chỉnh link preview và phương thức import hàng loạt.
+</Info>
+
+## Phương Thức Tạo
+
+Li2 cung cấp nhiều cách để tạo touchpoint:
+
+<CardGroup cols={2}>
+  <Card title="Dashboard UI" icon="browser">
+    Form đầy đủ tính năng với tất cả tùy chọn
+  </Card>
+
+  <Card title="Quick Create" icon="bolt">
+    Trường tối thiểu để tạo touchpoint nhanh
+  </Card>
+
+  <Card title="Bulk Import" icon="file-csv">
+    Tải CSV để tạo hàng trăm touchpoint cùng lúc
+  </Card>
+
+  <Card title="API (Đang Phát Triển)" icon="code">
+    Tạo theo chương trình cho tích hợp và tự động hóa
+  </Card>
+</CardGroup>
+
+## Tạo Chuẩn (Dashboard UI)
+
+<Steps>
+  <Step title="Mở Form Tạo">
+    Nhấp **+ Tạo Touchpoint** từ dashboard hoặc nhấn `Cmd/Ctrl + N`
+  </Step>
+
+  <Step title="Hoàn Thành Trường Bắt Buộc">
+    **URL Đích** (Bắt buộc)
+    - Trang đích cuối cùng nơi người dùng sẽ đến
+    - Phải bao gồm protocol: `https://example.com` không phải `example.com`
+
+    **Slug** (Tùy chọn nhưng khuyên dùng)
+    - Để trống để tạo ngẫu nhiên (VD: `a7Bx9Q`)
+    - Nhấp **✨ AI Generate** cho gợi ý theo ngữ cảnh
+    - Nhập slug tùy chỉnh (3-50 ký tự, chữ thường, số, gạch ngang)
+
+    **Tiêu Đề** (Tùy chọn nhưng khuyên dùng)
+    - Tên nội bộ chỉ hiển thị cho bạn và nhóm
+  </Step>
+
+  <Step title="Cấu Hình Tính Năng Tùy Chọn">
+    **Tags**: Thêm nhiều tag để tổ chức
+
+    **Space**: Gán vào space hiện có hoặc tạo mới
+
+    **Tham Số UTM**: Xem Tính Năng Nâng Cao
+
+    **Mục Tiêu Chuyển Đổi**: Xem Tính Năng Nâng Cao
+
+    **Link Preview**: Xem Tính Năng Nâng Cao
+  </Step>
+
+  <Step title="Tạo Touchpoint">
+    Nhấp **Tạo** để tạo touchpoint với link ngắn và mã QR
+  </Step>
+</Steps>
+
+## Tính Năng Nâng Cao
+
+### Tham Số UTM
+
+Tham số UTM theo dõi hiệu suất chiến dịch trong Google Analytics.
+
+**UTM Builder Tích Hợp**:
+<Steps>
+  <Step title="Mở Rộng Phần UTM">
+    Trong form tạo, mở rộng phần "Tham Số UTM"
+  </Step>
+
+  <Step title="Điền Trường UTM">
+    **utm_source** (Bắt buộc): Nguồn traffic
+    - VD: `instagram`, `email`, `qrcode-flyer`
+
+    **utm_medium** (Bắt buộc): Phương tiện marketing
+    - VD: `social`, `email`, `offline`, `referral`
+
+    **utm_campaign** (Bắt buộc): Tên chiến dịch
+    - VD: `khuyen-mai-he-2024`, `ra-mat-san-pham`
+
+    **utm_term** (Tùy chọn): Từ khóa tìm kiếm trả phí
+
+    **utm_content** (Tùy chọn): Phân biệt nội dung tương tự
+  </Step>
+
+  <Step title="Tự Động Thêm">
+    Li2 tự động thêm tham số UTM vào URL đích
+    - Gốc: `https://example.com/product`
+    - Với UTM: `https://example.com/product?utm_source=instagram&utm_medium=social&utm_campaign=he-2024`
+  </Step>
+</Steps>
+
+<Tip>
+**Theo dõi chiến dịch**: Tạo một touchpoint cho mỗi combo kênh/nguồn (VD: `khuyen-mai-he-instagram`, `khuyen-mai-he-email`) để so sánh hiệu suất kênh trong Google Analytics.
+</Tip>
+
+### Mục Tiêu Chuyển Đổi
+
+Theo dõi khi người dùng hoàn thành hành động mong muốn sau khi click touchpoint.
+
+**Thiết Lập Mục Tiêu Chuyển Đổi**:
+<Steps>
+  <Step title="Xác Định Mục Tiêu">
+    Trong form tạo, mở rộng "Theo Dõi Chuyển Đổi"
+
+    **Tên Mục Tiêu**: Tên mô tả (VD: "Thêm Vào Giỏ", "Gửi Form", "Mua Hàng")
+
+    **Loại Mục Tiêu**:
+    - **Truy cập Trang**: Người dùng đến URL cụ thể (VD: trang cảm ơn)
+    - **Sự kiện**: Người dùng kích hoạt sự kiện tùy chỉnh (cần cài script)
+  </Step>
+
+  <Step title="Cấu Hình Mục Tiêu">
+    **Cho Mục Tiêu Truy Cập Trang**:
+    - Nhập URL hoàn thành mục tiêu (VD: `https://example.com/cam-on`)
+    - Li2 theo dõi khi người dùng đến trang này sau khi click touchpoint
+
+    **Cho Mục Tiêu Sự Kiện**:
+    - Sao chép script theo dõi được cung cấp
+    - Cài trên website nơi sự kiện xảy ra
+  </Step>
+
+  <Step title="Xem Dữ Liệu Chuyển Đổi">
+    Sau khi cấu hình, xem số liệu chuyển đổi trong phân tích touchpoint:
+    - Tổng chuyển đổi
+    - Tỷ lệ chuyển đổi (chuyển đổi / click)
+    - Doanh thu (nếu đã cấu hình)
+    - Thời gian chuyển đổi
+  </Step>
+</Steps>
+
+### Tùy Chỉnh Link Preview
+
+Kiểm soát cách touchpoint xuất hiện khi chia sẻ trên mạng xã hội (Open Graph và Twitter Cards).
+
+<Steps>
+  <Step title="Mở Rộng Phần Link Preview">
+    Trong form tạo, tìm "Tùy Chỉnh Link Preview"
+  </Step>
+
+  <Step title="Cấu Hình Preview">
+    **Tiêu Đề Preview**:
+    - Ghi đè tiêu đề trang mặc định
+    - 60 ký tự hoặc ít hơn
+    - VD: "Giảm 30% Bộ Sưu Tập Hè | ThươngHiệuCủaBạn"
+
+    **Mô Tả Preview**:
+    - Mô tả ngắn hiển thị trong chia sẻ xã hội
+    - 155-160 ký tự tối ưu
+    - VD: "Ưu đãi có thời hạn: Tiết kiệm 30% tất cả phong cách hè. Miễn phí ship đơn hàng trên 500k. Mua ngay!"
+
+    **Hình Ảnh Preview**:
+    - Tải hình ảnh hoặc cung cấp URL hình ảnh
+    - Khuyên dùng: 1200×630px
+    - Định dạng: JPG, PNG
+    - Kích thước: Dưới 5MB
+  </Step>
+</Steps>
+
+### Custom Domains
+
+Dùng tên miền thương hiệu thay vì `li2.ai`:
+
+1. **Thêm Domain**: Vào Cài Đặt Organization → Custom Domains → Thêm Domain
+2. **Cấu Hình DNS**: Thêm bản ghi DNS cần thiết
+3. **Xác Minh Domain**: Li2 xác nhận cấu hình DNS
+4. **Chọn Khi Tạo**: Chọn custom domain khi tạo touchpoint
+
+Kết quả: `thuonghieucuaban.com/khuyen-mai-he` thay vì `li2.link/khuyen-mai-he`
+
+## Tạo Hàng Loạt
+
+Tạo hàng trăm touchpoint cùng lúc bằng import CSV:
+
+<Steps>
+  <Step title="Chuẩn Bị File CSV">
+    Tạo CSV với các cột:
+    - `destination_url` (bắt buộc)
+    - `slug` (tùy chọn, để trống để tự động tạo)
+    - `title` (tùy chọn)
+    - `tags` (tùy chọn, phân tách bằng dấu phẩy)
+    - `space` (tùy chọn, tên space)
+  </Step>
+
+  <Step title="Tải CSV">
+    1. Vào Touchpoints → Bulk Actions → Import CSV
+    2. Tải file CSV
+    3. Map cột nếu header không khớp chính xác
+  </Step>
+
+  <Step title="Xem Lại & Xác Nhận">
+    - Li2 hiển thị preview touchpoint sẽ được tạo
+    - Xác thực tất cả URL và kiểm tra slug trùng lặp
+  </Step>
+
+  <Step title="Tạo Hàng Loạt">
+    Nhấp **Tạo Tất Cả** để tạo tất cả touchpoint
+  </Step>
+</Steps>
+
+**Trường Hợp Sử Dụng Tạo Hàng Loạt**:
+- Danh mục sản phẩm: Tạo touchpoint cho mỗi SKU
+- Venue sự kiện: Tạo touchpoint cho mỗi bàn, gian hàng
+- Bất động sản: Touchpoint cho mỗi danh sách tài sản
+- Bán lẻ: Touchpoint cho mỗi địa điểm cửa hàng
+
+## Xử Lý Lỗi
+
+**Lỗi Xác Thực Thường Gặp**:
+
+| Lỗi | Nguyên Nhân | Giải Pháp |
+|-----|------------|-----------|
+| "Invalid URL" | Thiếu protocol hoặc URL sai định dạng | Thêm `https://` vào URL đích |
+| "Slug already exists" | Slug trùng trong organization | Chọn slug khác hoặc dùng tạo tự động |
+| "Slug contains invalid characters" | Ký tự đặc biệt hoặc khoảng trắng trong slug | Chỉ dùng chữ thường, số, gạch ngang |
+
+## Hành Động Sau Tạo
+
+Sau khi tạo touchpoint:
+
+1. **Test Ngay**: Click link ngắn và quét mã QR để xác minh chuyển hướng đúng
+2. **Tải Mã QR**: Lấy mã QR ở định dạng và kích thước cần thiết
+3. **Sao Chép Link Ngắn**: Copy link để chia sẻ
+4. **Thêm Vào Space**: Tổ chức vào space liên quan
+5. **Chia Sẻ Với Nhóm**: Mời thành viên nhóm nếu cộng tác
+
+## Mẹo Tạo Hiệu Quả
+
+<Tip>
+**Dùng Template**: Lưu cấu hình thường dùng (pattern UTM, quy ước tag) làm template để tạo nhanh hơn
+</Tip>
+
+<Tip>
+**Batch Touchpoint Tương Tự**: Tạo tất cả touchpoint Instagram cùng lúc, tất cả touchpoint email cùng lúc - dễ áp dụng tag nhất quán
+</Tip>
+
+<Warning>
+**Test Trước Phân Phối Hàng Loạt**: Luôn test một touchpoint trước khi tạo hàng trăm qua bulk import. Phát hiện lỗi cấu hình sớm.
+</Warning>
+
+## Bước Tiếp Theo
+
+<CardGroup cols={2}>
+  <Card title="Tùy Chỉnh Mã QR" icon="qrcode" href="/vi/core-features/touchpoints/qr-codes">
+    Thiết kế mã QR thương hiệu với màu, logo và khung tùy chỉnh
+  </Card>
+
+  <Card title="Quản Lý Touch-Points" icon="sliders" href="/vi/core-features/touchpoints/managing">
+    Cập nhật, tổ chức và tối ưu touchpoint hiện có
+  </Card>
+
+  <Card title="Xem Analytics" icon="chart-line" href="/vi/analytics/overview">
+    Theo dõi hiệu suất touchpoint với phân tích chi tiết
+  </Card>
+
+  <Card title="Custom Domains" icon="globe-pointer" href="/vi/core-features/touchpoints/custom-domains">
+    Thiết lập tên miền thương hiệu cho link ngắn chuyên nghiệp
+  </Card>
+</CardGroup>
+
+---
+
+**Sẵn sàng tạo touchpoint nâng cao?** Vào [dashboard](https://app.li2.ai) và nhấp **+ Tạo Touchpoint**.

@@ -9,8 +9,8 @@
   },
   "favicon": "/favicon.svg",
   "logo": {
-    "light": "/shared/logos/logo-light.svg",
-    "dark": "/shared/logos/logo-dark.svg"
+    "light": "/shared/logos/light.png",
+    "dark": "/shared/logos/dark.png"
   },
   "navigation": {
     "languages": [
@@ -32,7 +32,17 @@
                 ]
               },
               {
+                "group": "Đo Lường Chuyển Đổi",
+                "pages": [
+                  "vi/conversion-tracking/overview",
+                  "vi/conversion-tracking/setup",
+                  "vi/conversion-tracking/events",
+                  "vi/conversion-tracking/goals"
+                ]
+              },
+              {
                 "group": "Touchpoint (Điểm Chạm)",
+                "hidden": true,
                 "pages": [
                   "vi/core-features/touchpoints/overview",
                   "vi/core-features/touchpoints/creating",
@@ -44,6 +54,7 @@
               },
               {
                 "group": "Quản Lý & Tổ Chức",
+                "hidden": true,
                 "pages": [
                   "vi/core-features/collections/overview",
                   "vi/core-features/tags/overview"
@@ -51,6 +62,7 @@
               },
               {
                 "group": "Phân Tích & Báo Cáo",
+                "hidden": true,
                 "pages": [
                   "vi/analytics/overview",
                   "vi/analytics/dashboard",
@@ -79,7 +91,17 @@
                 ]
               },
               {
+                "group": "Conversion Tracking",
+                "pages": [
+                  "en/conversion-tracking/overview",
+                  "en/conversion-tracking/setup",
+                  "en/conversion-tracking/events",
+                  "en/conversion-tracking/goals"
+                ]
+              },
+              {
                 "group": "Touch-Points",
+                "hidden": true,
                 "pages": [
                   "en/core-features/touchpoints/overview",
                   "en/core-features/touchpoints/creating",
@@ -91,6 +113,7 @@
               },
               {
                 "group": "Organization",
+                "hidden": true,
                 "pages": [
                   "en/core-features/collections/overview",
                   "en/core-features/tags/overview"
@@ -98,6 +121,7 @@
               },
               {
                 "group": "Analytics",
+                "hidden": true,
                 "pages": [
                   "en/analytics/overview",
                   "en/analytics/dashboard",

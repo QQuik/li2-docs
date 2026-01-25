@@ -1,0 +1,401 @@
+---
+title: "Hướng Dẫn Cài Đặt Conversion Tracking"
+description: "Hướng dẫn từng bước để bật conversion tracking cho touchpoints và tích hợp Li2 Analytics SDK vào website hoặc ứng dụng của bạn."
+sidebarTitle: "Cài Đặt"
+icon: "screwdriver-wrench"
+---
+
+# Hướng Dẫn Cài Đặt Conversion Tracking
+
+<Info>
+**Trong hướng dẫn này**: Bạn sẽ học cách bật conversion tracking cho touchpoints, cài đặt Li2 Analytics SDK, và chuẩn bị hệ thống để track lead và sale events.
+</Info>
+
+## Yêu Cầu Trước Khi Bắt Đầu
+
+<Warning>
+**Yêu cầu gói dịch vụ**: Conversion tracking chỉ khả dụng cho:
+- **Premium Plan** trở lên
+- **Premium Trial** (để dùng thử)
+
+Nếu bạn đang dùng gói Free hoặc Basic, vui lòng nâng cấp để sử dụng tính năng này.
+</Warning>
+
+Trước khi bắt đầu, hãy đảm bảo bạn có:
+
+<CardGroup cols={2}>
+  <Card title="Quyền Truy Cập" icon="user-shield">
+    Owner hoặc Manager role trong organization
+  </Card>
+  <Card title="Touchpoint Đã Tạo" icon="diamond">
+    Ít nhất một touchpoint để track conversions
+  </Card>
+  <Card title="Website/App" icon="code">
+    Khả năng thêm JavaScript code vào trang web của bạn
+  </Card>
+  <Card title="Gói Premium+" icon="crown">
+    Premium plan hoặc cao hơn
+  </Card>
+</CardGroup>
+
+---
+
+## Tổng Quan Quy Trình Cài Đặt
+
+Quá trình cài đặt conversion tracking gồm 4 bước chính:
+
+<Steps>
+  <Step title="Bật Conversion Tracking cho Touchpoint">
+    Kích hoạt tracking trong touchpoint settings
+  </Step>
+  <Step title="Cài Đặt Li2 Analytics SDK">
+    Thêm tracking code vào website/app của bạn
+  </Step>
+  <Step title="Cấu Hình Bảo Mật">
+    Thiết lập allowed hostnames để bảo vệ dữ liệu
+  </Step>
+  <Step title="Xác Minh Cài Đặt">
+    Test và confirm tracking hoạt động đúng
+  </Step>
+</Steps>
+
+---
+
+## Bước 1: Bật Conversion Tracking cho Touchpoint
+
+### 1.1 Truy Cập Touchpoint Settings
+
+<Steps>
+  <Step title="Mở Touchpoint Details">
+    Trong dashboard, navigate đến **Touch-Points** và chọn touchpoint bạn muốn track conversions.
+  </Step>
+
+  <Step title="Vào Phần Settings">
+    Click tab **Settings** (biểu tượng ⚙️) trong touchpoint details page.
+  </Step>
+
+  <Step title="Tìm Conversion Tracking Section">
+    Scroll xuống phần **Advanced Settings** → tìm **Conversion Tracking**.
+  </Step>
+</Steps>
+
+### 1.2 Kích Hoạt Conversion Tracking
+
+Trong phần Conversion Tracking:
+
+1. **Toggle switch** sang ON (màu xanh)
+2. Click **Save Changes** để lưu
+
+<Tip>
+**Best Practice**: Chỉ bật conversion tracking cho touchpoints thực sự cần đo lường ROI (ví dụ: campaign chính, landing pages quan trọng). Điều này giúp giữ dữ liệu sạch và dễ phân tích.
+</Tip>
+
+<Note>
+Bật conversion tracking không ảnh hưởng đến hoạt động hiện tại của touchpoint. Link ngắn, QR code, và NFC vẫn hoạt động bình thường. Tracking chỉ bắt đầu khi bạn tích hợp SDK (Bước 2).
+</Note>
+
+---
+
+## Bước 2: Cài Đặt Li2 Analytics SDK
+
+Li2 Analytics SDK là thư viện JavaScript giúp track conversions tự động.
+
+<Tabs>
+  <Tab title="HTML / JavaScript" icon="code">
+    ### Cài Đặt cho Website HTML Thông Thường
+
+    Thêm script này vào `<head>` hoặc trước `</body>` của tất cả các pages cần track:
+
+    ```html
+    <script>
+      !(function (c, n) {
+        c[n] = c[n] || function () {
+          (c[n].q = c[n].q || []).push(arguments);
+        };
+        ["trackLead", "trackSale"].forEach(
+          (t) => (c[n][t] = (...a) => c[n](t, ...a))
+        );
+        var s = document.createElement("script");
+        s.defer = 1;
+        s.src = "https://unpkg.com/@li2/analytics/dist/index.global.js";
+        s.setAttribute("data-publishable-key", "li2_pk_xxxxxxxx");
+        document.head.appendChild(s);
+      })(window, "li2Analytics");
+    </script>
+    ```
+
+    **Thay thế publishableKey:**
+    - Tìm dòng: `s.setAttribute("data-publishable-key", "li2_pk_xxxxxxxx");`
+    - Thay `li2_pk_xxxxxxxx` bằng publishable key thực của bạn từ Settings → Analytics
+
+    **Vị trí đặt script:**
+    - **Trong `<head>`**: Load sớm, đảm bảo tracking luôn hoạt động
+    - **Trước `</body>`**: Không block page render, nhưng có thể miss early events
+
+    <Tip>
+    **Khuyến nghị**: Đặt trong `<head>` với `defer` attribute (đã có sẵn trong script) để balance giữa performance và tracking accuracy.
+    </Tip>
+  </Tab>
+
+  <Tab title="WordPress" icon="wordpress">
+    ### Cài Đặt cho WordPress
+
+    <Info>
+    **Plugin Đang Phát Triển**: Chúng tôi đang phát triển Li2 Analytics plugin cho WordPress để cài đặt dễ dàng hơn. Hiện tại, vui lòng sử dụng phương pháp thêm script thủ công bên dưới.
+    </Info>
+
+    **Cách 1: Sử dụng Plugin "Insert Headers and Footers"**
+
+    1. Cài đặt plugin **Insert Headers and Footers**
+    2. Vào **Settings → Insert Headers and Footers**
+    3. Paste script tracking code (từ tab HTML/JavaScript) vào **Scripts in Header**
+    4. Save changes
+
+    **Cách 2: Thêm Trực Tiếp vào Theme**
+
+    1. Vào **Appearance → Theme File Editor**
+    2. Mở file `header.php`
+    3. Paste script tracking code (từ tab HTML/JavaScript) trước `<?php wp_head(); ?>`
+    4. Update file
+
+    <Warning>
+    **Chú ý**: Nếu update theme, bạn sẽ mất code tracking. Khuyến nghị dùng plugin hoặc child theme để tránh vấn đề này.
+    </Warning>
+  </Tab>
+</Tabs>
+
+---
+
+## Bước 3: Cấu Hình Bảo Mật
+
+### 3.1 Thiết Lập Allowed Hostnames
+
+Allowed Hostnames là danh sách domains được phép gửi tracking requests. Đây là lớp bảo mật quan trọng để chặn abuse.
+
+<Steps>
+  <Step title="Mở Analytics Settings">
+    Navigate đến **Settings → Analytics** trong organization settings.
+  </Step>
+
+  <Step title="Thêm Allowed Hostnames">
+    Trong phần **Security**, tìm **Allowed Hostnames** và add domains của bạn:
+
+    **Ví dụ:**
+    - `example.com` - Chỉ cho phép domain chính xác
+    - `*.example.com` - Cho phép tất cả subdomains (www, app, blog, etc.)
+    - `localhost` - Cho phép local development (khuyến nghị trong dev)
+  </Step>
+
+  <Step title="Save Changes">
+    Click **Save** để áp dụng whitelist.
+  </Step>
+</Steps>
+
+<Warning>
+**Quan trọng**: Nếu không add allowed hostnames, tracking requests sẽ **BỊ CHẶN**. Đảm bảo add đủ tất cả domains và subdomains bạn sử dụng.
+</Warning>
+
+**Wildcard Support:**
+
+| Pattern | Cho phép |
+|---------|---------|
+| `example.com` | Chỉ `example.com` |
+| `www.example.com` | Chỉ `www.example.com` |
+| `*.example.com` | `app.example.com`, `blog.example.com`, etc. |
+| `*` | **Tất cả domains** (KHÔNG khuyến nghị cho production) |
+
+<Tip>
+**Development Setup**: Khi develop local, add `localhost` hoặc `127.0.0.1` vào allowed hostnames. Remove khi deploy production.
+</Tip>
+
+### 3.2 Xem Lại Publishable Key
+
+Publishable key được tự động tạo khi bạn enable Analytics. Để xem:
+
+1. Vào **Settings → Analytics**
+2. Copy **Publishable Key** (dạng `li2_pk_...`)
+3. Paste vào SDK configuration (đã làm ở Bước 2)
+
+<Note>
+**Publishable vs Secret Key**:
+- **Publishable key** (`li2_pk_...`): An toàn để expose phía client, dùng cho SDK
+- **Secret key** (`li2_sk_...`): Chỉ dùng server-side, KHÔNG expose ra client
+
+Conversion tracking SDK chỉ cần publishable key.
+</Note>
+
+---
+
+## Bước 4: Xác Minh Cài Đặt
+
+### 4.1 Test Click ID Capture
+
+Sau khi cài đặt SDK, test xem click ID có được capture đúng không:
+
+<Steps>
+  <Step title="Tạo Test Link">
+    Từ touchpoint đã enable conversion tracking, copy short link (VD: `li2.link/test-campaign`)
+  </Step>
+
+  <Step title="Click Link Trong Incognito Mode">
+    Mở trình duyệt ở chế độ ẩn danh (Incognito) và click vào short link
+  </Step>
+
+  <Step title="Kiểm Tra Cookie">
+    Mở **Developer Tools** (F12) → **Application** → **Cookies**
+
+    Tìm cookie tên `li_cid` với value dạng: `cm3w...`
+
+    ✅ **Thành công** nếu cookie tồn tại
+
+    ❌ **Thất bại** nếu không có cookie → Check lại SDK installation
+  </Step>
+
+  <Step title="Verify Trong Console">
+    Trong **Console** tab, nhập:
+    ```javascript
+    li2Analytics
+    ```
+
+    Nếu SDK load đúng, bạn sẽ thấy object với functions: `trackLead`, `trackSale`
+  </Step>
+</Steps>
+
+<AccordionGroup>
+  <Accordion title="Không thấy li_cid cookie?">
+    **Nguyên nhân phổ biến:**
+
+    1. **SDK chưa load**: Check Network tab, tìm request đến `unpkg.com/@li2/analytics`
+    2. **Publishable key sai**: Verify key trong script khớp với key trong Settings
+    3. **Click link không có uid parameter**: Li2 tự động add parameter `?uid=...` - nếu không có, touchpoint setting có thể chưa đúng
+    4. **Third-party cookies bị block**: Một số browser block third-party cookies - `li_cid` là first-party nên không bị ảnh hưởng, nhưng check setting browser
+
+    **Cách fix**: Re-install SDK, verify publishable key, test lại với browser khác
+  </Accordion>
+
+  <Accordion title="li2Analytics undefined trong console?">
+    **Nguyên nhân:**
+
+    1. **Script chưa load xong**: Đợi page load hoàn toàn rồi thử lại
+    2. **CDN blocked**: Check Network tab xem request đến unpkg.com có bị block không
+    3. **Ad blocker**: Tắt ad blocker và test lại
+
+    **Cách fix**: Check script tag trong HTML source, verify CDN accessible, disable ad blockers
+  </Accordion>
+
+  <Accordion title="Tracking requests bị CORS error?">
+    **Nguyên nhân:**
+
+    - Domain hiện tại không có trong **Allowed Hostnames**
+
+    **Cách fix**:
+
+    1. Vào Settings → Analytics → Allowed Hostnames
+    2. Add domain hiện tại (VD: `example.com`)
+    3. Save và test lại
+
+    <Tip>
+    CORS error message thường rất rõ ràng: `Request origin 'https://example.com' is not included in the allowed hostnames`. Copy exact domain và add vào allowed list.
+    </Tip>
+  </Accordion>
+</AccordionGroup>
+
+### 4.2 Test End-to-End Flow (Optional)
+
+Để test toàn bộ flow từ click → lead tracking:
+
+```javascript
+// Mở Console sau khi click vào touchpoint link
+li2Analytics.trackLead({
+  eventName: "Test Lead",
+  customerExternalId: "test-user-123",
+  customerEmail: "test@example.com",
+  customerName: "Test User"
+});
+```
+
+Check **Network** tab - nên thấy POST request đến API endpoint với status **200 OK**.
+
+<Warning>
+**Lưu ý**: Test lead này sẽ được ghi nhận thật trong database. Hiện tại Li2 chưa hỗ trợ delete conversion events qua UI. Khuyến nghị:
+- Sử dụng `eventName: "Test ..."` để dễ phân biệt với real data
+- Hoặc test trên development/staging environment trước khi deploy production
+</Warning>
+
+---
+
+## Hoàn Tất! 🎉
+
+Bạn đã cài đặt xong conversion tracking! Các bước tiếp theo:
+
+<CardGroup cols={2}>
+  <Card title="Track Lead Events" icon="user-plus" href="./events#lead-tracking">
+    Học cách track khi khách hàng sign up hoặc thể hiện quan tâm
+  </Card>
+
+  <Card title="Track Sale Events" icon="sack-dollar" href="./events#sale-tracking">
+    Học cách track revenue khi khách hàng mua hàng
+  </Card>
+
+  <Card title="Advanced Setup" icon="gear-complex" href="./goals">
+    Cấu hình conversion goals và custom events
+  </Card>
+</CardGroup>
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Conversion tracking toggle bị disabled (xám)?">
+    **Nguyên nhân**: Organization chưa có Premium plan.
+
+    **Cách fix**:
+    1. Vào **Settings → Billing**
+    2. Upgrade lên Premium hoặc cao hơn
+    3. Hoặc start Premium Trial để test
+  </Accordion>
+
+  <Accordion title="SDK load chậm, ảnh hưởng page speed?">
+    **Giải pháp**:
+
+    - SDK đã được optimize với `defer` loading - không block page render
+    - CDN global distribution đảm bảo latency thấp
+    - Minified bundle size < 10KB
+
+    **Nếu vẫn lo ngại**: Load SDK async sau khi page interactive:
+    ```javascript
+    window.addEventListener('load', function() {
+      // Inject SDK script here
+    });
+    ```
+  </Accordion>
+
+  <Accordion title="Tracking không hoạt động trên mobile app?">
+    Li2 Analytics SDK hiện chỉ hỗ trợ **web tracking** (JavaScript).
+
+    **Cho mobile apps**: Sử dụng **Server-side tracking** với API keys. Xem [Events Tracking - Server-side](./events#server-side-tracking).
+  </Accordion>
+
+  <Accordion title="Làm sao biết touchpoint nào đã enable conversion tracking?">
+    Trong **Touch-Points list**, tìm icon 📊 bên cạnh touchpoint name. Icon này chỉ xuất hiện khi conversion tracking đã được enabled.
+
+    Hoặc filter touchpoints với **Advanced Filters → Conversion Tracking = Enabled**.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Best Practices
+
+<Tip>
+**1. Enable tracking có chọn lọc**: Chỉ enable cho touchpoints quan trọng để data sạch và dễ analyze.
+
+**2. Test trong development**: Luôn add `localhost` vào allowed hostnames khi develop, remove khi deploy production.
+
+**3. Monitor setup**: Check Analytics dashboard thường xuyên trong tuần đầu sau setup để catch issues sớm.
+
+**4. Document your setup**: Ghi lại publishable key, allowed hostnames ở đâu để team khác có thể maintain.
+
+**5. Secure your keys**: Publishable key an toàn cho client, nhưng KHÔNG commit secret keys vào Git.
+</Tip>

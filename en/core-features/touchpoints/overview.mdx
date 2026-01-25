@@ -1,0 +1,339 @@
+---
+title: "Touch-Points Overview"
+description: "Understanding touchpoints in Li2.ai - unified marketing assets that combine short links, QR codes, and NFC tags with centralized analytics and dynamic destination control."
+sidebarTitle: "Overview"
+icon: "diamond"
+---
+
+# Touch-Points Overview
+
+<Info>
+**What you'll learn**: Understand the touchpoint concept, how touchpoints differ from traditional link shorteners, and why they're essential for modern proximity marketing.
+</Info>
+
+## What is a Touch-Point?
+
+A **touchpoint** is Li2.ai's core concept - a unified marketing asset that serves as a single source of truth for connecting offline and online experiences. Unlike traditional tools that treat QR codes, short links, and NFC tags as separate entities, Li2.ai combines them into one cohesive touchpoint.
+
+Think of a touchpoint as a **bridge between physical and digital spaces**:
+- The **same destination** accessible via multiple channels
+- **Unified analytics** regardless of how users access it
+- **Dynamic control** to update the destination without changing distribution
+
+<CardGroup cols={3}>
+  <Card title="One Destination" icon="location-dot">
+    Set a single destination URL that all access methods point to
+  </Card>
+
+  <Card title="Multiple Channels" icon="arrows-split-up-and-left">
+    Distribute as short links, QR codes, or NFC tags simultaneously
+  </Card>
+
+  <Card title="Unified Analytics" icon="chart-column">
+    Track all interactions in one dashboard regardless of access method
+  </Card>
+</CardGroup>
+
+## How Touch-Points Work
+
+When you create a touchpoint in Li2.ai:
+
+<Steps>
+  <Step title="Define Destination">
+    Specify where users should land (e.g., your product page, event registration, menu)
+  </Step>
+
+  <Step title="Customize Identifier">
+    Choose a memorable slug for your short link (e.g., `li2.ai/summer-sale`)
+  </Step>
+
+  <Step title="Instant Generation">
+    Li2.ai creates:
+    - A short link (e.g., `li2.ai/summer-sale`)
+    - A QR code encoding that link
+    - NFC tag data (optional) with the same redirect
+
+    All three point to the same destination and share analytics.
+  </Step>
+
+  <Step title="Distribute Freely">
+    Use the touchpoint however you need:
+    - Post the short link on social media
+    - Print the QR code on packaging
+    - Program the NFC tag into smart posters
+    - Embed in email campaigns
+    - Add to business cards
+  </Step>
+
+  <Step title="Track Performance">
+    View unified analytics showing:
+    - Total interactions (clicks + scans + taps)
+    - Channel breakdown (which method was used)
+    - Geographic data, device types, referrers
+    - Time-series trends
+  </Step>
+
+  <Step title="Update Dynamically">
+    Change the destination URL anytime without:
+    - Reprinting QR codes
+    - Updating published links
+    - Reprogramming NFC tags
+
+    The touchpoint slug stays the same; only the destination changes.
+  </Step>
+</Steps>
+
+## Touch-Points vs Traditional Link Shorteners
+
+| Feature | Traditional Link Shorteners | Li2.ai Touch-Points |
+|---------|----------------------------|-------------------|
+| **Primary Output** | Short link only | Short link + QR code + NFC data |
+| **QR Code Generation** | Separate tool or service | Integrated, automatic |
+| **Analytics Unity** | Separate tracking for link vs QR | Unified tracking across all channels |
+| **Destination Updates** | Create new link | Update existing touchpoint |
+| **Branding** | Limited customization | Custom domains, slugs, QR designs |
+| **UTM Parameters** | Manual addition | Built-in UTM builder |
+| **Conversion Tracking** | External setup required | Native conversion goals |
+| **Team Collaboration** | Single user or basic sharing | Organizations with roles & permissions |
+| **Collections** | Tags only | Collections + tags + workspace separation |
+
+## Touch-Point Components
+
+Every touchpoint consists of:
+
+### Core Components
+
+**Destination URL**
+- The final landing page users reach
+- Can be any valid URL (your website, social media, Google Form, YouTube video, etc.)
+- **Dynamic**: Change anytime without affecting the touchpoint slug
+
+**Slug**
+- The unique identifier in your short link (the part after `li2.ai/`)
+- Examples: `summer-sale`, `menu`, `signup-2024`
+- Can be custom, AI-generated, or random
+- **Permanent**: Cannot be changed after creation (prevents broken links)
+
+**Short Link**
+- The full short URL: `domain/slug` (e.g., `li2.ai/summer-sale`)
+- Automatically generated when you create a touchpoint
+- Works with custom domains if configured
+
+**QR Code**
+- Automatically generated encoding the short link
+- Downloadable in multiple formats (PNG, SVG)
+- Customizable design (colors, logo embedding, frame styles)
+- Prints at any size without quality loss (vector-based)
+
+### Optional Components
+
+**Title**
+- Internal name for organization purposes
+- Helps you identify the touchpoint in your dashboard
+- Not visible to end users
+
+**Tags**
+- Flexible labels for categorization (e.g., `campaign:summer`, `channel:instagram`)
+- Filter and group touchpoints by tags
+- Apply multiple tags to one touchpoint
+
+**Collection**
+- Group related touchpoints into folders
+- Useful for campaign-based organization or client work
+- View aggregated analytics for an entire collection
+
+**UTM Parameters**
+- Track campaign performance in Google Analytics
+- Built-in UTM builder for automatic parameter generation
+- Parameters: source, medium, campaign, term, content
+
+**Conversion Goals**
+- Define actions you want users to complete (purchase, signup, form submit)
+- Track conversion rates and goal completions
+- Measure true ROI beyond clicks
+
+## Types of Touch-Points
+
+While all touchpoints are fundamentally the same, they can be optimized for different use cases:
+
+### Marketing Campaign Touch-Points
+
+**Purpose**: Drive traffic to promotional landing pages
+**Best Practices**:
+- Use descriptive slugs: `black-friday-2024`, `spring-collection`
+- Add UTM parameters to track campaign performance
+- Set conversion goals (e.g., "Add to cart" or "Purchase")
+- Apply campaign-specific tags for filtering
+
+**Example**: A retail brand creates `li2.ai/holiday-sale` linking to their holiday promotion page. The QR code goes on in-store signage, the short link on Instagram, and the NFC tag on product displays.
+
+### Product Packaging Touch-Points
+
+**Purpose**: Connect physical products to digital experiences
+**Best Practices**:
+- Use product-specific slugs: `product-setup`, `user-manual`, `warranty`
+- Enable dynamic destinations to update based on product lifecycle
+- Track geographic data to understand where products are purchased
+
+**Example**: An electronics manufacturer prints `li2.ai/setup` on packaging. Initially it links to setup instructions, but after a firmware update, they change it to link to the update guide—no reprinting needed.
+
+### Event & Venue Touch-Points
+
+**Purpose**: Guide attendees and track engagement
+**Best Practices**:
+- Create touchpoints for: registration, agenda, venue map, feedback survey
+- Use short, memorable slugs: `event-register`, `venue-wifi`, `feedback`
+- Track analytics to measure attendance and engagement patterns
+
+**Example**: A conference creates `li2.ai/wifi` for instant venue WiFi access, `li2.ai/schedule` for the agenda, and `li2.ai/booth-123` for sponsor booths.
+
+### Menu & Dining Touch-Points
+
+**Purpose**: Digital menus and contactless ordering
+**Best Practices**:
+- Table-specific slugs for order tracking: `table-5`, `booth-12`
+- Seasonal menu updates via dynamic destinations
+- Track peak dining hours via time-series analytics
+
+**Example**: A restaurant creates `li2.ai/menu` QR codes on table tents. When they update the menu seasonally, they just change the destination URL—QR codes stay on the tables year-round.
+
+### Social Media & Content Touch-Points
+
+**Purpose**: Share content across platforms with tracking
+**Best Practices**:
+- Use branded slugs: `instagram`, `youtube-tutorial`, `blog-post`
+- Add UTM parameters to track which platform drives most traffic
+- Shorten long URLs for character-limited platforms (Twitter, SMS)
+
+**Example**: A content creator uses `li2.ai/latest` in their Instagram bio, updating the destination weekly to their newest video or blog post.
+
+### O2O (Online-to-Offline) Touch-Points
+
+**Purpose**: Drive online traffic to physical locations
+**Best Practices**:
+- Location-specific slugs: `store-nyc`, `showroom-la`
+- Link to: Google Maps, appointment booking, store hours
+- Track which online channels drive most in-store visits
+
+**Example**: A retail chain creates `li2.ai/find-store` linking to a store locator, promoted via email and social media to drive foot traffic.
+
+## Touch-Point Lifecycle
+
+### 1. Creation
+
+Create touchpoints via:
+- **Dashboard UI**: Full-featured creation form
+- **Quick Create**: Minimal fields for fast generation
+- **Bulk Import**: CSV upload for creating multiple touchpoints at once
+- **API**: Programmatic creation for integrations
+
+### 2. Distribution
+
+Share your touchpoint through:
+- **Digital Channels**: Social media, email, SMS, websites, apps
+- **Print Materials**: Flyers, posters, business cards, brochures
+- **Product Packaging**: Labels, inserts, hang tags, boxes
+- **Physical Displays**: Signage, banners, table tents, kiosks
+- **Smart Devices**: NFC tags, smart packaging, wearables
+
+### 3. Analytics & Optimization
+
+Monitor and improve performance:
+- **Real-time Dashboard**: Track clicks, scans, and taps as they happen
+- **Geographic Analysis**: See where your audience is located
+- **Device Intelligence**: Understand what devices users have
+- **A/B Testing**: Compare different destinations or messaging
+- **Conversion Tracking**: Measure goal completions and ROI
+
+### 4. Updates & Maintenance
+
+Manage touchpoints over time:
+- **Destination Changes**: Update where the touchpoint redirects
+- **Tag Management**: Add, remove, or modify tags for better organization
+- **Collection Assignment**: Move touchpoints between collections
+- **Archiving**: Disable touchpoints without deleting them
+- **Deletion**: Permanently remove touchpoints when no longer needed
+
+## Advanced Touch-Point Features
+
+### Dynamic Redirects
+
+Change destinations based on:
+- **Time**: Different destinations during business hours vs closed
+- **Location**: Redirect based on user's geographic location
+- **Device**: Show mobile-optimized pages for mobile users
+- **Language**: Redirect based on browser language
+
+*Note: Some features may require custom configuration or API usage*
+
+### Link Preview Customization
+
+Control how your touchpoint appears when shared on social media:
+- **Title**: Custom Open Graph title
+- **Description**: Preview text shown in social shares
+- **Image**: Featured image for social media cards
+- **Twitter Card**: Optimized for Twitter shares
+
+### Branded QR Codes
+
+Customize QR code appearance:
+- **Colors**: Match your brand colors
+- **Logo**: Embed your logo in the center
+- **Frame**: Add call-to-action frames ("Scan Me", "Get 20% Off")
+- **Design Patterns**: Choose different QR pattern styles
+
+### Conversion Funnels
+
+Track multi-step conversion funnels:
+- **Entry Point**: Touchpoint click/scan
+- **Intermediate Steps**: Page views, form fills, add-to-cart
+- **Goal Completion**: Purchase, signup, download
+- **Drop-off Analysis**: See where users abandon the funnel
+
+## Best Practices
+
+<Tip>
+**Start with Clear Naming**: Use descriptive titles and slugs that make sense months later. Future you will thank present you.
+</Tip>
+
+<Tip>
+**Plan for Updates**: Even if you don't plan to change destinations, design touchpoints as if you might. This flexibility is touchpoints' superpower.
+</Tip>
+
+<Tip>
+**Tag Consistently**: Establish a tagging convention early (`channel:`, `campaign:`, `type:`) and stick to it across all touchpoints.
+</Tip>
+
+<Tip>
+**Test Before Distribution**: Always test your touchpoint (click the link, scan the QR code) before mass distribution. Catching errors early saves reprints.
+</Tip>
+
+<Warning>
+**Avoid Generic Slugs**: Slugs like `link1`, `qr2`, `test` become meaningless when you have hundreds of touchpoints. Be specific: `summer-sale-instagram-2024`.
+</Warning>
+
+## Next Steps
+
+Now that you understand touchpoints, explore how to use them effectively:
+
+<CardGroup cols={2}>
+  <Card title="Creating Touch-Points" icon="plus" href="/en/core-features/touchpoints/creating">
+    Step-by-step guide to creating touchpoints with advanced options
+  </Card>
+
+  <Card title="QR Code Customization" icon="qrcode" href="/en/core-features/touchpoints/qr-codes">
+    Customize QR code design to match your brand
+  </Card>
+
+  <Card title="Short Link Management" icon="link" href="/en/core-features/touchpoints/short-links">
+    Master short link features including custom domains and slugs
+  </Card>
+
+  <Card title="Managing Touch-Points" icon="sliders" href="/en/core-features/touchpoints/managing">
+    Update, organize, and archive touchpoints effectively
+  </Card>
+</CardGroup>
+
+---
+
+**Ready to create your first touchpoint?** Follow the [Quick Start Guide](/en/getting-started/quick-start) for a hands-on tutorial.

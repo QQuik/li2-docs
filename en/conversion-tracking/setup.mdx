@@ -1,0 +1,401 @@
+---
+title: "Conversion Tracking Setup Guide"
+description: "Step-by-step guide to enable conversion tracking for touchpoints and integrate Li2 Analytics SDK into your website or application."
+sidebarTitle: "Setup"
+icon: "screwdriver-wrench"
+---
+
+# Conversion Tracking Setup Guide
+
+<Info>
+**In this guide**: Learn how to enable conversion tracking for touchpoints, install the Li2 Analytics SDK, and prepare your system to track lead and sale events.
+</Info>
+
+## Prerequisites
+
+<Warning>
+**Plan Requirement**: Conversion tracking is only available for:
+- **Premium Plan** and above
+- **Premium Trial** (for testing)
+
+If you're on the Free or Basic plan, please upgrade to use this feature.
+</Warning>
+
+Before you begin, ensure you have:
+
+<CardGroup cols={2}>
+  <Card title="Access Rights" icon="user-shield">
+    Owner or Manager role in your organization
+  </Card>
+  <Card title="Touchpoint Created" icon="diamond">
+    At least one touchpoint to track conversions
+  </Card>
+  <Card title="Website/App Access" icon="code">
+    Ability to add JavaScript code to your web pages
+  </Card>
+  <Card title="Premium+ Plan" icon="crown">
+    Premium plan or higher
+  </Card>
+</CardGroup>
+
+---
+
+## Setup Process Overview
+
+The conversion tracking setup consists of 4 main steps:
+
+<Steps>
+  <Step title="Enable Conversion Tracking for Touchpoint">
+    Activate tracking in touchpoint settings
+  </Step>
+  <Step title="Install Li2 Analytics SDK">
+    Add tracking code to your website/app
+  </Step>
+  <Step title="Configure Security">
+    Set up allowed hostnames to protect your data
+  </Step>
+  <Step title="Verify Setup">
+    Test and confirm tracking works correctly
+  </Step>
+</Steps>
+
+---
+
+## Step 1: Enable Conversion Tracking for Touchpoint
+
+### 1.1 Access Touchpoint Settings
+
+<Steps>
+  <Step title="Open Touchpoint Details">
+    In your dashboard, navigate to **Touch-Points** and select the touchpoint you want to track conversions for.
+  </Step>
+
+  <Step title="Go to Settings Tab">
+    Click the **Settings** tab (⚙️ icon) in the touchpoint details page.
+  </Step>
+
+  <Step title="Find Conversion Tracking Section">
+    Scroll down to **Advanced Settings** → locate **Conversion Tracking**.
+  </Step>
+</Steps>
+
+### 1.2 Activate Conversion Tracking
+
+In the Conversion Tracking section:
+
+1. **Toggle the switch** to ON (green)
+2. Click **Save Changes** to apply
+
+<Tip>
+**Best Practice**: Only enable conversion tracking for touchpoints that genuinely need ROI measurement (e.g., main campaigns, important landing pages). This keeps your data clean and easy to analyze.
+</Tip>
+
+<Note>
+Enabling conversion tracking doesn't affect your touchpoint's current functionality. Short links, QR codes, and NFC tags continue to work normally. Tracking only begins once you integrate the SDK (Step 2).
+</Note>
+
+---
+
+## Step 2: Install Li2 Analytics SDK
+
+The Li2 Analytics SDK is a JavaScript library that automatically tracks conversions. There are 2 installation methods:
+
+<Tabs>
+  <Tab title="HTML / JavaScript" icon="code">
+    ### Installation for Regular HTML Websites
+
+    Add this script to the `<head>` or before `</body>` of all pages that need tracking:
+
+    ```html
+    <script>
+      !(function (c, n) {
+        c[n] = c[n] || function () {
+          (c[n].q = c[n].q || []).push(arguments);
+        };
+        ["trackLead", "trackSale"].forEach(
+          (t) => (c[n][t] = (...a) => c[n](t, ...a))
+        );
+        var s = document.createElement("script");
+        s.defer = 1;
+        s.src = "https://unpkg.com/@li2/analytics/dist/index.global.js";
+        s.setAttribute("data-publishable-key", "li2_pk_xxxxxxxx");
+        document.head.appendChild(s);
+      })(window, "li2Analytics");
+    </script>
+    ```
+
+    **Replace publishableKey:**
+    - Find the line: `s.setAttribute("data-publishable-key", "li2_pk_xxxxxxxx");`
+    - Replace `li2_pk_xxxxxxxx` with your actual publishable key from Settings → Analytics
+
+    **Script placement:**
+    - **In `<head>`**: Loads early, ensures tracking always works
+    - **Before `</body>`**: Doesn't block page render, but might miss early events
+
+    <Tip>
+    **Recommendation**: Place in `<head>` with `defer` attribute (already included in script) to balance performance and tracking accuracy.
+    </Tip>
+  </Tab>
+
+  <Tab title="WordPress" icon="wordpress">
+    ### Installation for WordPress
+
+    <Info>
+    **Plugin In Development**: We're developing a Li2 Analytics plugin for WordPress for easier installation. For now, please use the manual script injection methods below.
+    </Info>
+
+    **Method 1: Using "Insert Headers and Footers" Plugin**
+
+    1. Install **Insert Headers and Footers** plugin
+    2. Go to **Settings → Insert Headers and Footers**
+    3. Paste tracking script code (from HTML/JavaScript tab) into **Scripts in Header**
+    4. Save changes
+
+    **Method 2: Add Directly to Theme**
+
+    1. Go to **Appearance → Theme File Editor**
+    2. Open `header.php` file
+    3. Paste tracking script code (from HTML/JavaScript tab) before `<?php wp_head(); ?>`
+    4. Update file
+
+    <Warning>
+    **Note**: If you update your theme, you'll lose the tracking code. We recommend using a plugin or child theme to avoid this issue.
+    </Warning>
+  </Tab>
+</Tabs>
+
+---
+
+## Step 3: Configure Security
+
+### 3.1 Set Up Allowed Hostnames
+
+Allowed Hostnames is a list of domains permitted to send tracking requests. This is a critical security layer to prevent abuse.
+
+<Steps>
+  <Step title="Open Analytics Settings">
+    Navigate to **Settings → Analytics** in your organization settings.
+  </Step>
+
+  <Step title="Add Allowed Hostnames">
+    In the **Security** section, find **Allowed Hostnames** and add your domains:
+
+    **Examples:**
+    - `example.com` - Only allows exact domain
+    - `*.example.com` - Allows all subdomains (www, app, blog, etc.)
+    - `localhost` - Allows local development (recommended for dev)
+  </Step>
+
+  <Step title="Save Changes">
+    Click **Save** to apply the whitelist.
+  </Step>
+</Steps>
+
+<Warning>
+**Important**: If you don't add allowed hostnames, tracking requests will be **BLOCKED**. Make sure to add all domains and subdomains you use.
+</Warning>
+
+**Wildcard Support:**
+
+| Pattern | Allows |
+|---------|--------|
+| `example.com` | Only `example.com` |
+| `www.example.com` | Only `www.example.com` |
+| `*.example.com` | `app.example.com`, `blog.example.com`, etc. |
+| `*` | **All domains** (NOT recommended for production) |
+
+<Tip>
+**Development Setup**: When developing locally, add `localhost` or `127.0.0.1` to allowed hostnames. Remove when deploying to production.
+</Tip>
+
+### 3.2 Review Publishable Key
+
+The publishable key is automatically generated when you enable Analytics. To view:
+
+1. Go to **Settings → Analytics**
+2. Copy **Publishable Key** (format: `li2_pk_...`)
+3. Paste into SDK configuration (already done in Step 2)
+
+<Note>
+**Publishable vs Secret Key**:
+- **Publishable key** (`li2_pk_...`): Safe to expose client-side, used for SDK
+- **Secret key** (`li2_sk_...`): Server-side only, DO NOT expose to clients
+
+Conversion tracking SDK only needs the publishable key.
+</Note>
+
+---
+
+## Step 4: Verify Setup
+
+### 4.1 Test Click ID Capture
+
+After installing the SDK, test whether click IDs are being captured correctly:
+
+<Steps>
+  <Step title="Create Test Link">
+    From the touchpoint with conversion tracking enabled, copy the short link (e.g., `li2.link/test-campaign`)
+  </Step>
+
+  <Step title="Click Link in Incognito Mode">
+    Open your browser in incognito mode and click the short link
+  </Step>
+
+  <Step title="Check Cookie">
+    Open **Developer Tools** (F12) → **Application** → **Cookies**
+
+    Look for a cookie named `li_cid` with a value like: `cm3w...`
+
+    ✅ **Success** if cookie exists
+
+    ❌ **Failed** if no cookie → Recheck SDK installation
+  </Step>
+
+  <Step title="Verify in Console">
+    In the **Console** tab, type:
+    ```javascript
+    li2Analytics
+    ```
+
+    If the SDK loaded correctly, you'll see an object with functions: `trackLead`, `trackSale`
+  </Step>
+</Steps>
+
+<AccordionGroup>
+  <Accordion title="Don't see li_cid cookie?">
+    **Common causes:**
+
+    1. **SDK hasn't loaded**: Check Network tab, look for request to `unpkg.com/@li2/analytics`
+    2. **Wrong publishable key**: Verify key in script matches key in Settings
+    3. **Link doesn't have uid parameter**: Li2 automatically adds `?uid=...` parameter - if missing, touchpoint settings might be incorrect
+    4. **Third-party cookies blocked**: Some browsers block third-party cookies - `li_cid` is first-party so shouldn't be affected, but check browser settings
+
+    **Fix**: Re-install SDK, verify publishable key, test again with different browser
+  </Accordion>
+
+  <Accordion title="li2Analytics undefined in console?">
+    **Causes:**
+
+    1. **Script hasn't finished loading**: Wait for page to fully load and try again
+    2. **CDN blocked**: Check Network tab to see if request to unpkg.com is blocked
+    3. **Ad blocker**: Disable ad blocker and test again
+
+    **Fix**: Check script tag in HTML source, verify CDN is accessible, disable ad blockers
+  </Accordion>
+
+  <Accordion title="Tracking requests getting CORS errors?">
+    **Cause:**
+
+    - Current domain not in **Allowed Hostnames**
+
+    **Fix**:
+
+    1. Go to Settings → Analytics → Allowed Hostnames
+    2. Add current domain (e.g., `example.com`)
+    3. Save and test again
+
+    <Tip>
+    CORS error messages are usually very clear: `Request origin 'https://example.com' is not included in the allowed hostnames`. Copy the exact domain and add it to the allowed list.
+    </Tip>
+  </Accordion>
+</AccordionGroup>
+
+### 4.2 Test End-to-End Flow (Optional)
+
+To test the complete flow from click → lead tracking:
+
+```javascript
+// Open Console after clicking touchpoint link
+li2Analytics.trackLead({
+  eventName: "Test Lead",
+  customerExternalId: "test-user-123",
+  customerEmail: "test@example.com",
+  customerName: "Test User"
+});
+```
+
+Check **Network** tab - you should see a POST request to API endpoint with status **200 OK**.
+
+<Warning>
+**Note**: This test lead will be actually recorded in the database. Li2 currently does not support deleting conversion events via UI. Recommendations:
+- Use `eventName: "Test ..."` to easily distinguish from real data
+- Or test on development/staging environment before deploying to production
+</Warning>
+
+---
+
+## Complete! 🎉
+
+You've successfully set up conversion tracking! Next steps:
+
+<CardGroup cols={2}>
+  <Card title="Track Lead Events" icon="user-plus" href="./events#lead-tracking">
+    Learn how to track when customers sign up or show interest
+  </Card>
+
+  <Card title="Track Sale Events" icon="sack-dollar" href="./events#sale-tracking">
+    Learn how to track revenue when customers make purchases
+  </Card>
+
+  <Card title="Advanced Setup" icon="gear-complex" href="./goals">
+    Configure conversion goals and custom events
+  </Card>
+</CardGroup>
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Conversion tracking toggle is disabled (grayed out)?">
+    **Cause**: Organization doesn't have Premium plan.
+
+    **Fix**:
+    1. Go to **Settings → Billing**
+    2. Upgrade to Premium or higher
+    3. Or start Premium Trial to test
+  </Accordion>
+
+  <Accordion title="SDK loads slowly, affecting page speed?">
+    **Solutions**:
+
+    - SDK is already optimized with `defer` loading - doesn't block page render
+    - Global CDN distribution ensures low latency
+    - Minified bundle size < 10KB
+
+    **If still concerned**: Load SDK async after page interactive:
+    ```javascript
+    window.addEventListener('load', function() {
+      // Inject SDK script here
+    });
+    ```
+  </Accordion>
+
+  <Accordion title="Tracking not working on mobile app?">
+    Li2 Analytics SDK currently only supports **web tracking** (JavaScript).
+
+    **For mobile apps**: Use **Server-side tracking** with API keys. See [Events Tracking - Server-side](./events#server-side-tracking).
+  </Accordion>
+
+  <Accordion title="How to know which touchpoints have conversion tracking enabled?">
+    In **Touch-Points list**, look for 📊 icon next to touchpoint name. This icon only appears when conversion tracking is enabled.
+
+    Or filter touchpoints with **Advanced Filters → Conversion Tracking = Enabled**.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Best Practices
+
+<Tip>
+**1. Enable tracking selectively**: Only enable for important touchpoints to keep data clean and easy to analyze.
+
+**2. Test in development**: Always add `localhost` to allowed hostnames when developing, remove when deploying to production.
+
+**3. Monitor setup**: Check Analytics dashboard regularly during the first week after setup to catch issues early.
+
+**4. Document your setup**: Record where publishable key and allowed hostnames are stored so other team members can maintain.
+
+**5. Secure your keys**: Publishable keys are safe for clients, but NEVER commit secret keys to Git.
+</Tip>
