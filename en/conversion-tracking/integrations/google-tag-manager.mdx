@@ -1,0 +1,581 @@
+---
+title: "Google Tag Manager Integration"
+description: "Implement Li2 conversion tracking via Google Tag Manager without touching your website's code."
+sidebarTitle: "Google Tag Manager"
+icon: "google"
+---
+
+# Google Tag Manager Integration
+
+<Info>
+**In this guide**: Learn how to implement Li2 conversion tracking using Google Tag Manager - no code changes required.
+</Info>
+
+## Google Tag Manager
+
+Google Tag Manager (GTM) is the most popular way to implement Li2 conversion tracking without touching your website's code. This method is ideal for marketers who want control over tracking without depending on developers.
+
+### Prerequisites
+
+<Warning>
+**Required**: Your website must already have Google Tag Manager installed. If not, follow [Google's GTM installation guide](https://support.google.com/tagmanager/answer/6103696) first.
+</Warning>
+
+Before you begin, ensure you have:
+
+<CardGroup cols={2}>
+  <Card title="GTM Container" icon="box">
+    GTM script installed on your website
+  </Card>
+
+  <Card title="Conversion Tracking Enabled" icon="toggle-on">
+    Enabled in touchpoint settings (see [Setup Guide](./setup))
+  </Card>
+
+  <Card title="Publishable Key" icon="key">
+    Available in Settings → Analytics
+  </Card>
+
+  <Card title="GTM Edit Access" icon="user-shield">
+    Permission to create tags and variables
+  </Card>
+</CardGroup>
+
+---
+
+## GTM Setup: Install Li2 SDK
+
+### Step 1: Create Custom HTML Tag
+
+<Steps>
+  <Step title="Open GTM Container">
+    Log in to [Google Tag Manager](https://tagmanager.google.com) and select your container
+  </Step>
+
+  <Step title="Create New Tag">
+    Click **Tags** → **New** → Name it "Li2 Analytics - SDK Loader"
+  </Step>
+
+  <Step title="Configure Tag">
+    1. **Tag Type**: Choose **Custom HTML**
+    2. **HTML Content**: Paste the script below
+    3. **Triggering**: Select **All Pages**
+  </Step>
+</Steps>
+
+**Script to paste:**
+
+```html
+<script>
+!(function (c, n) {
+  c[n] = c[n] || function () {
+    (c[n].q = c[n].q || []).push(arguments);
+  };
+  ["trackLead", "trackSale"].forEach(
+    (t) => (c[n][t] = (...a) => c[n](t, ...a))
+  );
+  var s = document.createElement("script");
+  s.defer = 1;
+  s.src = "https://unpkg.com/@li2/analytics/dist/index.global.js";
+  s.setAttribute("data-publishable-key", "li2_pk_xxxxxxxx");
+  document.head.appendChild(s);
+})(window, "li2Analytics");
+</script>
+```
+
+<Warning>
+**IMPORTANT**: Replace `li2_pk_xxxxxxxx` with your actual publishable key from **Settings → Analytics** in Li2 dashboard.
+</Warning>
+
+<Tip>
+**Why All Pages trigger?** The SDK needs to load on every page to:
+- Capture click IDs when users arrive from your touchpoints
+- Make `li2Analytics` object available for tracking events
+- Set the `li_cid` cookie for attribution
+</Tip>
+
+### Step 2: Create Click ID Variable
+
+This variable reads the `li_cid` cookie set by Li2 when users click your touchpoint links.
+
+<Steps>
+  <Step title="Create New Variable">
+    Click **Variables** → **User-Defined Variables** → **New**
+  </Step>
+
+  <Step title="Configure Variable">
+    1. **Variable Type**: **1st Party Cookie**
+    2. **Cookie Name**: `li_cid`
+    3. **Variable Name**: "Li2 Click ID"
+  </Step>
+
+  <Step title="Save Variable">
+    Click **Save**. You can now reference this as `{{Li2 Click ID}}` in your tags
+  </Step>
+</Steps>
+
+---
+
+## GTM Lead Tracking
+
+Track when users sign up, register, or show interest in your product/service.
+
+### Option 1: Thank You Page Tracking (Recommended)
+
+**When to use**: You redirect users to a thank you page after form submission (e.g., `/thank-you`, `/success`, `/welcome`)
+
+<Steps>
+  <Step title="Create New Tag">
+    **Tags** → **New** → Name: "Li2 - Track Lead - Thank You Page"
+  </Step>
+
+  <Step title="Configure Tag Type">
+    Select **Custom HTML** and paste the script below
+  </Step>
+
+  <Step title="Set Up Trigger">
+    **Triggering** → **New Trigger**:
+    - **Trigger Type**: Page View
+    - **This trigger fires on**: Some Page Views
+    - **Condition**: Page URL contains `/thank-you` (adjust to match your URL)
+  </Step>
+</Steps>
+
+**Script:**
+
+```html
+<script>
+(function() {
+  // Extract user info from URL parameters (common pattern)
+  var params = new URLSearchParams(window.location.search);
+  var email = params.get("email");
+  var name = params.get("name");
+
+  // Get click ID from GTM variable
+  var clickId = {{Li2 Click ID}} || "";
+
+  // Only track if we have both email and clickId
+  if (email && clickId) {
+    li2Analytics.trackLead({
+      eventName: "Sign Up",
+      customerExternalId: email,
+      customerName: name || email,
+      customerEmail: email,
+      clickId: clickId
+    });
+  }
+})();
+</script>
+```
+
+<Tip>
+**Customize for your use case:**
+- If customer info is in `localStorage` or `sessionStorage`, retrieve it from there
+- If you use data layer, read from `dataLayer.push()` variables
+- If form is on the same page, read from DOM elements (see Option 2)
+</Tip>
+
+### Option 2: Form Submission Tracking
+
+**When to use**: You want to track immediately when the form is submitted (no redirect)
+
+<Steps>
+  <Step title="Create New Tag">
+    **Tags** → **New** → Name: "Li2 - Track Lead - Form Submission"
+  </Step>
+
+  <Step title="Configure Tag Type">
+    Select **Custom HTML** and paste the script below
+  </Step>
+
+  <Step title="Set Up Trigger">
+    **Triggering** → **New Trigger**:
+    - **Trigger Type**: Form Submission
+    - **This trigger fires on**: Specific forms (use form ID or class)
+    - **Wait for Tags**: Check "Wait for Tags" with max wait time 2000ms
+  </Step>
+</Steps>
+
+**Script:**
+
+```html
+<script>
+(function() {
+  // Get form field values (adjust selectors to match your form)
+  var name = document.getElementById("name")?.value || "";
+  var email = document.getElementById("email")?.value || "";
+
+  // Get click ID from GTM variable
+  var clickId = {{Li2 Click ID}} || "";
+
+  // Only track if we have both email and clickId
+  if (email && clickId) {
+    li2Analytics.trackLead({
+      eventName: "Sign Up",
+      customerExternalId: email,
+      customerName: name || email,
+      customerEmail: email,
+      clickId: clickId
+    });
+  }
+})();
+</script>
+```
+
+<Warning>
+**IMPORTANT**: Update the DOM selectors (`getElementById`, `querySelector`) to match your actual form field IDs or classes. Inspect your form HTML to find the correct selectors.
+</Warning>
+
+---
+
+## GTM Sale Tracking
+
+Track revenue when customers make purchases.
+
+### Option 1: Order Confirmation Page (Recommended)
+
+**When to use**: You redirect users to an order confirmation page after successful payment (e.g., `/order-confirmation`, `/checkout/success`)
+
+<Steps>
+  <Step title="Create New Tag">
+    **Tags** → **New** → Name: "Li2 - Track Sale - Order Confirmation"
+  </Step>
+
+  <Step title="Configure Tag Type">
+    Select **Custom HTML** and paste the script below
+  </Step>
+
+  <Step title="Set Up Trigger">
+    **Triggering** → **New Trigger**:
+    - **Trigger Type**: Page View
+    - **This trigger fires on**: Some Page Views
+    - **Condition**: Page URL contains `/order-confirmation` (adjust to match your URL)
+  </Step>
+</Steps>
+
+**Script:**
+
+```html
+<script>
+(function() {
+  // Extract order info from URL parameters (common for payment gateways)
+  var params = new URLSearchParams(window.location.search);
+  var customerId = params.get("customer_id");
+  var amount = params.get("amount");
+  var invoiceId = params.get("invoice_id") || params.get("order_id");
+
+  // Get click ID from GTM variable
+  var clickId = {{Li2 Click ID}} || "";
+
+  // Only track if we have required fields
+  if (customerId && amount && clickId) {
+    li2Analytics.trackSale({
+      eventName: "Purchase",
+      customerExternalId: customerId,
+      amount: parseInt(amount), // Amount in cents (e.g., 4999 = $49.99)
+      invoiceId: invoiceId || undefined,
+      currency: "usd", // Change to "vnd" if needed
+      paymentProcessor: "stripe", // Or "paypal", "paddle", etc.
+      clickId: clickId
+    });
+  }
+})();
+</script>
+```
+
+<Note>
+**Amount Format**: Amount must be in smallest currency unit (cents for USD, đồng for VND):
+- ✅ CORRECT: `amount: 4999` = $49.99
+- ❌ WRONG: `amount: 49.99` = $0.49
+</Note>
+
+### Option 2: E-commerce Data Layer Tracking
+
+**When to use**: Your site pushes e-commerce data to GTM's data layer (common for Shopify, WooCommerce, Magento)
+
+<Steps>
+  <Step title="Create New Tag">
+    **Tags** → **New** → Name: "Li2 - Track Sale - Data Layer"
+  </Step>
+
+  <Step title="Configure Tag Type">
+    Select **Custom HTML** and paste the script below
+  </Step>
+
+  <Step title="Set Up Trigger">
+    **Triggering** → **New Trigger**:
+    - **Trigger Type**: Custom Event
+    - **Event Name**: `purchase` (or your e-commerce event name)
+  </Step>
+</Steps>
+
+**Script:**
+
+```html
+<script>
+(function() {
+  // Read from GTM data layer (pushed by your e-commerce platform)
+  var ecommerce = {{Ecommerce}};
+  var transaction = ecommerce?.purchase || {};
+
+  var customerId = transaction.actionField?.customer_id || "";
+  var amount = Math.round(parseFloat(transaction.actionField?.revenue || 0) * 100);
+  var invoiceId = transaction.actionField?.id || "";
+  var currency = (transaction.actionField?.currency || "usd").toLowerCase();
+
+  // Get click ID from GTM variable
+  var clickId = {{Li2 Click ID}} || "";
+
+  // Only track if we have required fields
+  if (customerId && amount > 0 && clickId) {
+    li2Analytics.trackSale({
+      eventName: "Purchase",
+      customerExternalId: customerId,
+      amount: amount,
+      invoiceId: invoiceId || undefined,
+      currency: currency,
+      paymentProcessor: "stripe",
+      clickId: clickId
+    });
+  }
+})();
+</script>
+```
+
+<Tip>
+**Data Layer Structure**: The script above assumes standard Enhanced Ecommerce format. If your platform uses a different structure, adjust the object paths accordingly. Check GTM Preview mode to inspect your actual data layer structure.
+</Tip>
+
+---
+
+## Testing Your GTM Setup
+
+### Step 1: Use GTM Preview Mode
+
+<Steps>
+  <Step title="Enable Preview Mode">
+    In GTM workspace, click **Preview** button (top right)
+  </Step>
+
+  <Step title="Connect to Website">
+    Enter your website URL and click **Connect**. A new window opens with GTM debugger overlay
+  </Step>
+
+  <Step title="Test SDK Loader Tag">
+    1. Navigate through your site
+    2. In GTM debugger, verify "Li2 Analytics - SDK Loader" fires on all pages
+    3. Check **Tags Fired** section
+  </Step>
+
+  <Step title="Test Lead Tracking">
+    1. Navigate to form page or thank you page
+    2. Verify lead tracking tag fires
+    3. Check tag configuration and variable values in debugger
+  </Step>
+
+  <Step title="Test Sale Tracking">
+    1. Navigate to order confirmation page
+    2. Verify sale tracking tag fires
+    3. Confirm amount, customerId, and clickId are captured correctly
+  </Step>
+</Steps>
+
+### Step 2: Browser Console Verification
+
+Open browser console (F12) and verify:
+
+**1. SDK Loaded:**
+```javascript
+li2Analytics
+// Should return: {trackLead: ƒ, trackSale: ƒ, ...}
+```
+
+**2. Click ID Cookie:**
+```javascript
+document.cookie.split(';').find(c => c.includes('li_cid'))
+// Should return: " li_cid=cm3w..."
+```
+
+**3. Manual Event Test:**
+```javascript
+li2Analytics.trackLead({
+  eventName: "Test Lead",
+  customerExternalId: "test@example.com",
+  customerEmail: "test@example.com"
+})
+// Check Network tab for POST request to Li2 API
+```
+
+### Step 3: Network Tab Verification
+
+1. Open **DevTools** → **Network** tab
+2. Filter by "track" or your API domain
+3. Trigger lead/sale events
+4. Look for POST requests to Li2 API endpoints
+5. Check request payload to ensure correct data is sent
+
+<Tip>
+**Debug Mode**: Add `?li2_debug=true` to your URL to enable verbose logging in the console. This shows exactly what data Li2 SDK is capturing and sending.
+</Tip>
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tag not firing in GTM Preview">
+    **Common causes:**
+
+    1. **Trigger conditions don't match**: Check that page URL or form selector matches exactly
+    2. **Tag sequence issue**: Ensure SDK loader tag fires before tracking tags
+    3. **Variable not returning value**: Test `{{Li2 Click ID}}` in GTM Variables section
+
+    **Fix:**
+    - Use GTM debugger to see why trigger didn't match
+    - Test trigger conditions manually (check actual URL, form ID in inspector)
+    - Verify variable is configured correctly (cookie name = `li_cid`)
+  </Accordion>
+
+  <Accordion title="li2Analytics is not defined">
+    **Cause:** SDK loader tag hasn't fired or script failed to load
+
+    **Fix:**
+    1. Check GTM Preview - did "Li2 Analytics - SDK Loader" fire?
+    2. Check Network tab - is script loading from unpkg.com?
+    3. Ad blocker blocking? Disable and test again
+    4. Check browser console for JavaScript errors
+    5. Verify publishable key is correct (no typos)
+  </Accordion>
+
+  <Accordion title="li_cid cookie not set">
+    **Cause:** User didn't arrive from a Li2 touchpoint link
+
+    **Explanation:**
+    - The `li_cid` cookie is ONLY set when users click a touchpoint link (short link, QR code, NFC tag)
+    - If you navigate directly to your site, cookie won't exist
+
+    **Test properly:**
+    1. Create a test touchpoint with conversion tracking enabled
+    2. Get the short link (e.g., `li2.link/test-campaign`)
+    3. Click the link in incognito mode
+    4. Now check cookie - it should exist
+  </Accordion>
+
+  <Accordion title="Form fields returning empty values">
+    **Cause:** DOM selectors don't match your actual form structure
+
+    **Fix:**
+    1. Inspect your form HTML to find actual field IDs/classes
+    2. Update selectors in the script:
+       ```javascript
+       // ❌ If this doesn't match your HTML
+       var email = document.getElementById("email")?.value;
+
+       // ✅ Change to match your form
+       var email = document.querySelector("input[name='user_email']")?.value;
+       ```
+    3. Test in browser console first to verify selector works
+  </Accordion>
+
+  <Accordion title="Sale amount is wrong (showing $0.49 instead of $49.99)">
+    **Cause:** Amount not converted to cents
+
+    **Fix:**
+    ```javascript
+    // ❌ WRONG: Sending dollars
+    amount: 49.99  // → Treated as 49 cents = $0.49
+
+    // ✅ CORRECT: Multiply by 100 to convert to cents
+    amount: Math.round(49.99 * 100)  // → 4999 cents = $49.99
+    ```
+  </Accordion>
+
+  <Accordion title="Events tracked multiple times (duplicates)">
+    **Cause:** Tag firing multiple times due to incorrect trigger setup
+
+    **Fix:**
+    1. Check GTM debugger - how many times did tag fire?
+    2. Review trigger conditions - is it too broad?
+    3. For form submissions: Enable "Wait for Tags" and set max wait time
+    4. For page views: Ensure URL condition is specific enough
+    5. Use `invoiceId` parameter to prevent duplicate sales (Li2 deduplicates within 7 days)
+  </Accordion>
+
+  <Accordion title="CORS errors in console">
+    **Cause:** Current domain not in allowed hostnames list
+
+    **Fix:**
+    1. Go to Li2 **Settings → Analytics → Security**
+    2. Add your domain to **Allowed Hostnames**:
+       - For exact match: `example.com`
+       - For all subdomains: `*.example.com`
+       - For development: `localhost` or `127.0.0.1`
+    3. Save and test again
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Best Practices
+
+<Tip>
+**1. Use GTM Folders**: Organize all Li2 tags in a folder called "Li2 Analytics" for easy management
+
+**2. Name tags consistently**: Use prefix "Li2 -" for all tags so they're easy to find
+
+**3. Document your setup**: Add notes in tag descriptions explaining what each tag does
+
+**4. Test in Preview before publishing**: Always use GTM Preview mode to verify tags work before publishing to production
+
+**5. Use version control**: GTM auto-saves versions - add descriptive version names when publishing
+
+**6. Set up error alerts**: Configure GTM to send notifications when tags fail to fire
+</Tip>
+
+---
+
+## Coming Soon
+
+<CardGroup cols={2}>
+  <Card title="Shopify Integration" icon="shopify">
+    Native Shopify app for automatic conversion tracking
+  </Card>
+
+  <Card title="WooCommerce Plugin" icon="wordpress">
+    WordPress plugin for WooCommerce stores
+  </Card>
+
+  <Card title="Zapier Integration" icon="bolt">
+    Connect Li2 to 5,000+ apps via Zapier
+  </Card>
+
+  <Card title="Segment Integration" icon="wave-pulse">
+    Send conversion events through Segment CDP
+  </Card>
+</CardGroup>
+
+<Info>
+**Want early access?** Contact us at [support@li2.ai](mailto:support@li2.ai) to join our beta program for upcoming integrations.
+</Info>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Track Lead Events" icon="user-plus" href="./events#lead-tracking">
+    Learn about all available lead tracking options
+  </Card>
+
+  <Card title="Track Sale Events" icon="sack-dollar" href="./events#sale-tracking">
+    Learn about all available sale tracking options
+  </Card>
+
+  <Card title="Configure Goals" icon="bullseye-arrow" href="./goals">
+    Set up conversion goals and targets
+  </Card>
+
+  <Card title="View Analytics" icon="chart-line" href="../setup">
+    Return to setup guide
+  </Card>
+</CardGroup>

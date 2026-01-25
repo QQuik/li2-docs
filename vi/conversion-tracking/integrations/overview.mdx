@@ -1,0 +1,230 @@
+---
+title: "Tổng Quan Tích Hợp Third-party"
+description: "Kết nối conversion tracking của Li2 với các nền tảng và công cụ phổ biến bạn đang sử dụng."
+sidebarTitle: "Overview"
+icon: "grid-2"
+---
+
+# Tích Hợp Third-party
+
+<Info>
+Tích hợp conversion tracking của Li2 với các công cụ và nền tảng yêu thích mà không cần viết code trực tiếp trên website.
+</Info>
+
+## Tại Sao Nên Dùng Integrations?
+
+Tích hợp third-party cho phép bạn triển khai conversion tracking của Li2 thông qua các công cụ đã sử dụng, mang lại:
+
+<CardGroup cols={2}>
+  <Card title="Không Cần Code" icon="code-simple">
+    Deploy tracking mà không cần sửa codebase của website
+  </Card>
+
+  <Card title="Quản Lý Tập Trung" icon="layer-group">
+    Quản lý tất cả marketing tags từ một platform
+  </Card>
+
+  <Card title="Version Control" icon="clock-rotate-left">
+    Test thay đổi trong preview mode trước khi publish
+  </Card>
+
+  <Card title="Dễ Cập Nhật" icon="arrows-rotate">
+    Cập nhật tracking logic mà không cần redeploy site
+  </Card>
+</CardGroup>
+
+---
+
+## Integrations Khả Dụng
+
+### Tag Management
+
+<CardGroup cols={1}>
+  <Card title="Google Tag Manager" icon="google" href="./google-tag-manager">
+    **Phổ Biến Nhất** - Quản lý toàn bộ marketing tags tại một nơi
+
+    **Tính Năng:**
+    - Không cần developer
+    - Preview mode testing
+    - Version control
+    - Hoạt động với mọi website
+
+    **Phù hợp cho:** Marketers muốn kiểm soát tracking
+  </Card>
+</CardGroup>
+
+### Nền Tảng E-commerce
+
+<CardGroup cols={2}>
+  <Card title="Shopify" icon="shopify">
+    **Sắp Ra Mắt** - Native Shopify app cho automatic tracking
+
+    **Tính Năng Dự Kiến:**
+    - Cài đặt one-click
+    - Automatic order tracking
+    - Customer sync
+    - Multi-currency support
+  </Card>
+
+  <Card title="WooCommerce" icon="wordpress">
+    **Sắp Ra Mắt** - WordPress plugin cho WooCommerce stores
+
+    **Tính Năng Dự Kiến:**
+    - Easy plugin installation
+    - Checkout tracking
+    - Order webhook integration
+    - WooCommerce dashboard widget
+  </Card>
+</CardGroup>
+
+### Automation & Integration
+
+<CardGroup cols={2}>
+  <Card title="Zapier" icon="bolt">
+    **Sắp Ra Mắt** - Kết nối Li2 với 5,000+ apps
+
+    **Tính Năng Dự Kiến:**
+    - No-code workflows
+    - CRM integration
+    - Email marketing sync
+    - Custom triggers
+  </Card>
+
+  <Card title="Segment" icon="wave-pulse">
+    **Sắp Ra Mắt** - Gửi conversion events qua Segment CDP
+
+    **Tính Năng Dự Kiến:**
+    - Centralized data pipeline
+    - Multi-destination sync
+    - Event transformation
+    - Real-time streaming
+  </Card>
+</CardGroup>
+
+---
+
+## Chọn Integration Phù Hợp
+
+<AccordionGroup>
+  <Accordion title="Tôi muốn track conversions mà không động vào code">
+    **Khuyến Nghị**: [Google Tag Manager](./google-tag-manager)
+
+    GTM hoàn hảo nếu bạn:
+    - Không có quyền developer access
+    - Muốn kiểm soát tracking tự mình
+    - Cần test trước khi deploy
+    - Đã dùng GTM cho tools khác
+  </Accordion>
+
+  <Accordion title="Tôi chạy cửa hàng online (Shopify, WooCommerce)">
+    **Sắp Ra Mắt**: E-commerce platform integrations
+
+    Native integrations sẽ cung cấp:
+    - Automatic order tracking
+    - Không cần manual setup
+    - Built-in e-commerce features
+    - One-click installation
+
+    **Giải Pháp Hiện Tại**: Dùng [Google Tag Manager](./google-tag-manager) hoặc [Direct SDK Installation](../setup)
+  </Accordion>
+
+  <Accordion title="Tôi cần kết nối Li2 với CRM/Marketing tools">
+    **Sắp Ra Mắt**: Zapier và Segment integrations
+
+    Chúng sẽ enable:
+    - Automatic data syncing
+    - Multi-platform workflows
+    - No-code automation
+    - Real-time updates
+
+    **Giải Pháp Hiện Tại**: Dùng webhooks hoặc [API integration](../events) cho server-side tracking
+  </Accordion>
+
+  <Accordion title="Tôi có developers và muốn full control">
+    **Khuyến Nghị**: [Direct SDK Installation](../setup)
+
+    Direct integration cung cấp:
+    - Maximum flexibility
+    - Custom event tracking
+    - Server-side tracking option
+    - Full API access
+
+    Bạn cũng có thể kết hợp direct SDK với GTM để có maximum control.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## So Sánh Integrations
+
+| Integration | Setup Time | Developer Cần? | Version Control | Live Testing | Phù Hợp Cho |
+|-------------|------------|----------------|-----------------|--------------|-------------|
+| **Google Tag Manager** | 15-30 phút | ❌ Không | ✅ Có | ✅ Có | Marketers |
+| **Direct SDK** | 10-20 phút | ✅ Có | ⚠️ Manual | ⚠️ Manual | Developers |
+| **Shopify** (Sắp có) | 5 phút | ❌ Không | ✅ Có | ✅ Có | Shopify stores |
+| **WooCommerce** (Sắp có) | 5-10 phút | ❌ Không | ✅ Có | ✅ Có | WordPress stores |
+| **Zapier** (Sắp có) | 10-15 phút | ❌ Không | ✅ Có | ✅ Có | No-code users |
+
+---
+
+## Đăng Ký Early Access
+
+<Info>
+**Muốn early access cho upcoming integrations?**
+
+Chúng tôi đang phát triển integrations cho:
+- Shopify native app
+- WooCommerce plugin
+- Zapier connector
+- Segment destination
+- Make (Integromat) modules
+- HubSpot integration
+
+Liên hệ chúng tôi tại [support@li2.ai](mailto:support@li2.ai) để:
+- Tham gia beta program
+- Ảnh hưởng roadmap priorities
+- Nhận exclusive early access
+- Cung cấp feedback về integrations
+</Info>
+
+---
+
+## Cần Custom Integration?
+
+Nếu bạn cần integration không có trong danh sách, chúng tôi có thể giúp:
+
+<CardGroup cols={2}>
+  <Card title="Enterprise Integrations" icon="building">
+    Custom integrations cho enterprise needs
+
+    Liên hệ: [enterprise@li2.ai](mailto:enterprise@li2.ai)
+  </Card>
+
+  <Card title="API Documentation" icon="code">
+    Tự build integration của bạn bằng API
+
+    Xem: [API Reference](../events)
+  </Card>
+</CardGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Bắt Đầu Với GTM" icon="google" href="./google-tag-manager">
+    Cài đặt conversion tracking qua Google Tag Manager
+  </Card>
+
+  <Card title="Direct SDK Setup" icon="code" href="../setup">
+    Cài Li2 Analytics SDK trực tiếp trên website
+  </Card>
+
+  <Card title="Track Events" icon="chart-line" href="../events">
+    Tìm hiểu về tracking lead và sale events
+  </Card>
+
+  <Card title="Configure Goals" icon="bullseye-arrow" href="../goals">
+    Thiết lập conversion goals và targets
+  </Card>
+</CardGroup>

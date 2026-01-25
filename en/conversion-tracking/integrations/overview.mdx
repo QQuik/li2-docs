@@ -1,0 +1,230 @@
+---
+title: "Third-party Integrations Overview"
+description: "Connect Li2 conversion tracking with popular platforms and tools you already use."
+sidebarTitle: "Overview"
+icon: "grid-2"
+---
+
+# Third-party Integrations
+
+<Info>
+Integrate Li2 conversion tracking with your favorite tools and platforms without writing code directly on your website.
+</Info>
+
+## Why Use Integrations?
+
+Third-party integrations allow you to implement Li2 conversion tracking through tools you already use, providing:
+
+<CardGroup cols={2}>
+  <Card title="No Code Changes" icon="code-simple">
+    Deploy tracking without modifying your website's codebase
+  </Card>
+
+  <Card title="Centralized Management" icon="layer-group">
+    Manage all your marketing tags from one platform
+  </Card>
+
+  <Card title="Version Control" icon="clock-rotate-left">
+    Test changes in preview mode before publishing
+  </Card>
+
+  <Card title="Easy Updates" icon="arrows-rotate">
+    Update tracking logic without redeploying your site
+  </Card>
+</CardGroup>
+
+---
+
+## Available Integrations
+
+### Tag Management
+
+<CardGroup cols={1}>
+  <Card title="Google Tag Manager" icon="google" href="./google-tag-manager">
+    **Most Popular** - Manage all marketing tags in one place
+
+    **Features:**
+    - No developer required
+    - Preview mode testing
+    - Version control
+    - Works with any website
+
+    **Best for:** Marketers who want control over tracking
+  </Card>
+</CardGroup>
+
+### E-commerce Platforms
+
+<CardGroup cols={2}>
+  <Card title="Shopify" icon="shopify">
+    **Coming Soon** - Native Shopify app for automatic tracking
+
+    **Planned Features:**
+    - One-click installation
+    - Automatic order tracking
+    - Customer sync
+    - Multi-currency support
+  </Card>
+
+  <Card title="WooCommerce" icon="wordpress">
+    **Coming Soon** - WordPress plugin for WooCommerce stores
+
+    **Planned Features:**
+    - Easy plugin installation
+    - Checkout tracking
+    - Order webhook integration
+    - WooCommerce dashboard widget
+  </Card>
+</CardGroup>
+
+### Automation & Integration
+
+<CardGroup cols={2}>
+  <Card title="Zapier" icon="bolt">
+    **Coming Soon** - Connect Li2 to 5,000+ apps
+
+    **Planned Features:**
+    - No-code workflows
+    - CRM integration
+    - Email marketing sync
+    - Custom triggers
+  </Card>
+
+  <Card title="Segment" icon="wave-pulse">
+    **Coming Soon** - Send conversion events through Segment CDP
+
+    **Planned Features:**
+    - Centralized data pipeline
+    - Multi-destination sync
+    - Event transformation
+    - Real-time streaming
+  </Card>
+</CardGroup>
+
+---
+
+## Choosing the Right Integration
+
+<AccordionGroup>
+  <Accordion title="I want to track conversions without touching code">
+    **Recommended**: [Google Tag Manager](./google-tag-manager)
+
+    GTM is perfect if you:
+    - Don't have developer access
+    - Want to control tracking yourself
+    - Need to test before deploying
+    - Already use GTM for other tools
+  </Accordion>
+
+  <Accordion title="I run an online store (Shopify, WooCommerce)">
+    **Coming Soon**: E-commerce platform integrations
+
+    Native integrations will provide:
+    - Automatic order tracking
+    - No manual setup required
+    - Built-in e-commerce features
+    - One-click installation
+
+    **Current Solution**: Use [Google Tag Manager](./google-tag-manager) or [Direct SDK Installation](../setup)
+  </Accordion>
+
+  <Accordion title="I need to connect Li2 with my CRM/Marketing tools">
+    **Coming Soon**: Zapier and Segment integrations
+
+    These will enable:
+    - Automatic data syncing
+    - Multi-platform workflows
+    - No-code automation
+    - Real-time updates
+
+    **Current Solution**: Use webhooks or [API integration](../events) for server-side tracking
+  </Accordion>
+
+  <Accordion title="I have developers and want full control">
+    **Recommended**: [Direct SDK Installation](../setup)
+
+    Direct integration provides:
+    - Maximum flexibility
+    - Custom event tracking
+    - Server-side tracking option
+    - Full API access
+
+    You can also combine direct SDK with GTM for maximum control.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Integration Comparison
+
+| Integration | Setup Time | Developer Required | Version Control | Live Testing | Best For |
+|-------------|------------|-------------------|-----------------|--------------|----------|
+| **Google Tag Manager** | 15-30 min | ❌ No | ✅ Yes | ✅ Yes | Marketers |
+| **Direct SDK** | 10-20 min | ✅ Yes | ⚠️ Manual | ⚠️ Manual | Developers |
+| **Shopify** (Coming) | 5 min | ❌ No | ✅ Yes | ✅ Yes | Shopify stores |
+| **WooCommerce** (Coming) | 5-10 min | ❌ No | ✅ Yes | ✅ Yes | WordPress stores |
+| **Zapier** (Coming) | 10-15 min | ❌ No | ✅ Yes | ✅ Yes | No-code users |
+
+---
+
+## Request Early Access
+
+<Info>
+**Want early access to upcoming integrations?**
+
+We're building integrations for:
+- Shopify native app
+- WooCommerce plugin
+- Zapier connector
+- Segment destination
+- Make (Integromat) modules
+- HubSpot integration
+
+Contact us at [support@li2.ai](mailto:support@li2.ai) to:
+- Join our beta program
+- Influence roadmap priorities
+- Get exclusive early access
+- Provide feedback on integrations
+</Info>
+
+---
+
+## Need a Custom Integration?
+
+If you need an integration not listed here, we can help:
+
+<CardGroup cols={2}>
+  <Card title="Enterprise Integrations" icon="building">
+    Custom integrations for enterprise needs
+
+    Contact: [enterprise@li2.ai](mailto:enterprise@li2.ai)
+  </Card>
+
+  <Card title="API Documentation" icon="code">
+    Build your own integration using our API
+
+    View: [API Reference](../events)
+  </Card>
+</CardGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Start with GTM" icon="google" href="./google-tag-manager">
+    Set up conversion tracking via Google Tag Manager
+  </Card>
+
+  <Card title="Direct SDK Setup" icon="code" href="../setup">
+    Install Li2 Analytics SDK directly on your website
+  </Card>
+
+  <Card title="Track Events" icon="chart-line" href="../events">
+    Learn about tracking lead and sale events
+  </Card>
+
+  <Card title="Configure Goals" icon="bullseye-arrow" href="../goals">
+    Set up conversion goals and targets
+  </Card>
+</CardGroup>

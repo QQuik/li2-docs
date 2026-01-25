@@ -37,6 +37,12 @@
                   "vi/conversion-tracking/overview",
                   "vi/conversion-tracking/setup",
                   "vi/conversion-tracking/events",
+                  {
+                    "group": "Integrations",
+                    "pages": [
+                      "vi/conversion-tracking/integrations/google-tag-manager"
+                    ]
+                  },
                   "vi/conversion-tracking/goals"
                 ]
               },
@@ -96,6 +102,12 @@
                   "en/conversion-tracking/overview",
                   "en/conversion-tracking/setup",
                   "en/conversion-tracking/events",
+                  {
+                    "group": "Integrations",
+                    "pages": [
+                      "en/conversion-tracking/integrations/google-tag-manager"
+                    ]
+                  },
                   "en/conversion-tracking/goals"
                 ]
               },
