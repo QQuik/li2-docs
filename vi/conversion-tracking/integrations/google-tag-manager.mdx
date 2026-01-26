@@ -71,9 +71,15 @@ Trước khi bắt đầu, đảm bảo bạn có:
   c[n] = c[n] || function () {
     (c[n].q = c[n].q || []).push(arguments);
   };
-  ["trackLead", "trackSale"].forEach(
-    (t) => (c[n][t] = (...a) => c[n](t, ...a))
-  );
+  var methods = ["trackLead", "trackSale"];
+  for (var i = 0; i < methods.length; i++) {
+    (function(method) {
+      c[n][method] = function() {
+        var args = Array.prototype.slice.call(arguments);
+        c[n].apply(c[n], [method].concat(args));
+      };
+    })(methods[i]);
+  }
   var s = document.createElement("script");
   s.defer = 1;
   s.src = "https://unpkg.com/@li2/analytics/dist/index.global.js";
@@ -202,8 +208,10 @@ Track khi users sign up, đăng ký, hoặc thể hiện quan tâm đến sản 
 <script>
 (function() {
   // Lấy giá trị form fields (điều chỉnh selectors cho phù hợp với form của bạn)
-  var name = document.getElementById("name")?.value || "";
-  var email = document.getElementById("email")?.value || "";
+  var nameField = document.getElementById("name");
+  var emailField = document.getElementById("email");
+  var name = nameField ? nameField.value : "";
+  var email = emailField ? emailField.value : "";
 
   // Lấy click ID từ GTM variable
   var clickId = {{Li2 Click ID}} || "";
@@ -316,12 +324,15 @@ Track revenue khi khách hàng mua hàng.
 (function() {
   // Đọc từ GTM data layer (được push bởi e-commerce platform của bạn)
   var ecommerce = {{Ecommerce}};
-  var transaction = ecommerce?.purchase || {};
+  var transaction = (ecommerce && ecommerce.purchase) ? ecommerce.purchase : {};
+  var actionField = transaction.actionField || {};
 
-  var customerId = transaction.actionField?.customer_id || "";
-  var amount = Math.round(parseFloat(transaction.actionField?.revenue || 0) * 100);
-  var invoiceId = transaction.actionField?.id || "";
-  var currency = (transaction.actionField?.currency || "usd").toLowerCase();
+  var customerId = actionField.customer_id || "";
+  var revenue = actionField.revenue || 0;
+  var amount = Math.round(parseFloat(revenue) * 100);
+  var invoiceId = actionField.id || "";
+  var currencyRaw = actionField.currency || "usd";
+  var currency = currencyRaw.toLowerCase();
 
   // Lấy click ID từ GTM variable
   var clickId = {{Li2 Click ID}} || "";
@@ -469,10 +480,12 @@ li2Analytics.trackLead({
     2. Update selectors trong script:
        ```javascript
        // ❌ Nếu này không match HTML của bạn
-       var email = document.getElementById("email")?.value;
+       var emailField = document.getElementById("email");
+       var email = emailField ? emailField.value : "";
 
        // ✅ Đổi để match form của bạn
-       var email = document.querySelector("input[name='user_email']")?.value;
+       var emailField = document.querySelector("input[name='user_email']");
+       var email = emailField ? emailField.value : "";
        ```
     3. Test trong browser console trước để verify selector hoạt động
   </Accordion>
