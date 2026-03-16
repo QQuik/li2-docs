@@ -79,7 +79,15 @@
             ]
           },
           {
-            "tab": "Hướng dẫn sử dụng"
+            "tab": "Hướng dẫn sử dụng",
+            "groups": [
+              {
+                "group": "Quản Lý Liên kết",
+                "pages": [
+                  "link-thong-minh"
+                ]
+              }
+            ]
           }
         ]
       },
