@@ -19,7 +19,7 @@
         "default": true,
         "tabs": [
           {
-            "tab": "Hướng Dẫn Sử Dụng",
+            "tab": "Tài liệu hướng dẫn dành cho nhà. phát triển",
             "groups": [
               {
                 "group": "Bắt Đầu",
@@ -74,6 +74,25 @@
                   "vi/analytics/dashboard",
                   "vi/analytics/demographics",
                   "vi/analytics/filters"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Hướng dẫn sử dụng",
+            "groups": [
+              {
+                "group": "Quản lý link",
+                "pages": [
+                  "tong-quan-link",
+                  {
+                    "group": "Links",
+                    "pages": [
+                      "tao-link-rut-gon",
+                      "",
+                      "tao-qr-codes"
+                    ]
+                  }
                 ]
               }
             ]
