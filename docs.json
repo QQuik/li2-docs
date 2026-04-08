@@ -19,7 +19,7 @@
         "default": true,
         "tabs": [
           {
-            "tab": "Tài liệu hướng dẫn dành cho nhà. phát triển",
+            "tab": "Tài liệu hướng dẫn dành cho nhà phát triển",
             "groups": [
               {
                 "group": "Bắt Đầu",
@@ -88,9 +88,9 @@
                   {
                     "group": "Links",
                     "pages": [
-                      "tao-link-rut-gon",
-                      "",
-                      "tao-qr-codes"
+                      "tao-short-link-trong-li2",
+                      "tao-qr-codes",
+                      "untitled-page"
                     ]
                   }
                 ]
