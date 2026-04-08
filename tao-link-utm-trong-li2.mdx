@@ -1,0 +1,79 @@
+---
+title: "Cách Tạo Link UTM Trong Li2"
+description: "Dùng UTM Builder tích hợp của Li2 để tạo link UTM chuẩn, rút gọn và track trong 1 bước."
+---
+
+Các **tham số UTM** (Urchin Tracking Module ) rất phù hợp cho các liên kết tiếp thị vì chúng giúp bạn theo dõi chi tiết **nguồn truy cập** của từng chiến dịch marketing. Lý do là:
+
+- **Xác định nguồn (Source)**: Xác định nguồn lưu lượng truy cập (ví dụ: Facebook, Google), giúp xác định nền tảng nào đang thúc đẩy lưu lượng truy cập.
+- **Theo dõi chiến dịch (Campaign Tracking)**: Theo dõi các chiến dịch tiếp thị cụ thể, cho phép các nhà tiếp thị đánh giá hiệu quả của từng chiến dịch.
+- **Phân biệt phương tiện (Medium)**: Họ phân biệt giữa các loại phương tiện tiếp thị khác nhau (ví dụ: email, phương tiện truyền thông xã hội, PPC).
+- **Hiệu suất nội dung (Content Performance)**: Theo dõi các nội dung khác nhau trong một chiến dịch, cung cấp thông tin chi tiết về nội dung nào được người đọhưởng ứng tốt nhất.
+
+## Công cụ tạo UTM của Li2
+
+| Tham số | Code | Mô tả |
+| --- | --- | --- |
+| Source | utm\_source | Nguồn Traffic: Định danh nền tảng cụ thể nơi người dùng bắt đầu hành trình (ví dụ: Facebook, Google, LinkedIn). |
+| Medium | utm\_medium | Phương tiện: Phân loại hình thức tiếp cận hoặc loại kênh phân phối (ví dụ: cpc, organic, email, social). |
+| Campaign | utm\_campaign | Chiến dịch: Tên gọi để gộp nhóm các hoạt động marketing trong cùng một mục tiêu (ví dụ: launch\_pro\_2026, tet\_promotion). |
+| Term | utm\_term | Từ khóa: Theo dõi các từ khóa mục tiêu trong quảng cáo trả phí (Paid Search) để tối ưu tỷ lệ chuyển đổi. |
+| Content | utm\_content | Nội dung: Phân tách các điểm chạm (touchpoints) khác nhau trong cùng một mẫu quảng cáo (ví dụ: link\_bio, cta\_button). |
+
+## Cách thêm tham số UTM
+
+Có hai cách để gắn tham số UTM cho liên kết và mã QR trong Li2, tùy thuộc vào việc bạn đang tạo mới hay muốn chỉnh sửa nội dung đã có. Bạn có thể lựa chọn một trong hai phương thức sau
+
+1. Thêm tham số UTM cho link và mã QR tạo mới.
+2. Thêm tham số UTM cho link và mã QR đã có trong tài khoản.
+
+### Thêm tham số UTM cho link và mã QR tạo mới
+
+<Steps>
+  <Step title="Đăng nhập">
+    Đăng nhập tài khoản tại [app.li2.ai](http://app.li2.ai)
+  </Step>
+  <Step title="Tạo link rút gọn hoặc mã QR">
+    Trong menu bên trái, chọn **Link Rút Gọn** , chọn **tạo Link rút gọn.**
+  </Step>
+  <Step title="Mở hộp thoại UTM và thêm các tham số">
+    Nhấp vào ô **UTM**, bạn có thể điền các tham số UTM cho liên kết của mình.
+
+    Tại đây, bạn có thể thiết lập các tham số UTM cho liên kết của mình. Ví dụ:
+
+    - **UTM Source**: `facebook`
+    - **UTM Medium**: `social`
+    - **UTM Campaign**: `sale-he-2026`
+
+    Nhấp **Áp dụng **để thêm các tham số UTM vào liên kết của bạn.
+  </Step>
+  <Step title="Tạo link ngắn/ mã QR có tham số UTM">
+    Nhấn **Tạo **ở góc bên phải.
+  </Step>
+</Steps>
+
+### Thêm tham số UTM cho link và mã QR đã có
+
+<Steps>
+  <Step title="Đăng nhập">
+    Đăng nhập tài khoản tại [app.li2.ai](http://app.li2.ai)
+  </Step>
+  <Step title="Chọn link hoặc mã QR">
+    Trong menu bên trái, chọn **Link Rút Gọn** hoặc **Mã QR**
+
+    Nhấp vào Tiêu đề của link rút gọn/mã QR cần gắn UTM
+  </Step>
+  <Step title="Mở hộp thoại UTM và thêm các tham số">
+    Tại màn hình chi tiết, chọn **Tuỳ chọn Nâng cao**
+
+    Nhấp **UTM Builder**, điền các tham số UTM cho liên kết của mình.
+
+    Nhấp **Áp dụng **để thêm các tham số UTM vào link ngắn/ mã QR của bạn
+  </Step>
+</Steps>
+
+<Warning>
+  Lưu ý: Dù bạn chọn cách nào, Li2 đều tự động thêm các tham số UTM vào URL gốc và đảm bảo chúng được ghi nhận chính xác trong thống kê chiến dịch.
+</Warning>
+
+Việc thêm tham số UTM trong Li2 giúp marketer theo dõi chính xác nguồn truy cập, đánh giá hiệu suất từng kênh và tối ưu chiến dịch hiệu quả hơn. Khi kết hợp cùng thống kê phân tích trong Li2, bạn có thể xem chi tiết lượt click, thiết bị, khu vực và tỷ lệ chuyển đổi của từng đường link.
