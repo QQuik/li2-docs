@@ -83,18 +83,18 @@
             "pages": [
               "untitled-page",
               {
-                "group": "Quản lý link",
+                "group": "MANAGING YOUR LINKS",
                 "pages": [
                   "tong-quan-link",
                   {
                     "group": "Links",
                     "pages": [
+                      "huong-dan-rut-gon-link-li2",
                       "cong-cu-tao-short-link-trong-li2",
                       "tao-ma-qr-dong-trong-li2",
                       "tao-link-utm-trong-li2",
                       "bao-ve-link-bang-mat-khau-li2",
                       "cach-thiet-lap-thoi-han-cua-link",
-                      "huong-dan-rut-gon-link-li2",
                       "cach-thiet-lap-ban-xem-truoc-khi-chia-se-link",
                       "kiem-soat-quyen-truy-cap-link-li2",
                       "cach-ma-hoa-lien-ket-e2ee-li2",
@@ -105,20 +105,30 @@
                       "nham-muc-tieu-theo-thiet-bi-li2",
                       "nham-muc-tieu-theo-dia-ly-li2",
                       "cach-tao-va-su-dung-mau-utm-li2",
-                      "xem-thong-ke-phan-tich-trong-li2",
-                      "cach-loc-va-xem-analytics-theo-space-li2",
-                      "cach-loc-va-xem-analytics-theo-tag-li2",
-                      "cach-loc-va-xem-analytics-theo-link-li2",
                       "cach-tao-va-xoa-space-trong-li2",
                       "cach-them-chinh-sua-va-go-link-trong-space-li2",
                       "cach-su-dung-tags-li2",
-                      "to-chuc-li2-la-gi",
-                      "moi-va-quan-ly-thanh-vien-to-chuc-li2",
-                      "moi-thanh-vien-va-gan-vai-tro-trong-space-li2",
-                      "cach-thiet-lap-va-van-hanh-team-li2untitled-page",
                       "huong-dan-theo-doi-conversion-li2"
                     ]
+                  },
+                  {
+                    "group": "Analytics",
+                    "pages": [
+                      "xem-thong-ke-phan-tich-trong-li2",
+                      "cach-loc-va-xem-analytics-theo-link-li2",
+                      "cach-loc-va-xem-analytics-theo-tag-li2",
+                      "cach-loc-va-xem-analytics-theo-space-li2"
+                    ]
                   }
+                ]
+              },
+              {
+                "group": "TEAM & ORGANIZATION",
+                "pages": [
+                  "to-chuc-li2-la-gi",
+                  "moi-va-quan-ly-thanh-vien-to-chuc-li2",
+                  "moi-thanh-vien-va-gan-vai-tro-trong-space-li2",
+                  "cach-thiet-lap-va-van-hanh-team-li2untitled-page"
                 ]
               }
             ]
