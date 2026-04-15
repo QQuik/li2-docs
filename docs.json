@@ -80,7 +80,8 @@
           },
           {
             "tab": "Hướng dẫn sử dụng",
-            "groups": [
+            "pages": [
+              "untitled-page",
               {
                 "group": "Quản lý link",
                 "pages": [
