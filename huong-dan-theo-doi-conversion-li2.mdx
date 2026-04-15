@@ -1,0 +1,196 @@
+---
+title: "Cách Theo Dõi Conversion Trong Li2 (trackLead & trackSale)"
+description: "Tích hợp trackLead() và trackSale() để đo chuyển đổi từ short link và QR code về dashboard Li2."
+---
+
+Mỗi khi bạn chạy một chiến dịch marketing, việc **chỉ theo dõi số lượt click link là chưa đủ** để phản ánh đầy đủ bức tranh của phễu thu hút khách hàng.
+
+Bạn cần theo dõi **cách những lượt click đó chuyển đổi thành đăng ký và doanh số** để có thể xác định chiến dịch hoặc kênh nào đang hoạt động hiệu quả nhất.
+
+Với **Li2 Conversions,** bạn có thể biến **bất kỳ short link nào được tạo trên Li2** thành **một công cụ attribution hoàn chỉnh**. Điều này cho phép bạn hiểu rõ mức độ mà các link của mình đang tạo ra **người dùng thực tế và doanh thu thực tế.**
+
+## Li2 conversions họat động như thế nào
+
+Cách Li2 theo dõi conversion có thể được tóm gọn trong 3 bước đơn giản:
+
+<Steps>
+  <Step title="Click Event (Sự kiện click)">
+    Đây là bước đầu tiên trong phễu conversion. Nó có thể là:
+
+    - Một lượt click link trên bài đăng hoặc quảng cáo mạng xã hội.
+    - Một lượt click link trong email hoặc SMS.
+    - Một lượt quét mã QR cho các chiến dịch offline (hoặc video).
+  </Step>
+  <Step title="Lead Event (Sự kiện lead)">
+    Khi người dùng thực hiện một hành động cho thấy **sự quan tâm** tới sản phẩm hoặc dịch vụ của bạn. Ví dụ như:
+
+    - Đăng ký tài khoản.
+    - Thêm sản phẩm vào giỏ hàng.
+    - Điền form thông tin để lại email.
+  </Step>
+  <Step title="Sale Event (Sự kiện bán hàng)">
+    Khi người dùng mua sản phẩm hoặc dịch vụ của bạn. Ví dụ bao gồm:
+
+    - Đăng ký gói trả phí.
+    - Mở rộng mức sử dụng (nâng cấp từ gói này lên gói khác).
+    - Mua một sản phẩm.
+
+    Thông qua quy trình 3 bước này, team Marketing có thể tối ưu hóa ngân sách bằng cách chọn lựa **những hoạt động và nội dung mang lại kết quả tốt nhất**, dựa trên dữ liệu thực tế thay vì cảm tính.
+  </Step>
+</Steps>
+
+## Conversion được theo dõi như thế nào?
+
+Li2 Conversions sử dụng **cookie first-party đơn giản, hỗ trợ cả client-side và server-side event tracking** để theo dõi conversion.
+
+<Steps>
+  <Step title="Lưu click ID dưới dạng cookie first-party">
+    Khi người dùng click vào một link đã bật conversion, Li2 sẽ gắn một tham số query uid duy nhất vào URL đích. 
+
+    SDK **@li2/analytics** sẽ tự động phát hiện tham số này và lưu click ID dưới dạng cookie first-party **li\_cid** trên domain của bạn (ví dụ: [yourdomain.com](http://yourdomain.com)).
+
+    và lưu nó dưới dạng cookie first-party trên domain của bạn (ví dụ: [yourdomain.com](http://yourdomain.com)).
+
+    Điều này cho phép Li2 **gán mọi sự kiện conversion xảy ra sau đó** cho **lượt click ban đầu** — và theo đó là **link đã được click**.
+
+    Để bật tính năng này, bạn cần cài đặt package **@li2/analytics** trong dự án của mình.
+
+    ```text
+    npm install@li2/analytics
+    ```
+
+    **@li2/analytics** cho phép bạn theo dõi **lead conversion** và **sale conversion** cho Li2.
+
+    Package này sẽ tự động:
+
+    - Phát hiện tham số uid trong URL
+    - Lưu click ID thành cookie first-party li\_cid
+  </Step>
+  <Step title="Gán sự kiện conversion cho lượt click ban đầu">
+    Sau đó, khi một sự kiện conversion xảy ra (ví dụ: người dùng đăng ký tài khoản), bạn có thể **kiểm tra cookie**
+
+    **li\_cid** và gán conversion đó cho lượt click ban đầu.
+
+    Ví dụ, khi người dùng hoàn tất đăng ký, bạn có thể gửi lead conversion event như sau:
+
+    ```text
+    import { trackLead } from "@li2/analytics";
+    await trackLead({
+    eventName: "Sign up", // bắt buộc
+    customerExternalId: "user_123", // ID người dùng trong hệ thống của bạn
+    customerEmail: "user@example.com",
+    customerName: "Nguyen Van A",
+    });
+    ```
+
+    Khi gửi một **lead conversion event**, bạn có thể truyền các thuộc tính sau:
+
+    | **Thuộc tính** | **Mô tả** | **Bắt buộc** |
+    | :-: | :-: | :-: |
+    | clickId | Click ID được SDK tự động lọc từ cookie li\_cid. Có thể truyền thủ công nếu cần | Không. (SDK tự điền) |
+    | eventName | Tên của sự kiện. Ví dụ: "Sign up" | Có |
+    | customerExternalId | ID duy nhất của khách hàng trong hệ thống của bạn. Sẽ được dùng để nhận diện và gán mọi sự kiện trong tương lai cho khách hàng này | Không |
+    | customerEmail | Email của khách hàng. | Không |
+    | customerName | Tên khách hàng. | Không |
+    | customerAvatar | URL avatar của khách hàng. | Không |
+
+    Lead event sẽ đóng vai trò là **nguồn dữ liệu gốc** cho danh tính khách hàng và link mà họ đến từ đó. Điều này có nghĩa là **mọi hành động tiếp theo** của khách hàng (ví dụ: nâng cấp gói, mua sản phẩm) sẽ **tự động được gán cho link ban đầu.**
+  </Step>
+  <Step title="Gửi sale events">
+    Bước cuối cùng trong phễu conversion là theo dõi **sale event** và gán chúng cho lượt click ban đầu. Li2 cung cấp endpoint POST /api/v1/track/sale để gửi sale event thông qua Li2 TypeScript SDK:
+
+    ```text
+    import { init } from "@li2/analytics";
+    const li2 = init({ publishableKey: "YOUR_PUBLISHABLE_KEY" });
+    await li2.trackSale({
+    customerExternalId: "user_123", // bắt buộc
+    amount: 590000, currency: "vnd",
+    paymentProcessor: "momo",
+    eventName: "Subscription creation",
+    // bắt buộc, đơn vị nhỏ nhất của currency (VND: đồng, USD: c
+    });
+    ```
+
+    Các thuộc tính có thể gửi khi tạo sale event:
+
+    | **Thuộc tính** | **Mô tả** | **Bắt buộc** |
+    | :-: | :-: | :-: |
+    | customerExternalId | ID duy nhất của khách hàng trong hệ thống của bạn | Có |
+    | amount | Giá trị đơn hàng theo đơn vị nhỏ nhất của currency.<br />VND: truyền số đồng nguyên (ví dụ: 590000 =<br />590.000₫). USD: truyền cent (ví dụ: 5900 =<br />\$59.00) | Có |
+    | paymentProcessor | Tên cổng thanh toán xử lý giao dịch (ví dụ:<br />"momo", "vnpay") | Không |
+    | eventName | Tên sự kiện. Mặc định là "Purchase" | Không |
+    | invoiceId | ID hóa đơn trong hệ thống của bạn | Không |
+    | currency | Đơn vị tiền tệ. Mặc định là "usd" | Không |
+    | metadata | Object chứa thông tin bổ sung | Không |
+  </Step>
+</Steps>
+
+## Làm thế nào để xem dữ liệu conversion?
+
+Tất cả các conversion được theo dõi sẽ hiển thị tại **Bảng điều khiển Phân tích (Analytics dashboard) của bạn.** Li2 cung cấp 3 chế độ hiển thị khác nhau giúp bạn phân tích dữ liệu chuyển đổi một cách hiệu quả:
+
+- **Biểu đồ chuỗi thời gian (Time-series)**: Hiển thị biến động của số lượt nhấp (clicks), khách hàng tiềm năng (leads), Doanh số (sales) theo trình tự thời gian.
+- **Biểu đồ phễu (Funnel chart)**: Trực quan hóa tỷ lệ conversion. Tỷ lệ sụt giảm (dropoff) qua từng giai đoạn trong phễu convsersion:  Lượt nhấp → Khách hàng tiềm năng → Doanh số.
+- **Luồng sự kiện thời gian thực (Real-time events stream)**: Danh sách cập nhật trực tiếp mọi sự kiện chuyển đổi phát sinh trên tất cả các liên kết thuộc không gian làm việc (space) của bạn.
+
+## Bạn có thể xây dựng gì với Li2 Conversions?
+
+Có rất nhiều use case cho Li2 Conversions. Dưới đây là một vài ví dụ:
+
+### Theo dõi đơn hàng từ quảng cáo (Paid Ads Attribution)
+
+Bạn có thể sử dụng các short link khác nhau cho từng chiến dịch quảng cáo, sau đó gắn cùng một conversion “Purchase”.
+
+**Ví dụ:**
+
+- Facebook Ads → link A
+- Google Ads → link B
+- TikTok Ads → link C
+
+Khi khách hàng hoàn tất mua hàng:
+
+- Li2 ghi nhận conversion
+- Gán đơn hàng về đúng link quảng cáo
+
+Bạn có thể biết:
+
+- Quảng cáo nào tạo ra nhiều đơn hàng nhất
+- Conversion rate của từng kênh
+- Kênh nào chỉ có click nhưng không có đơn
+
+### So sánh hiệu quả nhiều landing page bán hàng
+
+Bạn có thể tạo nhiều link Li2 trỏ về các landing page khác nhau và gắn cùng một conversion.
+
+**Ví dụ:**
+
+- Landing page A (ưu đãi %)
+- Landing page B (freeship)
+- Landing page C (combo sản phẩm)
+
+Li2 cho phép bạn:
+
+- So sánh conversion rate giữa các landing page
+- Xác định trang bán hàng hiệu quả nhất
+- Tối ưu nội dung dựa trên dữ liệu conversion
+
+### Theo dõi hiệu quả chiến dịch khuyến mãi theo từng link
+
+Với mỗi chương trình khuyến mãi, bạn có thể:
+
+- Tạo link riêng
+- Gắn conversion riêng (hoặc dùng chung Purchase)
+
+**Ví dụ:**
+
+- Sale 11.11
+- Sale cuối tuần
+- Flash sale 2 giờ
+
+Conversion giúp bạn biết:
+
+- Chương trình nào tạo ra nhiều đơn nhất
+- Thời điểm nào có tỷ lệ mua cao
+- Nên lặp lại chiến dịch nào trong tương lai
+
+Bắt đầu với Li2 Conversions: Để bắt đầu sử dụng Li2 Conversions, hãy tham khảo **quickstart guide** của Li2.

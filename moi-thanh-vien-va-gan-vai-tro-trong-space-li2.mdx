@@ -1,0 +1,80 @@
+---
+title: "Cách Mời Thành Viên & Gán Vai Trò Trong Space Li2"
+description: "Mời người dùng vào Space cụ thể, phân quyền Viewer/Editor/Admin theo từng Space trong Li2."
+---
+
+Sau khi tạo Space, bạn cần mời thành viên vào Space và gán vai trò phù hợp để kiểm soát ai có thể chỉnh sửa link, ai chỉ được xem và ai có quyền quản lý Space. Tính năng quản lý thành viên trong Space cho phép bạn mời thêm người từ tổ chức vào Space hoặc xóa những thành viên không còn tham gia. 
+
+Ví dụ Công ty có **team Marketing** và **team Truyền thông nội bộ** cùng dùng Li2. Mỗi team làm việc trong Space riêng để chỉ thấy và thao tác với dữ liệu liên quan. Việc mời đúng người vào đúng Space và gán đúng vai trò giúp tránh chỉnh sửa nhầm và đảm bảo Analytics hiển thị đúng người.
+
+Trước khi bắt đầu, bạn hãy đảm bảo rằng:
+
+- Thành viên đã được **mời vào Organization.**
+- Space đã được tạo.
+- Bạn là **Space Owner** (hoặc Organization Owner)
+
+## Cách mời thành viên vào Space
+
+<Steps>
+  <Step title="Mở Space cần quản lý">
+    Truy cập vào trang quản lý link tại [app.li2.ai](http://app.li2.ai).
+
+    Trên thanh menu bên trái, mục **Quản lý** chọn **Space** để chọn Space bạn muốn thao tác.
+  </Step>
+  <Step title="Mở danh sách thành viên Space">
+    Mở tab **Thành viên**, nhấn nút **Thêm thành viên**
+  </Step>
+  <Step title="Chọn thành viên và gán vài trò">
+    Chọn thành viên trong tổ chức, nhấn dấu "**v**" để chọn vai trò của thành viên:
+
+    - Người xem
+    - Biên tập viên
+    - Chủ sở hữu
+
+    Nhấn nút **Thêm**. Quyền sẽ được áp dụng ngay lập tức.
+  </Step>
+</Steps>
+
+Sau khi hoàn tất, thành viên sẽ **ngay lập tức có quyền truy cập Space** theo vai trò được gán.
+
+## Thay đổi vai trò hoặc xóa thành viên khỏi Space
+
+### Cách thay đổi vai trò thành viên trong Space
+
+<Steps>
+  <Step title="Mở tab Thành viên trong Space">
+  </Step>
+  <Step title="Chọn thành viên cần chỉnh">
+  </Step>
+  <Step title="Thay đổi vai trò (Owner / Editor / Viewer)">
+  </Step>
+</Steps>
+
+### Cách xóa thành viên khỏi Space
+
+<Steps>
+  <Step title="Mở danh Space">
+    Trên thanh menu bên trái, mục **Quản lý** chọn **Space** để chọn Space bạn muốn thao tác.
+  </Step>
+  <Step title="Chọn thành viên ">
+    Mở tab **Thành viên**
+
+    Tại bảng **Thành viên Space**, chọn thành viên muốn xoá
+
+    Nhấn **biểu tượng thùng rác** để xóa thành viên khỏi Space.
+  </Step>
+</Steps>
+
+Sau khi hoàn tất, thành viên sẽ k**hông còn quyền truy cập Space**.
+
+## Một số lưu ý quan trọng Space
+
+1. **Viewer** không thể chỉnh sửa link, kể cả link do họ tạo.
+2. Analytics chỉ hiển thị cho thành viên của Space.
+3. Quyền trong Space ghi đè hành vi mặc định của Space access mode (chế độ truy cập).
+4. Organization Owner là ngoại lệ, có thể truy cập mọi Space.
+5. Chỉ **Chủ sở hữu (Owner)** của Space mới có quyền: Mời hoặc xóa thành viên khỏi space.
+6. Việc xóa thành viên:
+   - Không làm mất link hoặc QR đã tạo trong Space.
+   - Chỉ thu hồi quyền truy cập và thao tác.
+   - Thành viên có thể thuộc **nhiều Space khác nhau**, việc xóa chỉ áp dụng cho Space hiện tại.

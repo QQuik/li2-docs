@@ -1,0 +1,59 @@
+---
+title: "Cách Redirect Theo Địa Lý Trong Li2"
+description: "Cài đặt Smart Targeting địa lý để chuyển hướng người dùng ở các khu vực khác nhau đến đúng trang đích trong Li2."
+---
+
+Trên Li2, bạn có thể **nhắm mục tiêu người dùng theo vị trí địa lý** để điều hướng họ đến trang đích phù hợp với quốc gia hoặc khu vực của họ. Điều này giúp bạn sử dụng một link duy nhất cho nhiều thị trường, trong khi vẫn **tối ưu trải nghiệm người dùng** và **theo dõi dữ liệu tập trung**.
+
+Ví dụ bạn chạy một chiến dịch tại Việt Nam và quốc tế. Người dùng tại Việt Nam được chuyển đến landing page tiếng Việt, trong khi người dùng ở các quốc gia khác được chuyển đến trang tiếng Anh – tất cả chỉ với một link Li2.
+
+## Cách thiết lập nhắm mục tiêu theo vị trí địa lý
+
+Bạn có thể thiết lập trực tiếp trên một liên kết đã có, chỉ với vài bước:
+
+<Steps>
+  <Step title="Mở link cần cấu hình">
+    Truy cập vào trang quản lý link tại [app.li2.ai](http://app.li2.ai)
+
+    Trong danh sách **Link rút gọn**, chọn liên kết bạn muốn thiết lập nhắm mục tiêu.
+  </Step>
+  <Step title="Mở phần nhắm mục tiêu theo vị trí">
+    Mở tab **Tùy chọn nâng cao**. Chọn **Nhắm mục tiêu thông minh**
+
+    Nhấn vào nút **Thêm điều kiệ**n, chọn **Quốc Gia**
+  </Step>
+  <Step title="Thêm quy tắc và thiết lập URL">
+    Chọn **quốc gia** bạn muốn nhắm mục tiêu bằng cách cuộn chuột hoặc gõ quốc gia trong ô tìm kiếm.
+
+    Thêm **URL đích** tương ứng tại ô **Chuyển hướng đến link**
+
+    Nhấn **Lưu** để áp dụng quy tắc.
+  </Step>
+</Steps>
+
+Ngay sau đó, Li2 sẽ tự động nhận diện vị trí người dùng khi họ truy cập link và điều hướng đến URL phù hợp.
+
+## Link sẽ hoạt động như thế nào?
+
+| Trường hợp | Kết quả |
+| --- | --- |
+| Người dùng ở quốc gia đã cấu hình | Chuyển hướng đến URL tương ứng |
+| Người dùng ở quốc gia khác | Chuyển hướng đến URL mặc định |
+| Tracking & Analytics | Ghi nhận đầy đủ |
+
+## Lưu ý quan trọng khi thiết lập nhắm mục tiêu theo vị trí
+
+- Nhắm mục tiêu theo vị trí không tạo link mới.
+- Analytics vẫn được ghi nhận trên một link duy nhất
+- Vị trí được xác định dựa trên IP của người dùng
+- Một số người dùng có thể dùng VPN, ảnh hưởng đến kết quả.
+
+**Với các kịch bản nâng cao:**
+
+- Li2 kiểm tra các điều kiện **từ trên xuống** và áp dụng **điều kiện khớp đầu tiên**.
+- Nếu người dùng **không khớp bất kỳ điều kiện nào**, hệ thống sẽ chuyển hướng đến **URL mặc định** của liên kết.
+- Bạn có thể sử dụng thêm **nhóm điều kiện** để kết hợp:
+  - **AND**: tất cả điều kiện trong nhóm phải thỏa mãn
+  - **OR**: chỉ cần một trong các điều kiện thỏa mãn
+
+Nên thiết lập điều kiện **cụ thể trước, tổng quát sau** để tránh xung đột logic.

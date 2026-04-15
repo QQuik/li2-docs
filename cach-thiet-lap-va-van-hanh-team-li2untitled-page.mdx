@@ -1,0 +1,110 @@
+---
+title: "Cách Thiết Lập & Vận Hành Team Trong Li2"
+description: "Tạo team, thêm thành viên, phân chia workspace theo nhóm và quản lý quyền truy cập theo team trong Li2."
+---
+
+Khi bắt đầu làm việc nhóm trong Li2, việc thiết lập team đúng cách ngay từ đầu sẽ giúp bạn tránh nhầm lẫn về quyền, hạn chế rủi ro chỉnh sửa sai và kiểm soát dữ liệu hiệu quả hơn.
+
+Li2 sử dụng hai lớp phân quyền để kiểm soát quyền truy cập và thao tác dữ liệu:
+
+- **Organization** (Tổ chức) – xác định quyền của bạn với hệ thống và tài nguyên do chính bạn tạo.
+- **Space** (Không gian làm việc chung) – xác định quyền của bạn với tài nguyên của người khác trong cùng không gian làm việc.
+
+Ví dụ: Công ty có **team Marketing** và **team Truyền thông nội bộ** cùng sử dụng Li2. Team Marketing quản lý link chiến dịch và theo dõi hiệu quả, trong khi team Truyền thông nội bộ dùng link và QR cho tài liệu, thông báo và đào tạo nội bộ. Bằng cách tạo **Space riêng cho từng team**, Li2 giúp mỗi nhóm chỉ thấy và thao tác với dữ liệu liên quan, tránh chỉnh sửa nhầm và đảm bảo Analytics hiển thị đúng người.
+
+Để mời thành viên vào tổ chức, bạn cần có tài khoản Li2. Bạn cần đăng ký tài khoản Li2. Nếu bạn đã có tài khoản, bạn đăng nhập vào tài khoản và mời thành viên vào tổ chức của bạn.
+
+## Quy trình thiết lập team trong Li2
+
+Để thiết lập team đúng cách, bạn nên thực hiện theo thứ tự sau:
+
+1. Mời thành viên vào Organization.
+2. Tạo Space và chọn chế độ truy cập.
+3. Mời thành viên vào Space và gán vai trò.
+
+<Steps>
+  <Step title="Mời Thành viên vào Organization">
+    Ngay khi bạn tạo tài khoản Li2, bạn là Organization Owner. Để làm việc nhóm, bạn cần mời đồng nghiệp vào Organization.
+
+    **Cách thực hiện:**
+
+    Vào **Cài đặt tổ chức**, chọn **Thành viên.**
+
+    Mời thành viên mới, nhập email của người cần mời.
+
+    Chọn vai trò thành viên phù hợp:
+
+    - **Owner**: cùng quản lý hệ thống.
+    - **Member**: thành viên trong tổ chức.
+
+    Nhấn **Mời** để thêm thành viên.
+
+    Hệ thống sẽ gửi Email mời tham gia tổ chức đến đồng đội của bạn. Thành viên chỉ cần chấp nhận lời mời trong Email để được chuyển thẳng vào **dashboard của tổ chức** và bắt đầu làm việc theo quyền đã được cấp.
+  </Step>
+  <Step title="Tạo Space và chế độ truy cập Space">
+    Sau khi thêm thành viên, bạn cần tạo các space và phân vai trò cho các thành viên trong space (Role-Based Access Control).
+
+    <Note>
+      **Role-Based Access Control (RBAC)** là một cách tiếp cận bảo mật hạn chế quyền với tài nguyên dựa trên vai trò của từng thành viên.
+    </Note>
+
+    RBAC trong Space của Li2
+
+    Trong hệ thống space chứa link của Li2, RBAC cho phép bạn: Giới hạn truy cập vào các link dựa trên vai trò của từng thành viên
+
+    Ví dụ: các thành viên marketing chỉ thấy space của marketing, trong khi trưởng nhóm thì có toàn quyền với mọi space.
+
+    Khi bạn tạo một space, bạn có toàn quyền chỉnh cho space đó. Có 3 tùy chọn chế độ truy cập cho space:
+
+    - **Puplic**  — mặc định: Bất kỳ ai trong tổ chức của bạn đều có quyền truy cập và chỉnh sửa space và link bên trong.
+    - **View Only** (Chỉ xem): Thành viên trong tổ chức có thể xem space và các link, nhưng không chỉnh sửa.
+    - **Private**: Chỉ thành viên được thêm riêng (qua cài đặt phân quyền của space), chủ hữu của space và chủ sở hữu của tổ chức mới có quyền truy cập.
+  </Step>
+</Steps>
+
+## Cách thực hiện tạo space Li2
+
+<Steps>
+  <Step title="Vào tạo Space">
+    Trong menu bên trái, chọn mục Spaces
+
+    Nhấn nút **Tạo Space**
+  </Step>
+  <Step title="Điền thông tin Space">
+    Nhập thông tin Space gồm:
+
+    - Tên Space: đặt tên dễ nhận biết (ví dụ: Campaign Q3, Client A).
+    - Màu sắc: chọn màu để phân biệt nhanh các Space
+
+    Chọn Chế độ truy cập phù hợp:
+
+    - Public
+    - View only
+    - Private
+
+    Nhấn **Tạo Spac**e để hoàn tất.
+  </Step>
+  <Step title="Mời và phân vai trò cho các thành viên space">
+    Bạn có thể thiết lập quyền cụ thể cho từng sapce bằng cách phân quyền cho mỗi thành viên trong space.
+
+    Cách thực hiện như sau:
+
+    Chọn **Space** bạn muốn thêm thành viên.
+
+    Mở tab **Thành viên**, nhấn nút **Thêm thành viên**
+
+    Chọn thành viên từ danh sách tổ chức, nhấn dấu "**v**" để thêm vai trò cho thành viên:
+
+    - **Người xem**: Chỉ có thể xem sapce và link không thể chỉnh sửa.
+    - **Biên tập viên**: Có thể chỉnh sửa space và link bên trong.
+    - **Chủ sở hữu**: Toàn quyền truy cập space và link bên trong. Có thể mời người khác và quản lý quyền của họ.
+
+    Nhấn nút **Thêm**.
+  </Step>
+</Steps>
+
+Sau khi hoàn tất, thành viên được thêm sẽ ngay lập tức có quyền truy cập Space theo vai trò đã được gán.
+
+<Warning>
+  Lưu ý: Khi đổi vai trò sang Viewer, thành viên đó sẽ mất quyền sửa/xóa link, kể cả link họ từng tạo trong Space đó.
+</Warning>

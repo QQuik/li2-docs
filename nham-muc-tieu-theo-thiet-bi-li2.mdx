@@ -1,0 +1,47 @@
+---
+title: "Cách Redirect Theo Thiết Bị Trong Li2 "
+description: "Cài Smart Targeting để chuyển hướng người dùng iOS sang App Store, Android sang Play Store, desktop sang web — tự động trong Li2."
+---
+
+Tính năng **Nhắm mục tiêu theo thiết bị** (Device Targeting) trong Li2 cho phép bạn **chuyển hướng người dùng đến các trang đích khác nhau dựa trên loại thiết bị** họ đang sử dụng.
+
+Ví dụ, bạn có thể thiết lập URL đích tùy chỉnh cho thiết bị iOS bằng cách bật công tắc “Nhắm mục tiêu iOS” trong trình tạo liên kết và một URL khác cho thiết bị Android bằng cách bật công tắc “Nhắm mục tiêu Android” trong trình tạo liên kết.
+
+Để sử dụng tính năng này, hãy nhấp vào nút Targeting trong trình tạo liên kết. Thao tác này sẽ mở một cửa sổ bật lên mới với các tùy chọn nhắm mục tiêu thiết bị.
+
+## Cách thiết lập nhắm mục tiêu theo thiết bị
+
+<Steps>
+  <Step title="Mở trang quản lý link">
+    Truy cập vào trang quản lý link tại [app.li2.ai](http://app.li2.ai)
+
+    Trong danh sách Liên kết rút gọn, chọn liên kết bạn muốn thiết lập nhắm mục tiêu.
+  </Step>
+  <Step title="Mở cài đặt nhắm mục tiêu theo thiết bị">
+    Mở tab **Tùy chọn nâng cao**. Chọn **Nhắm mục tiêu thông minh**.
+
+    Nhấp vào nút **Thêm điều kiện**, chọn **Thiết bị**.
+  </Step>
+  <Step title="Thêm URL">
+    Trong cửa sổ thiết lập, bạn có thể:
+
+    Chọn **loại thiết bị** (ví dụ: Android, iOS, Windows, macOS, Others).
+
+    Nhập **URL đích** tương ứng cho từng loại thiết bị.
+  </Step>
+  <Step title="Lưu thay đổi">
+    Nhấn Lưu để áp dụng quy tắc.
+  </Step>
+</Steps>
+
+<Warning>
+  Lưu ý quan trọng:
+
+  - Li2 sẽ tự động kiểm tra thiết bị người dùng khi truy cập và chuyển hướng đến URL tương ứng.
+  - Các quy tắc được kiểm tra từ trên xuống dưới, vì vậy hãy sắp xếp thứ tự ưu tiên phù hợp.
+  - Nếu thiết bị không khớp với bất kỳ quy tắc nào, người dùng sẽ được đưa đến URL mặc định của liên kết.
+</Warning>
+
+Điều này đặc biệt hữu ích nếu bạn muốn hướng người dùng iOS đến App Store để tải ứng dụng iOS của bạn, và người dùng Android đến Google Play Store để tải ứng dụng Android của bạn.
+
+Trong cả hai trường hợp, URL đích chính sẽ được sử dụng làm URL dự phòng nếu loại thiết bị của người dùng không khớp với các quy tắc nhắm mục tiêu.

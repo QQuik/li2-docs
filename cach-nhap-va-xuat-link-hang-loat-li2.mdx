@@ -1,0 +1,87 @@
+---
+title: "Cách Nhập & Xuất Link Hàng Loạt Trong Li2"
+description: "Import link từ CSV, export toàn bộ danh sách và đồng bộ link giữa các workspace trong Li2."
+---
+
+Li2 cho phép bạn nhập (import) và xuất (export) link hàng loạt bằng file CSV. Tính năng này giúp bạn quản lý số lượng lớn link nhanh hơn, tiết kiệm thời gian khi tạo link, cập nhật dữ liệu hoặc làm việc với team.
+
+Trước khi bắt đầu, bạn cần đảm bảo rằng:
+
+- File CSV đã được chuẩn bị đúng định dạng.
+- Bạn đang sử dụng gói hỗ trợ tính năng Import / Export (nếu có giới hạn theo plan)
+
+## Cách nhập link hàng loạt (Import)
+
+<Steps>
+  <Step title="Mở trang quản lý link">
+    Đăng nhập vào [app.li2.ai](http://app.li2.ai)
+
+    Trên menu bên trái, chọn **Short Links**
+  </Step>
+  <Step title="Mở menu Import">
+    Ở góc trên bên phải, nhấn vào biểu tượng ⋮
+
+    Chọn **Import from CSV** 
+  </Step>
+  <Step title="Tải file lên">
+    Kéo và thả file CSV vào khung upload hoặc Nhấn Browse để chọn file từ máy tính.
+
+    Chọn tên cột trong file CSV với các trường dữ liệu tương ứng trong hệ thống.
+  </Step>
+  <Step title="Kiểm tra ">
+    Quay lại danh sách **Link rút gọn** để kiểm tra các link đã được cập nhật.
+
+    Kiểm tra email thông báo từ hệ thống để:Xác nhận quá trình nhập thành công.
+
+    Xem chi tiết lý do nếu có link nhập thất bại.
+
+    <Warning>
+      Lưu ý khi nhập link
+
+      - Mỗi dòng trong file tương ứng với một link.
+      - Các trường thường dùng gồm:
+        - Destination URL
+        - Slug (nếu có)
+        - Name
+        - Tags
+        - UTM parameters (nếu có)
+    </Warning>
+  </Step>
+</Steps>
+
+## Cách xuất link hàng loạt (Export)
+
+<Steps>
+  <Step title="Mở menu Export">
+    Tại trang **Short Links**. Nhấn biểu tượng ⋮
+
+    Chọn **Export to CSV**
+  </Step>
+  <Step title="Cấu hình dữ liệu xuất">
+    Trong cửa sổ Export, bạn có thể:
+
+    - **Lọc theo thời gian tạo**: Chọn khoảng thời gian tại mục Filter by created at
+    - Chọn các cột cần xuất. Bạn có thể chọn các trường như:
+      - Destination
+      - Slug
+      - Name
+      - Short URL
+      - QR Enabled
+      - Tags
+      - Created by
+      - Created at
+      - UTM Source / Medium / Campaign / Term / Content
+    - Chỉ các cột được chọn mới xuất hiện trong file.
+  </Step>
+  <Step title="Xuất file">
+    Nhấn **Export File CSV** sẽ được tạo và tải xuống.
+  </Step>
+</Steps>
+
+<Warning>
+  Lưu ý quan trọng
+
+  - Import / Export không làm thay đổi Analytics đã ghi nhận.
+  - Xuất file không xóa hoặc chỉnh sửa link gốc
+  - Khi import lại dữ liệu đã tồn tại, hãy kiểm tra kỹ: Slug trùng; URL đích; Tag và UTM
+</Warning>

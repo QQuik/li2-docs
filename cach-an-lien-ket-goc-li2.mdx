@@ -1,0 +1,43 @@
+---
+title: "Cách Ẩn Link Gốc (Cloaking) Trong Li2"
+description: "Ẩn URL đích khỏi người dùng cuối bằng tính năng link cloaking của Li2. Hướng dẫn bật và cấu hình."
+---
+
+## Ẩn liên kết gốc là gì?
+
+**Ẩn liên kết gốc** (Link cloaking) cho phép bạn không hiển thị URL đích trên thanh địa chỉ của trình duyệt khi người dùng truy cập link rút gọn.
+
+**Ẩn liên kết gốc** giúp **che URL đích phía sau một link rút gọn mang thương hiệu**, để khi người dùng truy cập, trình duyệt chỉ hiển thị link rút gọn hoặc link thương hiệu của bạn thay vì URL gốc. Nhờ đó, link trở nên **gọn gàng hơn, dễ nhớ hơn và nhất quán hơn về mặt thương hiệu**, đồng thời vẫn giữ nguyên hành vi chuyển hướng và tracking phía sau.
+
+## Cách bật tính năng Ẩn liên kết gốc trên Li2
+
+<Steps>
+  <Step title="Mở link cần cấu hình">
+    Đăng nhập vào [app.li2.ai](http://app.li2.ai)
+
+    Chọn tab Link rút gọn, nhấp vào link cần thiết lập
+  </Step>
+  <Step title="Bật link Cloaking">
+    Trong giao diện chi tiết của link, chọn tab Tùy chọn nâng cao
+
+    Kéo xuống để chọn mục Ẩn liên kết gốc trong nhóm Bảo mật & Riêng tư
+
+    Bật công tắc Bật ẩn danh liên kết
+
+    Nhấn Áp dụng để lưu.
+  </Step>
+</Steps>
+
+Sau khi bật, khi người dùng truy cập link, trình duyệt sẽ chỉ hiển thị link rút gọn của bạn, thay vì URL đích gốc.
+
+<Warning>
+  **Lưu ý quan trọng khi bật Ẩn liên kết gốc**
+
+  - **Không phải URL nào cũng có thể ẩn**
+    - Một số website **chủ động chặn việc hiển thị trong iframe** vì lý do bảo mật. Trong các trường hợp này, Ẩn liên kết gốc sẽ không hoạt động.
+    - Các website phổ biến thường **không hỗ trợ ẩn liên kết gốc** gồm: Google, YouTube, Facebook, Twitter/X, PayPal, Vimeo,...
+  - **URL đích cần sử dụng HTTPS**, điều này nhằm bảo vệ người dùng khỏi các website không mã hóa dữ liệu
+  - **Ẩn liên kết gốc ≠ Mã hóa URL**
+    - Tính năng này **chỉ ẩn URL hiển thị**, không mã hóa URL đích.
+    - Nếu bạn cần bảo mật tuyệt đối URL đích, hãy sử dụng Mã hóa liên kết (E2EE) trên Li2
+</Warning>

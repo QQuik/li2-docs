@@ -1,0 +1,59 @@
+---
+title: "Cách Cài Đặt Redirect Code Trong Li2 "
+description: "Chọn loại redirect 301 (permanent) hoặc 302 (temporary) cho short link trong Li2 và ảnh hưởng đến SEO."
+---
+
+## Redirect Code trong Li2 là gì?
+
+Khi người dùng truy cập một link rút gọn trên Li2, hệ thống sẽ tự động chuyển hướng họ đến URL đích. Bạn không cần cấu hình gì thêm để link hoạt động bình thường.
+
+Trong một số trường hợp đặc biệt (ví dụ: SEO hoặc yêu cầu kỹ thuật), Li2 cho phép bạn tùy chỉnh mã chuyển hướng HTTP (Redirect Code) để kiểm soát cách trình duyệt và công cụ tìm kiếm xử lý link đó. Nếu bạn không chắc nên chọn mã nào, hãy giữ nguyên mặc định (302).
+
+## Khi nào bạn cần quan tâm đến Redirect Code?
+
+Bạn chỉ nên thay đổi Redirect Code khi:
+
+- Bạn đổi URL vĩnh viễn và muốn công cụ tìm kiếm ghi nhận URL mới
+- Bạn cần kiểm soát hành vi SEO
+- Bạn có yêu cầu kỹ thuật đặc biệt (API, hệ thống backend…)
+
+Nếu bạn đang dùng Li2 cho:
+
+- Chiến dịch marketing
+- Tracking clicks
+- Chia sẻ link thông thường
+
+Không cần thay đổi Redirect Code. Li2 hiện hỗ trợ 4 mã chuyển hướng phổ biến:
+
+- **301**: Dùng khi URL đích đã thay đổi cố định. Trình duyệt có thể cache lâu dài, công cụ tìm kiếm cập nhật URL mới.
+- **302 (Mặc định)**: Dùng khi URL đích có thể thay đổi. Không cache cố định, phù hợp cho link marketing.
+- **307**: Dùng cho link có gửi form, đảm bảo dữ liệu được gửi sau khi truy cập link rút gọn.
+- **308**: Dùng cho endpoint form cố định, dữ liệu luôn được chuyển đến URL đích.
+
+Sau khi xác định mã chuyển hướng phù hợp, bạn có thể thiết lập trực tiếp trên từng link trong Li2 theo hướng dẫn bên dưới.
+
+## Cách thiết lập Redirect Code trên Li2
+
+<Steps>
+  <Step title="Mở link cần chỉnh sửa">
+    Đăng nhập vào [app.li2.ai](http://app.li2.ai)
+
+    Tại danh sách Link rút gọn, chọn link cần cài mã chuyển hướng.
+  </Step>
+  <Step title="Mở và chọn mã chuyển hướng tùy chỉnh">
+    Chọn tab **Tùy chọn nâng cao** → nhấp vào mục **Mã chuyển hướng tùy chỉnh**
+
+    Chọn loại mã phù hợp, mặc định là mã 302
+  </Step>
+  <Step title="Lưu thay đổi">
+    Nhấn **Áp dụng** để lưu. Thay đổi có hiệu lực ngay cho link đó.
+  </Step>
+</Steps>
+
+<Warning>
+  Lưu ý quan trọng khi dùng redirect cho link rút gọn
+
+  - Thay đổi Redirect Code không làm mất dữ liệu Analytics.
+  - Mỗi link có thể có Redirect Code riêng.
+  - Bạn có thể thay đổi bất kỳ lúc nào.
+</Warning>

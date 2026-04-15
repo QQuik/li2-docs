@@ -1,0 +1,104 @@
+---
+title: "Cách Tạo & Dùng Mẫu UTM Trong Li2"
+description: "Tạo UTM template tái sử dụng, áp dụng nhanh cho nhiều link và chuẩn hóa naming convention trong Li2."
+---
+
+**UTM (Urchin Tracking Module)** là tập hợp các tham số (parameters) được thêm vào cuối đường link, giúp bạn theo dõi hiệu quả chiến dịch marketing một cách chi tiết — ví dụ như nguồn truy cập, kênh quảng bá, tên chiến dịch hay nội dung quảng cáo cụ thể.
+
+Việc tạo **Mẫu UTM (UTM Template)** giúp bạn:
+
+- Dễ dàng chuẩn hóa các đường link quảng cáo.
+- Giảm lỗi khi nhập tay nhiều thông số.
+- Tiết kiệm thời gian khi triển khai chiến dịch hàng loạt.
+- Đồng bộ dữ liệu theo dõi giữa các thành viên trong nhóm marketing.
+
+<Note>
+  **Khi nào nên sử dụng**: Khi bạn thường xuyên tạo nhiều liên kết có cùng cấu trúc UTM (ví dụ: các chiến dịch chạy ads hàng tuần, email marketing hoặc social post định kỳ).
+</Note>
+
+## Các thành phần cơ bản của UTM
+
+Một link có gắn UTM thường bao gồm các tham số sau:
+
+- **utm\_source:** Nguồn của lưu lượng truy cập, ví dụ: Google, Facebook, LinkedIn.
+- **utm\_medium:** Phương thức của lưu lượng truy cập, ví dụ: cpc (quảng cáo trả phí), organic (tự nhiên), referral (giới thiệu).
+- **utm\_campaign:** Tên của chiến dịch, ví dụ: summer\_sale (giảm giá hè), newsletter\_campaign (chiến dịch bản tin).
+- **utm\_term:** Từ khóa kích hoạt lưu lượng truy cập, ví dụ: “running shoes” (giày chạy bộ).
+- **utm\_content:** Nội dung cụ thể kích hoạt lưu lượng truy cập, ví dụ: “text\_link” (liên kết dạng văn bản).
+
+Khi làm việc trong một đội ngũ marketing, việc có thể tạo ra các mẫu UTM chuẩn để tái sử dụng cho nhiều liên kết khác nhau là rất quan trọng. Điều này giúp bạn tối ưu hóa quy trình quản lý chiến dịch UTM và đảm bảo tính nhất quán giữa các chiến dịch – từ đó cải thiện độ chính xác cho dữ liệu của bạn.
+
+## Cách tạo Mẫu UTM trong Li2
+
+Trên Li2, bạn có hai cách để tạo Mẫu UTM:
+
+### Cách 1: Tạo trực tiếp trong UTM Builder
+
+Phương pháp này lý tưởng khi bạn đang tạo một liên kết mới và muốn lưu các thông số UTM đã nhập thành một mẫu để tái sử dụng.
+
+<Steps>
+  <Step title="Mở App Li2">
+    Đăng nhập tài khoản tại [app.li2.ai](http://app.li2.ai)
+  </Step>
+  <Step title="Tạo link rút gọn hoặc mã QR">
+    Chọn Link rút gọn hoặc Mã QR, chọn **Tạo link rút gọn** hoặc **Tạo mã QR**
+
+    Nhập URL bạn muốn rút ngắn/tạo QR vào trường URL Đích.
+  </Step>
+  <Step title="Mở hộp thoại UTM và thêm các tham số">
+    Nhấp vào ô **UTM**, bạn có thể điền các tham số UTM bạn muốn.
+
+    Nhấp vào **Mẫu UTM, đặt tên cho mẫu** để lưu các thêm các tham số UTM dưới dạng một mẫu mới hoặc chọn một mẫu UTM có sẵn.
+
+    Chọn **Áp dụng** để lưu mẫu.
+
+    Li2 sẽ tự động lưu lại cấu trúc UTM này để bạn tái sử dụng cho các chiến dịch sau.
+  </Step>
+</Steps>
+
+### Cách 2: Tạo từ trang quản lý Mẫu UTM
+
+Phương pháp này phù hợp để quản lý tập trung và thiết lập sẵn các mẫu trước khi bạn tạo liên kết ngắn.
+
+<Steps>
+  <Step title="Truy cập trang cài đặt mẫu UTM">
+    Vào mục **Mẫu UTM** trong thanh menu bên trái.
+  </Step>
+  <Step title="Mở trình tạo mẫu UTM và thêm tham số">
+    Chọn Tạo Mẫu UTM. Điền các trường cần thiết:
+
+    - **Tên mẫu (Template Name)** – bắt buộc.
+    - **Source, Medium, Campaign, Term, Content** – theo cấu trúc chiến dịch.
+    - **Description** – mô tả ngắn gọn mục đích của mẫu (tuỳ chọn).
+  </Step>
+  <Step title="Lưu mẫu UTM">
+    Sau khi hoàn tất, nhấn **Tạo mẫu** để tạo mẫu UTM mới.
+
+    Mẫu này sẽ ngay lập tức có sẵn để sử dụng trong UTM Builder cho tất cả các liên kết trong không gian làm việc của bạn.
+  </Step>
+</Steps>
+
+## Cách sử dụng Mẫu UTM khi tạo link mới
+
+Sau khi mẫu được tạo, bạn có hai cách để áp dụng nó vào liên kết của mình.
+
+### Cách 1: Áp dụng trực tiếp khi tạo liên kết ngắn
+
+- Khi tạo link mới, nhấn vào biểu tượng **UTM** ngay bên dưới ô **cài đặt nâng cao**.
+- Một danh sách các **Mẫu UTM** bạn đã tạo sẽ hiện ra. **Chọn mẫu** bạn muốn áp dụng.
+
+### Cách 2: Áp dụng chỉnh sửa link
+
+Trong khi chỉnh sửa link, chọn tab **Tùy chọn nâng cao**, nhấp **UTM Builder**.
+
+- Chọn **mẫu UTM** có sẵn từ danh sách và áp dụng.
+- Thông số UTM từ mẫu đã chọn sẽ được áp dụng ngay lập tức vào liên kết của bạn.
+
+## Lợi ích thực tế khi dùng Mẫu UTM
+
+- Giúp marketer **duy trì sự thống nhất** trong cách đặt UTM giữa các chiến dịch.
+- **Tăng độ chính xác** khi đo lường kết quả trên các nền tảng như Google Analytics, Meta Ads.
+- **Tiết kiệm thời gian,** đặc biệt với đội nhóm hoặc agency quản lý nhiều khách hàng.
+- Dễ dàng **chia sẻ và quản lý** tập trung trên cùng workspace của Li2.
+
+Bạn có muốn tìm kiếm thêm thông tin về Trang **Cài đặt Mẫu UTM (UTM Templates Settings Page)** hoặc **Hướng dẫn sử dụng Thẻ (Tags) trên Li2** không?

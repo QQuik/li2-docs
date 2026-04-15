@@ -1,0 +1,54 @@
+---
+title: "Cách Bật Mã Hóa E2EE Cho Link Trong Li2"
+description: "Kích hoạt mã hóa đầu cuối (E2EE) cho short link để bảo vệ thông tin người dùng và ẩn metadata trong Li2."
+---
+
+**Tính năng mã hóa đầu-cuối (End-to-End Encryption – E2EE)** trên Li2 cho phép bạn bảo vệ URL đích bằng khóa truy cập, để chỉ người có mã hợp lệ mới mở được nội dung. URL gốc không được hiển thị nếu không có khóa giải mã.
+
+## E2EE trên Li2 là gì?
+
+**E2EE** (End-to-End Encryption) là cơ chế trong đó URL đích được mã hóa trước khi lưu và chia sẻ, và chỉ được giải mã tại thời điểm truy cập hợp lệ.
+
+Trong Li2:
+
+- URL đích được mã hóa
+- Người truy cập cần có mã khóa (passcode / key) để mở link
+- Nếu không có khóa hợp lệ, URL đích không được hiển thị và không được chuyển hướng
+
+## Cách thiết lập mã hóa liên kết (E2EE) trên Li2
+
+<Warning>
+  Lưu ý trước khi bắt đầu: **_Mã hóa liên kết E2EE_** chỉ có thể bật khi **_tạo link mới_**.
+</Warning>
+
+<Steps>
+  <Step title="Mở trình tạo link ngắn">
+    Đăng nhập vào [app.li2.ai](http://app.li2.ai)
+
+    Vào danh sách link, Chọn **Tạo link rút gọn** và nhập URL đích bạn muốn rút gọn & bảo vệ vào ô **Nhập link của bạn**
+  </Step>
+  <Step title="Mở E2EE cho liên kết">
+    Ngay tại ô nhập URL đích, nhấp vào  **E2EE** ở góc phải để bật mã hóa.
+
+    Khi E2EE được bật, Li2 sẽ tự động chuyển URL sang định dạng mã hóa đầu - cuối
+
+    Sao chép và lưu trữ khóa mã hóa của bạn trước khi nhấn Tạo link
+  </Step>
+  <Step title="Tạo link thành công">
+    Nhấn Tạo link để hoàn tất. Hệ thống sẽ hiển thị bảng thông báo để nhắc nhở bạn lưu khóa mã hóa.
+  </Step>
+</Steps>
+
+<Warning>
+  **Lưu ý quan trọng khi sử dụng E2EE**
+
+  Quy tắc hoạt động: **\[Link rút gọn \+ # \+ khóa mã hóa\]**
+
+  Vd: "[https://li2.link/6LBCW#E6PLLQvaW-kLhbZgZVYfaA](https://li2.link/6LBCW#E6PLLQvaW-kLhbZgZVYfaA)"
+
+  Link được mã hóa đầu - cuối sẽ **không thể thay đổi** hoặc truy cập URL đích nếu mất khóa mã hóa
+
+  E2EE giúp **ẩn hoàn toàn URL gốc**, kể cả với hệ thống trung gian
+
+  Một số tính năng không khả dụng khi mã hóa E2EE gồm **Nhắm mục tiêu thông minh & Kiểm thử A/B**
+</Warning>
