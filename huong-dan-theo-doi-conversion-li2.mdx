@@ -1,5 +1,5 @@
 ---
-title: "Cách Theo Dõi Conversion Trong Li2 (trackLead & trackSale)"
+title: "Cách Theo Dõi Conversion Li2 "
 description: "Tích hợp trackLead() và trackSale() để đo chuyển đổi từ short link và QR code về dashboard Li2."
 ---
 
@@ -45,7 +45,7 @@ Li2 Conversions sử dụng **cookie first-party đơn giản, hỗ trợ cả c
 
 <Steps>
   <Step title="Lưu click ID dưới dạng cookie first-party">
-    Khi người dùng click vào một link đã bật conversion, Li2 sẽ gắn một tham số query uid duy nhất vào URL đích. 
+    Khi người dùng click vào một link đã bật conversion, Li2 sẽ gắn một tham số query uid duy nhất vào URL đích.
 
     SDK **@li2/analytics** sẽ tự động phát hiện tham số này và lưu click ID dưới dạng cookie first-party **li\_cid** trên domain của bạn (ví dụ: [yourdomain.com](http://yourdomain.com)).
 

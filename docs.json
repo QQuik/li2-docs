@@ -106,14 +106,14 @@
                       "nham-muc-tieu-theo-dia-ly-li2",
                       "cach-tao-va-su-dung-mau-utm-li2",
                       "cach-them-chinh-sua-va-go-link-trong-space-li2",
-                      "cach-su-dung-tags-li2",
-                      "huong-dan-theo-doi-conversion-li2"
+                      "cach-su-dung-tags-li2"
                     ]
                   },
                   {
                     "group": "Analytics",
                     "pages": [
                       "xem-thong-ke-phan-tich-trong-li2",
+                      "huong-dan-theo-doi-conversion-li2",
                       "cach-loc-va-xem-analytics-theo-link-li2",
                       "cach-loc-va-xem-analytics-theo-tag-li2",
                       "cach-loc-va-xem-analytics-theo-space-li2"
