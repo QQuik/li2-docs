@@ -110,6 +110,7 @@
                   },
                   {
                     "group": "Analytics",
+                    "icon": "chart-mixed",
                     "pages": [
                       "vi/guide/xem-thong-ke-phan-tich-trong-li2",
                       "vi/guide/huong-dan-theo-doi-conversion-li2",
