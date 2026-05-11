@@ -88,6 +88,7 @@
                   "tong-quan-link",
                   {
                     "group": "Links",
+                    "icon": "link",
                     "pages": [
                       "cong-cu-tao-short-link-trong-li2",
                       "vi/guide/tao-ma-qr-dong-trong-li2",
@@ -123,6 +124,7 @@
               },
               {
                 "group": "TEAM & ORGANIZATION",
+                "icon": "user-group",
                 "pages": [
                   "vi/guide/to-chuc-li2-la-gi",
                   "vi/guide/moi-va-quan-ly-thanh-vien-to-chuc-li2",
