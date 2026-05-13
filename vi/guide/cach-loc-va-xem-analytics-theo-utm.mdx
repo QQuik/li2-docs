@@ -1,0 +1,47 @@
+---
+title: "Cách Lọc Analytics Theo UTM"
+---
+
+Trong hệ thống Analytics của Li2, bạn có thể xem và phân tích dữ liệu theo UTM Source, UTM Medium và UTM Campaign để đánh giá chính xác hiệu suất của từng nguồn, từng kênh và từng chiến dịch thay vì chỉ theo dõi tổng lượt truy cập chung của toàn bộ hệ thống.
+
+Với tab **UTM Parameters**, bạn có thể dễ dàng xem hiệu suất của từng tham số UTM theo thời gian thực. Ví dụ như sau:
+
+## Cách lọc dữ liệu theo tham số UTM trên Li2
+
+<Steps>
+  <Step title="Mở trang Analytics và bộ lọc">
+    - Đăng nhập vào [App Li2](https://li2.ai/vi/login)
+    - Chọn tab Analytics ở menu bên trái
+  </Step>
+  <Step title="Chọn lọc theo UTM">
+    - Nhấn vào nút **Lọc theo**
+    - Tick chọn các tham số trong menu thả xuống để mở:
+      - **UTM Source** - lọc theo nguồn traffic
+      - **UTM Medium** - lọc theo kênh
+      - **UTM Campaign** - lọc theo chiến dịch
+
+    <Warning>
+      Lưu ý:
+
+      - Việc lọc dữ liệu theo UTM chỉ áp dụng cho các liên kết đã được gắn tham số UTM trước đó. Nếu bạn chưa thiết lập, hãy tham khảo bài viết \[[Làm thế nào để thêm tham số UTM vào liên kết](https://li2.ai/vi/blog/cach-them-tham-so-utm-tren-li2)\].
+      - Trong trường hợp link đã có UTM nhưng chưa xuất hiện trong bộ lọc, hãy kiểm tra lại khoảng thời gian đang chọn. Bộ lọc chỉ hiển thị các UTM có phát sinh lượt truy cập trong thời gian được áp dụng.
+    </Warning>
+
+    Chọn thời gian cần xem phân tích (mặc định 7 ngày gần nhất)
+  </Step>
+  <Step title="Lọc theo nhiều UTM">
+    - Tích chọn một hoặc nhiều UTM bạn muốn xem dữ liệu.
+    - Nhấn **Áp dụng**, hệ thống cập nhật dữ liệu Analytics theo tham số đã chọn.
+
+    <Frame>
+    </Frame>
+  </Step>
+</Steps>
+
+Ngay sau đó, toàn bộ dashboard Analytics (lượt truy cập, click/scan, nguồn truy cập, thiết bị…) sẽ chỉ hiển thị dữ liệu của các UTM đã chọn.
+
+## Lưu ý khi sử dụng bộ lọc UTM trên Li2
+
+- Các giá trị UTM phân biệt chữ hoa - chữ thường
+- Nên chuẩn hoá cách đặt UTM để tránh dữ liệu bị phân mảnh
+- Có thể bật **Loại trừ lượt truy cập từ bot** để báo cáo chính xác hơn
