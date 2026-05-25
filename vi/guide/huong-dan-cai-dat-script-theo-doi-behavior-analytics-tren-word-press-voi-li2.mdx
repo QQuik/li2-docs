@@ -1,0 +1,107 @@
+---
+title: "Hướng dẫn cài đặt Script theo dõi Behavior Analytics trên WordPress với Li2"
+---
+
+**Behavior Analytics** giúp bạn theo dõi cách người dùng thực sự tương tác trên website từ lượt xem trang, lượt nhấp, hành vi cuộn trang, điền biểu mẫu đến hành trình duyệt web và phiên làm việc.
+
+Thay vì chỉ xem các chỉ số traffic tổng quan, bạn có thể hiểu rõ **người dùng đang làm gì, dừng ở đâu và bỏ đi tại bước nào**. Đây là dữ liệu quan trọng để tối ưu trải nghiệm website, cải thiện conversion và phát hiện các điểm ma sát trong hành trình khách hàng.
+
+Để Li2 bắt đầu ghi nhận dữ liệu hành vi, bạn cần cài đặt **script theo dõi Behavior Analytics** lên website. Với website WordPress, Li2 hỗ trợ thiết lập thông qua plugin, giúp quá trình cài đặt nhanh hơn và hạn chế thao tác kỹ thuật phức tạp.
+
+## Hướng dẫn cài đặt Script theo dõi Behavior Analytics trên WordPress với Li2
+
+<Steps>
+  <Step title="Chọn thiết lập Phân tích hành vi">
+    Tại menu bên trái chọn **Bắt đầu**, chọn mục **Phân tích hành vi** → nhấn **Bắt đầu**.
+
+    <Frame>
+      ![Chon Bat Dau Voi Phan Tich Hanh Vi](/images/chon-bat-dau-voi-phan-tich-hanh-vi.png)
+    </Frame>
+
+    Sau đó, tại màn hình thiết lập, chọn **Cài đặt Script theo dõi**.
+
+    <Frame>
+      ![Chon Cai Dat Script Theo Doi](/images/chon-cai-dat-script-theo-doi.png)
+    </Frame>
+  </Step>
+  <Step title="Thêm website và chọn phương thức cài đặt WordPress">
+    - Nhập **URL website** của bạn để Li2 tự động nhận diện nền tảng website và đề xuất phương thức cài đặt phù hợp.
+
+    <Frame>
+      ![Them Web De De Xuat Loai Script Can Cai Vao](/images/them-web-de-de-xuat-loai-script-can-cai-vao.png)
+    </Frame>
+
+    - Nếu website sử dụng **WordPress**, hệ thống sẽ hiển thị trạng thái **Detected** cho tùy chọn **WordPress**.
+    - Chọn **WordPress** để tiếp tục thiết lập.
+  </Step>
+  <Step title="Cài đặt plugin Li2 Analytics trên WordPress">
+    Tại bước **Cài script**:
+
+    - Tải file plugin **Li2 Analytics** trực tiếp từ trang hướng dẫn trên Li2
+    - Nhấn vào **Plugins → Thêm mới** để mở nhanh trang cài đặt plugin trên WordPress Admin.
+    - Trong trang **Thêm plugin mới** của WordPress Admin, thực hiện các bước sau:
+      - Chọn **Upload Plugin**
+      <Frame>
+        ![Upload Plugin Tai Wordpress Admin](/images/upload-plugin-tai-wordpress-admin.png)
+      </Frame>
+      - Tải file `.zip` của **Li2 Analytics** lên
+      <Frame>
+        ![Tai File Li2 Analytics Len Plugin](/images/tai-file-li2-analytics-len-plugin.png)
+      </Frame>
+      - Nhấn **Install Now** để tải lên
+      <Frame>
+        ![Install Plugin Li2 Analytics](/images/install-plugin-li2-analytics.png)
+      </Frame>
+      - Nhấn **Activate Plugin** để kích hoạt
+      <Frame>
+        ![Active Plugin Li2 Analytics](/images/active-plugin-li2-analytics.png)
+      </Frame>
+
+    Quay lại Li2 và nhấn **Đã cài plugin – Tiếp tục**.
+  </Step>
+  <Step title="Xác minh cài đặt">
+    Tại bước **Xác minh cài đặt**, nhấn **Mở trang web** để Li2 kiểm tra trạng thái kết nối.
+
+    Hệ thống sẽ tự động xác minh các điều kiện sau:
+
+    - **Script được tìm thấy trên trang**
+    - **Publishable key khớp**
+    - **Script đang hoạt động và được cấu hình đúng**
+
+    Khi tất cả trạng thái hiển thị dấu xác nhận màu xanh, nhấn **Tiếp tục**.
+  </Step>
+  <Step title="Chọn tính năng theo dõi">
+    Bật các tính năng bạn muốn thu thập dữ liệu bằng công tắc màu xanh.
+
+    Các tùy chọn bao gồm:
+
+    - **Theo dõi lượt xem trang**
+    - **Theo dõi lượt nhấp**
+    - **Theo dõi cuộn trang**
+    - **Theo dõi biểu mẫu**
+    - **Ghi lại phiên làm việc**
+    - **Theo dõi liên kết ngoài**
+
+    Nếu sử dụng **Theo dõi liên kết ngoài**, bạn có thể thêm domain ngoài cần theo dõi vào ô cấu hình.
+
+    Sau khi hoàn tất, nhấn **Lưu & Hoàn thành**.
+  </Step>
+  <Step title="Kiểm tra thiết lập">
+    Li2 sẽ hiển thị màn hình **Kiểm tra thiết lập** để xác nhận dữ liệu đang được ghi nhận.
+
+    Bạn có thể thực hiện một số thao tác kiểm tra trên website như:
+
+    - Điều hướng qua nhiều trang
+    - Nhấp vào nút, liên kết hoặc phần tử tương tác
+    - Cuộn trang
+    - Điền và gửi biểu mẫu
+    - Nhấp vào liên kết ngoài
+    - Duyệt website vài phút để tạo phiên làm việc
+
+    Nếu chưa thấy dữ liệu, bạn có thể bật **Chế độ Debug** để kiểm tra log sự kiện được ghi nhận theo thời gian thực.
+
+    Sau khi xác nhận dữ liệu hoạt động bình thường, nhấn **Hoàn thành**.
+  </Step>
+</Steps>
+
+Khi hoàn thành các bước trên, website của bạn đã được kết nối với Li2 và sẵn sàng thu thập dữ liệu hành vi người dùng. Từ đây, bạn có thể bắt đầu theo dõi tương tác thực tế trên website, phân tích hành trình truy cập và tối ưu trải nghiệm để cải thiện hiệu quả chuyển đổi.

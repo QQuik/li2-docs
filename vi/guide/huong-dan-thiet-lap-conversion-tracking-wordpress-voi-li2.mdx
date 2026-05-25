@@ -1,0 +1,137 @@
+---
+title: "Hướng dẫn thiết lập Conversion Tracking WordPress với Li2"
+---
+
+Conversion Tracking giúp doanh nghiệp biết chính xác người dùng đã làm gì sau khi nhấp vào link marketing. Thay vì chỉ đo lượt click, Li2 cho phép theo dõi toàn bộ hành động chuyển đổi như đăng ký tài khoản, thêm sản phẩm vào giỏ hàng hay tạo đơn hàng trên website.
+
+Với WordPress và WooCommerce, Li2 hỗ trợ kết nối nhanh bằng plugin, giúp marketer triển khai tracking mà không cần can thiệp code phức tạp. Chỉ trong vài bước, bạn có thể kết nối website, tạo short link và bắt đầu ghi nhận conversion theo từng chiến dịch. Điều này giúp đo hiệu quả marketing rõ ràng hơn, tối ưu ngân sách nhanh hơn và hiểu chính xác nguồn nào đang tạo ra doanh thu.
+
+## Hướng dẫn thiết lập Conversion Tracking WordPress với Li2
+
+<Steps>
+  <Step title="Chọn Link Attribution">
+    Tại menu bên trái, vào **Bắt đầu** → tại tab **Link Attribution** chọn **Bắt đầu**
+
+    <Frame>
+      ![Chon Bat Dau Voi Link Attribution](/images/chon-bat-dau-voi-link-attribution.png)
+    </Frame>
+  </Step>
+  <Step title="Chọn mục tiêu theo dõi chuyển đổi">
+    - Chọn **Theo dõi chuyển đổi**
+
+    <Frame>
+      ![Chon Muc Tieu Theo Doi Chuyen Doi](/images/chon-muc-tieu-theo-doi-chuyen-doi.png)
+    </Frame>
+
+    - Nhập **URL website** để Li2 tự động nhận diện nền tảng website và đề xuất cách cài đặt phù hợp.
+
+    <Frame>
+      ![De Xuat Thiet Lap Conversion Tracking Voi Wordpress](/images/de-xuat-thiet-lap-conversion-tracking-voi-wordpress.png)
+    </Frame>
+
+    Nếu website sử dụng WordPress, hệ thống sẽ tự động hiển thị đề xuất tùy chọn **Thiết lập với WordPress.**
+
+    - Nhấn chọn tuỳ chọn WordPress, sẽ hiện thị trang "**WordPress Conversion Tracking**" để tiếp tục cấu hình
+  </Step>
+  <Step title="Install Plugin - Tải và cài plugin Li2 Analytics">
+    - Tải file plugin **Li2 Analytics** trực tiếp từ trang hướng dẫn trên Li2
+
+    <Frame>
+      ![Tai File Zip Cua Plugin Li2 Analytics](/images/tai-file-zip-cua-plugin-li2-analytics.png)
+    </Frame>
+
+    - Nhấn vào **Plugins → Thêm mới** để mở nhanh trang cài đặt plugin trên WordPress Admin.
+
+    <Frame>
+      ![Mo Wordpress Admin Cua Trang Web Nhanh](/images/mo-wordpress-admin-cua-trang-web-nhanh.png)
+    </Frame>
+
+    - Trong trang **Thêm plugin mới** của WordPress Admin, thực hiện các bước sau:
+      - Chọn **Upload Plugin**
+      <Frame>
+        ![Upload Plugin Tai Wordpress Admin](/images/upload-plugin-tai-wordpress-admin.png)
+      </Frame>
+      - Tải file `.zip` của **Li2 Analytics** lên
+      <Frame>
+        ![Hinh Docs Hương Dẫn P2 (4)](/images/Hinh-docs-hương-dẫn-p2-\(4\).png)
+      </Frame>
+      - Nhấn **Install Now** để tải lên
+      <Frame>
+        ![Install Plugin Li2 Analytics](/images/install-plugin-li2-analytics.png)
+      </Frame>
+      - Nhấn **Activate Plugin** để kích hoạt
+      <Frame>
+        ![Active Plugin Li2 Analytics](/images/active-plugin-li2-analytics.png)
+      </Frame>
+
+    Sau khi hoàn tất, quay lại Li2 và nhấn **Done – Plugin is installed**.
+
+    <Frame>
+      ![Done Plugin Is Installed](/images/Done-Plugin-is-installed.png)
+    </Frame>
+  </Step>
+  <Step title="Configure & Setup - Cấu hình Conversion Tracking">
+    - Chọn các sự kiện chuyển đổi muốn theo dõi, ví dụ:
+      - Track Lead for all registered users
+      - Track Lead when a user adds an item to cart
+      - Track Sale when a user creates an order
+    - Nhấn **Auto Configure** để Li2 tự động cấu hình plugin và kết nối API với WordPress
+
+    <Frame>
+      ![Configured Setup](/images/configured-setup.png)
+    </Frame>
+
+    Sau khi cấu hình hoàn tất, nhấn **Done — Plugin is configured** để chuyển sang bước tiếp theo.
+  </Step>
+  <Step title="Verify Installation - Kiểm tra trạng thái kết nối">
+    - Nhấn kiểm tra **Open Site to Verify**
+
+    <Frame>
+      ![Check Verify Trang Web](/images/check-verify-trang-web.png)
+    </Frame>
+
+    - Li2 sẽ tự động kiểm tra:
+      - Plugin đã được kích hoạt
+      - Publishable Key
+      - Server API Key
+      - Các sự kiện tracking đã hoạt động
+
+    Nếu toàn bộ trạng thái hiển thị dấu xác nhận màu xanh, nhấn **Continue** để tiếp tục.
+
+    <Frame>
+      ![Hoan Thanh Buoc Verify Trang Web](/images/hoan-thanh-buoc-verify-trang-web.png)
+    </Frame>
+  </Step>
+  <Step title="Create Short Link - Tạo short link để tracking">
+    - Chọn **Create New**
+    - Nhập:
+      - **Destination URL**: URL website hoặc landing page cần theo dõi
+      - **Custom Slug** (không bắt buộc): đặt tên slug cho short link
+
+    Sau đó nhấn **Create Short Link** để tạo link tracking.
+
+    <Frame>
+      ![Create Shortlink De Test](/images/Create-shortlink-de-test.png)
+    </Frame>
+
+    Khi tạo link ngắn, bạn nhấn **Continue** để đến  bước tiếp theo
+  </Step>
+  <Step title="Test Tracking - Kiểm tra hoạt động tracking">
+    - Truy cập short link vừa tạo
+    - Thực hiện các hành động đã thiết lập tracking trên website, ví dụ:
+      - Đăng ký tài khoản
+      - Thêm sản phẩm vào giỏ hàng
+      - Hoàn tất đơn hàng
+
+    Sau đó:
+
+    - Nhấn **Check Conversions** để kiểm tra dữ liệu conversion đã ghi nhận trên Li2 hay chưa
+    - Nếu dữ liệu hiển thị thành công, nhấn **Done** để hoàn tất thiết lập Conversion Tracking.
+
+    <Frame>
+      ![Check Conversion Khi Da Gan Plugin Thanh Cong](/images/check-conversion-khi-da-gan-plugin-thanh-cong.png)
+    </Frame>
+  </Step>
+</Steps>
+
+Sau khi hoàn tất thiết lập, bạn đã có hệ thống Conversion Tracking hoạt động trực tiếp trên website WordPress/WooCommerce với Li2. Từ đây, mọi hành động quan trọng của người dùng như đăng ký, thêm giỏ hàng hay tạo đơn hàng đều được ghi nhận và gắn với đúng nguồn marketing. Thay vì chỉ nhìn vào lượt click, bạn có thể đo chính xác chiến dịch nào tạo ra chuyển đổi và doanh thu thực tế. Đây là nền tảng để tối ưu ngân sách, cải thiện hiệu suất marketing và đưa ra quyết định dựa trên dữ liệu rõ ràng hơn.
