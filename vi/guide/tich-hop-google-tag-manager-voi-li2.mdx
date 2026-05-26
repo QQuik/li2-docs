@@ -31,7 +31,13 @@ Trước khi bắt đầu: Đảm bảo bạn đã có đủ các yếu tố sau
   <Step title="Tạo Tag Cài SDK">
     1. Đăng nhập vào Google Tag Manager và chọn container của bạn.
     2. Vào **Tags** → click **New**.
+       <Frame>
+         ![Tich Hop Google Tag Manager Voi Li2 1](/images/tich-hop-google-tag-manager-voi-li2-1.png)
+       </Frame>
     3. Chọn **Tag Type** là **Custom HTML**
+       <Frame>
+         ![Tich Hop Google Tag Manager Voi Li2 2](/images/tich-hop-google-tag-manager-voi-li2-2.png)
+       </Frame>
     4. Paste đoạn script sau vào ô HTML:
        ```text
        <script>
@@ -60,7 +66,13 @@ Trước khi bắt đầu: Đảm bảo bạn đã có đủ các yếu tố sau
          **Quan trọng:** Thay <kbd>YOUR\_PUBLISHABLE\_KEY</kbd> bằng Publishable Key thực tế từ **Li2 Dashboard → Settings → Analytics.**
        </Note>
     5. Phần **Triggering** → chọn **All Page**
+       <Frame>
+         ![Tich Hop Google Tag Manager Voi Li2 3](/images/tich-hop-google-tag-manager-voi-li2-3.png)
+       </Frame>
     6. Đặt tên tag là **<kbd>Li2 Analytics - SDK Loader</kbd>**, sau đó click **Save**.
+       <Frame>
+         ![Tich Hop Google Tag Manager Voi Li2 4](/images/tich-hop-google-tag-manager-voi-li2-4.png)
+       </Frame>
        <Note>
          **Tại sao cần All Pages?** SDK phải load trên mọi trang để ghi nhận Click ID (<kbd>li\_cid</kbd> cookie) ngay khi người dùng đến từ short link hoặc QR code của bạn — dù họ chưa chuyn đổi ở trang đó.
        </Note>
@@ -69,8 +81,17 @@ Trước khi bắt đầu: Đảm bảo bạn đã có đủ các yếu tố sau
     Variable (biến) này đọc cookie <kbd>li\_cid</kbd> — mã được Li2 tự động ghi khi người dùng click vào touch-point link.
 
     1. Vào **Variables** → phần **User-Defined Variables** → click **New**.
+       <Frame>
+         ![Tich Hop Google Tag Manager Voi Li2 5](/images/tich-hop-google-tag-manager-voi-li2-5.png)
+       </Frame>
     2. Chọn **Variable Type** → chọn **1st Party Cookie**. Đặt tên: <kbd>Li2 Click ID</kbd>
+       <Frame>
+         ![Tich Hop Google Tag Manager Voi Li2 6](/images/tich-hop-google-tag-manager-voi-li2-6.png)
+       </Frame>
     3. Điền thông tin: **Cookie Name**: <kbd>li\_cid</kbd>
+       <Frame>
+         ![Tich Hop Google Tag Manager Voi Li2 7](/images/tich-hop-google-tag-manager-voi-li2-7.png)
+       </Frame>
     4. Click **Save**.
        Từ bước này, bạn có thể dùng biến **<kbd>{{Li2 Click ID}}</kbd>** trong bất kỳ tag nào.
   </Step>
@@ -78,6 +99,9 @@ Trước khi bắt đầu: Đảm bảo bạn đã có đủ các yếu tố sau
     1. Click **Submit** ở góc trên bên phải của GTM workspace.
     2. Thêm tên version mô tả — ví dụ: Add Li2 tracking.
     3. Click **Publish**.
+       <Frame>
+         ![Tich Hop Google Tag Manager Voi Li2 8](/images/tich-hop-google-tag-manager-voi-li2-8.png)
+       </Frame>
   </Step>
 </Steps>
 
@@ -87,11 +111,21 @@ Trước khi bắt đầu: Đảm bảo bạn đã có đủ các yếu tố sau
 
 <Steps>
   <Step title="Trong GTM workspace, click nút Preview (góc trên phải).">
+    <Frame>
+      ![Tich Hop Google Tag Manager Voi Li2 9](/images/tich-hop-google-tag-manager-voi-li2-9.png)
+    </Frame>
   </Step>
   <Step title="Nhập URL website và click Connect — một cửa sổ mới mở với GTM Debugger phía dưới.">
+    <Frame>
+      ![Tich Hop Google Tag Manager Voi Li2 10](/images/tich-hop-google-tag-manager-voi-li2-10.png)
+    </Frame>
   </Step>
   <Step title="Duyệt web bình thường. Trong GTM Debugger, kiểm tra:">
     - Tag <kbd>Li2 Analytics - SDK Loader</kbd> xuất hiện trong **Tags Fired** ở tất cả các trang
+
+    <Frame>
+      ![Tich Hop Google Tag Manager Voi Li2 11](/images/tich-hop-google-tag-manager-voi-li2-11.png)
+    </Frame>
   </Step>
 </Steps>
 
