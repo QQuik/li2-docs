@@ -145,3 +145,158 @@ Thêm <kbd>?li2\_debug=true</kbd> vào URL để bật verbose logging trong con
 <Warning>
   **Lưu ý:** Cookie li\_cid **chỉ được set** khi người dùng truy cập website qua touch-point link (short link, QR code, NFC tag) của Li2. Nếu gõ thẳng URL vào trình duyệt, cookie sẽ không tồn tại — đây là hoạt động bình thường.
 </Warning>
+
+Triển khai **Li2 Analytics SDK** thông qua Google Tag Manager để theo dõi hành vi người dùng mà không cần chỉnh sửa mã nguồn website. Sau khi cài đặt SDK, Li2 sẽ tự động thu thập các dữ liệu sau:
+
+- **Pageviews** — người dùng đã xem những trang nào và theo thứ tự ra sao.
+- **Heatmap & Click patterns** — họ click nhiều nhất ở đâu trên từng trang.
+- **Funnel analysis** — tỷ lệ người dùng đi qua từng bước trong phễu bạn thiết lập.
+
+Sau khi SDK được cài, Li2 sẽ tự động thu thập các dữ liệu này mà không cần cấu hình thêm.
+
+> Nếu bạn muốn theo dõi **lead** và **sale** (ví dụ: ai điền form, ai mua hàng, kênh nào mang lại doanh thu), hãy xem **Conversion Tracking qua Google Tag Manager** sau khi hoàn thành hướng dẫn này.
+
+## **Các bước thực hiện Li2 Analytics SDK thông qua Google Tag Manager  **
+
+Trước khi bắt đầu: Đảm bảo bạn đã có đủ các yếu tố sau:
+
+| **  Yêu cầu** |
+| :-- |
+
+| **Yêu cầu** |
+| :-: |
+
+|  |
+| :-- |
+
+| **Lấy ở đâu** |
+| :-: |
+
+**Lấy ở đâu**
+
+| **GTM Container** | GTM script đã được cài trên website |
+| :-- | :-- |
+| **Publishable Key** | Li2 Dashboard → Settings → Analytics |
+| **Allowed hostname** | Li2 Dashboard → Settings → Analytics--\> Allowed Hostnames --\> Nhập URL website của bạn. |
+| **Quyền edit GTM** | [tagmanager.google.com](http://tagmanager.google.com) → container của website bạn |
+
+> **Chưa có GTM?** Làm theo [hướng dẫn cài đặt GTM của Google](https://support.google.com/tagmanager/answer/14842164?visit_id=639083788430160180-1855164391&ref_topic=14841964&rd=2) trước, sau đó quay lại đây.
+
+### **Bước 1 — Tạo Tag Cài SDK**
+
+1. Đăng nhập vào Google Tag Manager và chọn container của bạn.
+
+2. Vào **Tags** → click **New**.
+
+3. Chọn **Tag Type** là **Custom HTML**
+
+4. Paste đoạn script sau vào ô HTML:
+
+```plaintext
+<script>
+!(function (c, n) {
+ c[n] = c[n] || function () {
+   (c[n].q = c[n].q || []).push(arguments);
+ };
+ var methods = ["trackLead", "trackSale"];
+ for (var i = 0; i < methods.length; i++) {
+   (function(method) {
+     c[n][method] = function() {
+       var args = Array.prototype.slice.call(arguments);
+       c[n].apply(c[n], [method].concat(args));
+     };
+   })(methods[i]);
+ }
+ var s = document.createElement("script");
+ s.defer = 1;
+ s.src = "https://unpkg.com/@li2/analytics/dist/index.global.js";
+ s.setAttribute("data-publishable-key", "YOUR_PUBLISHABLE_KEY");
+ document.head.appendChild(s);
+})(window, "li2Analytics");
+</script>
+```
+
+> **Quan trọng:** Thay YOUR\_PUBLISHABLE\_KEY bằng Publishable Key thực tế từ **Li2 Dashboard → Settings → Analytics.**
+
+5. Phần **Triggering** → chọn **All Page**
+
+6. Đặt tên tag là **Li2 Analytics - SDK Loader**, sau đó click **Save**.
+
+> **Tại sao cần All Pages?** SDK phải load trên mọi trang để ghi nhận Click ID (li\_cid cookie) ngay khi người dùng đến từ short link hoặc QR code của bạn — dù họ chưa chuyn đổi ở trang đó.
+
+### **Bước 2 — Tạo Biến Click ID**
+
+Variable (biến) này đọc cookie li\_cid — mã được Li2 tự động ghi khi người dùng click vào touch-point link.
+
+1. Vào **Variables** → phần **User-Defined Variables** → click **New**.
+
+2. Chọn **Variable Type** ---\> chọn **1st Party Cookie**. Đặt tên: Li2 Click ID
+
+3. Điền thông tin: **Cookie Name**: li\_cid
+
+4. Click **Save**.
+
+Từ bước này, bạn có thể dùng biến **{{Li2 Click ID}}** trong bất kỳ tag nào.
+
+### **Bước 3 — Publish**
+
+1. Click **Submit** ở góc trên bên phải của GTM workspace.
+
+2. Thêm tên version mô tả — ví dụ: Add Li2 tracking.
+
+3. Click **Publish**.
+
+## **Kiểm Tra Sau Khi Cài Đặt**
+
+### **Dùng GTM Preview Mode**
+
+1. Trong GTM workspace, click nút **Preview** (góc trên phải).
+
+2. Nhập URL website và click **Connect** — một cửa sổ mới mở với GTM Debugger phía dưới.
+
+3. Duyệt web bình thường. Trong GTM Debugger, kiểm tra:
+
+- Tag Li2 Analytics - SDK Loader xuất hiện trong **Tags Fired** ở tất cả các trang
+
+### **Dùng Browser Console (F12)**
+
+Xác nhận SDK đã load thành công:
+
+```plaintext
+// Kiểm tra SDK đã load chưa
+li2Analytics
+// Kết quả đúng: {trackLead: ƒ, trackSale: ƒ, ...}
+```
+
+Xác nhận Click ID cookie tồn tại:
+
+```plaintext
+// Kiểm tra cookie
+document.cookie.split(';').find(c => c.includes('li_cid'))
+// Kết quả đúng: " li_cid=cm3w..."
+```
+
+Thêm ?li2\_debug=true vào URL để bật verbose logging trong console — hiển thị chính xác data mà SDK đang capture và gửi.
+
+> **Lưu ý:** Cookie li\_cid **chỉ được set** khi người dùng truy cập website qua touch-point link (short link, QR code, NFC tag) của Li2. Nếu gõ thẳng URL vào trình duyệt, cookie sẽ không tồn tại — đây là hoạt động bình thường.
+
+## Troubleshooting
+
+**Tag không fire trong GTM Preview**
+
+Trigger condition không match. Mở GTM Debugger → phần **Tags Not Fired** → click vào tag để xem lý do cụ thể. Kiểm tra lại Page URL condition có chứa đúng đoạn text bạn cài không.
+
+**Lỗi <kbd>li2Analytics is not defined</kbd>**
+
+SDK Loader tag chưa fire hoặc script bị block. Kiểm tra Network tab xem script từ [unpkg.com](http://unpkg.com) có load thành công không. Thử tắt Ad Blocker và test lại. Verify Publishable Key không bị typo.
+
+**Cookie <kbd>li\_cid</kbd> không có**
+
+Người dùng không đến từ touch-point link của Li2. Test đúng cách bằng cách click vào short link trước, sau đó mới kiểm tra cookie.
+
+Sau khi cài đặt xong, SDK đã chạy. Li2 bắt đầu thu thập dữ liệu hành vi ngay lập tức — bạn có thể vào xem tại:
+
+- **Heatmap** — Li2 Dashboard → Heatmap → chọn trang cần xem.
+- **Funnels** — Li2 Dashboard → Funnels → tạo phễu phân tích đầu tiên.
+
+Bước tiếp theo, muốn biết ai điền form và ai mua hàng? Cài SDK mới chỉ là nền tảng. Để **đo conversion** — gắn lead và sale về đúng link/kênh đã mang lại khách — bạn cần thiết lập [**Conversion Tracking**](https://li2.ai/vi/blog/huong-dan-theo-doi-conversion-tren-li2#heading-0).
