@@ -121,3 +121,27 @@ Trước khi bắt đầu: Đảm bảo bạn đã có đủ các yếu tố sau
       </Frame>
   </Step>
 </Steps>
+
+### Dùng Browser Console (F12)
+
+Xác nhận SDK đã load thành công:
+
+```text
+// Kiểm tra SDK đã load chưa
+li2Analytics
+// Kết quả đúng: {trackLead: ƒ, trackSale: ƒ, ...}
+```
+
+Xác nhận Click ID cookie tồn tại:
+
+```text
+// Kiểm tra cookie
+document.cookie.split(';').find(c => c.includes('li_cid'))
+// Kết quả đúng: " li_cid=cm3w..."
+```
+
+Thêm <kbd>?li2\_debug=true</kbd> vào URL để bật verbose logging trong console — hiển thị chính xác data mà SDK đang capture và gửi.
+
+<Warning>
+  **Lưu ý:** Cookie li\_cid **chỉ được set** khi người dùng truy cập website qua touch-point link (short link, QR code, NFC tag) của Li2. Nếu gõ thẳng URL vào trình duyệt, cookie sẽ không tồn tại — đây là hoạt động bình thường.
+</Warning>
