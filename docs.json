@@ -91,22 +91,22 @@
                     "icon": "link",
                     "pages": [
                       "vi/guide/quan-ly-link/tao-short-link-trong-li2",
-                      "vi/guide/tao-ma-qr-dong-trong-li2",
-                      "vi/guide/cach-them-tham-so-utm-tren-li2",
-                      "vi/guide/bao-ve-link-bang-mat-khau-li2",
-                      "vi/guide/cach-thiet-lap-thoi-han-cua-link",
-                      "vi/guide/cach-thiet-lap-ban-xem-truoc-khi-chia-se-link",
+                      "vi/guide/quan-ly-link/tao-ma-qr-dong-trong-li2",
+                      "vi/guide/quan-ly-link/cach-them-tham-so-utm-tren-li2",
+                      "vi/guide/quan-ly-link/bao-ve-link-bang-mat-khau-li2",
+                      "vi/guide/quan-ly-link/cach-thiet-lap-thoi-han-cua-link",
+                      "vi/guide/quan-ly-link/cach-thiet-lap-ban-xem-truoc-khi-chia-se-link",
                       "vi/guide/kiem-soat-quyen-truy-cap-link-li2",
-                      "vi/guide/cach-ma-hoa-lien-ket-e2ee-li2",
-                      "vi/guide/cach-an-lien-ket-goc-li2",
-                      "vi/guide/cai-dat-redirect-code-li2",
-                      "vi/guide/cach-cai-dat-trang-loi-404-trong-li2",
-                      "vi/guide/cach-nhap-va-xuat-link-hang-loat-li2",
-                      "vi/guide/nham-muc-tieu-theo-thiet-bi-li2",
-                      "vi/guide/nham-muc-tieu-theo-dia-ly-li2",
-                      "vi/guide/cach-tao-va-su-dung-mau-utm-li2",
-                      "vi/guide/cach-su-dung-tags-li2",
-                      "vi/guide/cach-them-chinh-sua-va-go-link-trong-space-li2",
+                      "vi/guide/quan-ly-link/cach-ma-hoa-lien-ket-e2ee-li2",
+                      "vi/guide/quan-ly-link/cach-an-lien-ket-goc-li2",
+                      "vi/guide/quan-ly-link/cai-dat-redirect-code-li2",
+                      "vi/guide/quan-ly-link/cach-cai-dat-trang-loi-404-trong-li2",
+                      "vi/guide/quan-ly-link/cach-nhap-va-xuat-link-hang-loat-li2",
+                      "vi/guide/quan-ly-link/nham-muc-tieu-theo-thiet-bi-li2",
+                      "vi/guide/quan-ly-link/nham-muc-tieu-theo-dia-ly-li2",
+                      "vi/guide/quan-ly-link/cach-tao-va-su-dung-mau-utm-li2",
+                      "vi/guide/quan-ly-link/cach-su-dung-tags-li2",
+                      "vi/guide/quan-ly-link/cach-them-chinh-sua-va-go-link-trong-space-li2",
                       "vi/guide/cach-them-sub-domain-trong-li2"
                     ]
                   },
@@ -116,11 +116,11 @@
                     "pages": [
                       "vi/guide/xem-thong-ke-phan-tich-trong-li2",
                       "vi/guide/huong-dan-theo-doi-conversion-li2",
-                      "vi/guide/cach-loc-va-xem-analytics-theo-link-li2",
-                      "vi/guide/cach-loc-va-xem-analytics-theo-tag-li2",
-                      "vi/guide/cach-loc-va-xem-analytics-theo-space-li2",
+                      "vi/guide/analytics/cach-loc-va-xem-analytics-theo-link-li2",
+                      "vi/guide/analytics/cach-loc-va-xem-analytics-theo-tag-li2",
+                      "vi/guide/analytics/cach-loc-va-xem-analytics-theo-space-li2",
                       "vi/guide/cach-loc-va-xem-analytics-theo-utm",
-                      "vi/guide/cach-loc-va-xem-analytics-theo-loai-tuong-tac"
+                      "vi/guide/analytics/cach-loc-va-xem-analytics-theo-loai-tuong-tac"
                     ]
                   }
                 ]
@@ -128,21 +128,20 @@
               {
                 "group": "User Behavior ",
                 "pages": [
-                  "vi/guide/cai-dat-sdk-li2-voi-google-tag-manager",
-                  "vi/guidecai-dat-sdk-li2-tren-wordpress",
-                  "vi/guide/thiet-lap-conversion-tracking-wordpress-voi-li2",
-                  "vi/guide/cai-dat-sdk-li2-tren-word-press"
+                  "vi/guide/tich-hop/cai-dat-sdk-li2-voi-google-tag-manager",
+                  "vi/guide/tich-hop/cai-dat-sdk-li2-tren-wordpress",
+                  "vi/guide/tich-hop/thiet-lap-conversion-tracking-wordpress-voi-li2"
                 ]
               },
               {
                 "group": "TEAM & ORGANIZATION",
                 "icon": "user-group",
                 "pages": [
-                  "vi/guide/to-chuc-li2-la-gi",
-                  "vi/guide/moi-va-quan-ly-thanh-vien-to-chuc-li2",
-                  "vi/guide/moi-thanh-vien-va-gan-vai-tro-trong-space-li2",
-                  "vi/guide/cach-thiet-lap-va-van-hanh-team-li2",
-                  "vi/guide/cach-tao-va-xoa-space-trong-li2"
+                  "vi/guide/workspace/to-chuc-li2-la-gi",
+                  "vi/guide/workspace/moi-va-quan-ly-thanh-vien-to-chuc-li2",
+                  "vi/guide/workspace/moi-thanh-vien-va-gan-vai-tro-trong-space-li2",
+                  "vi/guide/workspace/cach-thiet-lap-va-van-hanh-team-li2",
+                  "vi/guide/workspace/cach-tao-va-xoa-space-trong-li2"
                 ]
               }
             ]
