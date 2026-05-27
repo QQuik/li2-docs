@@ -90,7 +90,7 @@
                     "group": "Links",
                     "icon": "link",
                     "pages": [
-                      "cong-cu-tao-short-link-trong-li2",
+                      "tao-short-link-trong-li2",
                       "vi/guide/tao-ma-qr-dong-trong-li2",
                       "vi/guide/cach-them-tham-so-utm-tren-li2",
                       "vi/guide/bao-ve-link-bang-mat-khau-li2",
@@ -135,13 +135,14 @@
                   "vi/guide/cach-thiet-lap-va-van-hanh-team-li2",
                   "vi/guide/cach-tao-va-xoa-space-trong-li2",
                   "vi/guide/huong-dan-thiet-lap-conversion-tracking-wordpress-voi-li2",
-                  "vi/guide/huong-dan-cai-dat-script-theo-doi-behavior-analytics-tren-word-press-voi-li2",
                   "vi/guide/tich-hop-google-tag-manager-li2"
                 ]
               },
               {
                 "group": "Behavior",
-                "pages": []
+                "pages": [
+                  "vi/guide/huong-dan-cai-dat-script-theo-doi-behavior-analytics-tren-word-press-voi-li2"
+                ]
               }
             ]
           }
