@@ -10,93 +10,63 @@ Triển khai **Li2 Analytics SDK** thông qua Google Tag Manager ghi nhận hàn
 
 Sau khi SDK được cài, Li2 sẽ tự động thu thập các dữ liệu này mà không cần cấu hình thêm.
 
-> Nếu bạn muốn theo dõi **lead** và **sale** (ví dụ: ai điền form, ai mua hàng, kênh nào mang lại doanh thu), hãy xem **Conversion Tracking qua Google Tag Manager** sau khi hoàn thành hướng dẫn này.
+<Tip>
+  Nếu bạn muốn theo dõi **lead** và **sale** (ví dụ: ai điền form, ai mua hàng, kênh nào mang lại doanh thu), hãy xem **Conversion Tracking qua Google Tag Manager** sau khi hoàn thành hướng dẫn này.
+</Tip>
 
 ## Các bước thực hiện Li2 Analytics SDK thông qua Google Tag Manager
 
-Trước khi bắt đầu: Đảm bảo bạn đã có đủ các yếu tố sau:
+Trước khi bắt đầu, đảm bảo bạn đã có đủ các yếu tố sau:
 
 | **Yêu cầu** | **Lấy ở đâu** |
 | --- | --- |
 | **GTM Container** | GTM script đã được cài trên website |
-| **Publishable Key** | Li2 Dashboard → Settings → Analytics |
-| **Allowed hostname** | Li2 Dashboard → Settings → Analytics → Allowed Hostnames → Nhập URL website của bạn. |
 | **Quyền edit GTM** | [tagmanager.google.com](http://tagmanager.google.com) → container của website bạn |
 
 <Note>
   **Chưa có GTM?** Làm theo [hướng dẫn cài đặt GTM của Google](https://support.google.com/tagmanager/answer/14842164?visit_id=639083788430160180-1855164391&ref_topic=14841964&rd=2) trước, sau đó quay lại đây.
 </Note>
 
+### Bước 1: Tạo Custom HTML Tag
+
 <Steps>
-  <Step title="Tạo Tag Cài SDK">
-    1. Đăng nhập vào Google Tag Manager và chọn container của bạn.
-    2. Vào **Tags** → click **New**
-       <Frame>
-         ![Tich Hop Google Tag Manager Voi Li2 1 1](/images/tich-hop-google-tag-manager-voi-li2-1-1.png)
-       </Frame>
-    3. Chọn **Tag Type** là **Custom HTML**
-       <Frame>
-         ![Tich Hop Google Tag Manager Voi Li2 2 1](/images/tich-hop-google-tag-manager-voi-li2-2-1.png)
-       </Frame>
-    4. Paste đoạn script sau vào ô HTML:
-       ```html
-       <script>
-       !(function (c, n) {
-        c[n] = c[n] || function () {
-          (c[n].q = c[n].q || []).push(arguments);
-        };
-        var methods = ["trackLead", "trackSale"];
-        for (var i = 0; i < methods.length; i++) {
-          (function(method) {
-            c[n][method] = function() {
-              var args = Array.prototype.slice.call(arguments);
-              c[n].apply(c[n], [method].concat(args));
-            };
-          })(methods[i]);
-        }
-        var s = document.createElement("script");
-        s.defer = 1;
-        s.src = "https://unpkg.com/@li2/analytics/dist/index.global.js";
-        s.setAttribute("data-publishable-key", "YOUR_PUBLISHABLE_KEY");
-        document.head.appendChild(s);
-       })(window, "li2Analytics");
-       </script>
-       ```
-       <Warning>
-         **Quan trọng:** Thay `YOUR_PUBLISHABLE_KEY` bằng Publishable Key thực tế từ **Li2 Dashboard → Settings → Analytics.**
-       </Warning>
-    5. Phần **Triggering** → chọn **All Page**
-    6. Đặt tên tag là **Li2 Analytics - SDK Loader**, sau đó click **Save**.
-       <Note>
-         **Tại sao cần All Pages?** SDK phải load trên mọi trang để ghi nhận Click ID (`li_cid` cookie) ngay khi người dùng đến từ short link hoặc QR code của bạn — dù họ chưa chuyển đổi ở trang đó.
-       </Note>
+  <Step title="Mở GTM Container">
+    Đăng nhập vào **Google Tag Manager** và chọn container của bạn. 
   </Step>
-  <Step title="Tạo Biến Click ID">
-    Variable (biến) này đọc cookie `li_cid` — mã được Li2 tự động ghi khi người dùng click vào touch-point link.
-
-    1. Vào **Variables** → phần **User-Defined Variables** → click **New**.
-       <Frame>
-         ![Tich Hop Google Tag Manager Voi Li2 3 1](/images/tich-hop-google-tag-manager-voi-li2-3-1.png)
-       </Frame>
-    2. Chọn **Variable Type** → chọn **1st Party Cookie**. Đặt tên: `Li2 Click ID`
-       <Frame>
-         ![Tich Hop Google Tag Manager Voi Li2 4 1](/images/tich-hop-google-tag-manager-voi-li2-4-1.png)
-       </Frame>
-    3. Điền thông tin: **Cookie Name**: `li_cid`
-       <Frame>
-         ![Tich Hop Google Tag Manager Voi Li2 5 1](/images/tich-hop-google-tag-manager-voi-li2-5-1.png)
-       </Frame>
-    4. Click **Save**.
-
-    Từ bước này, bạn có thể dùng biến **`{{Li2 Click ID}}`** trong bất kỳ tag nào.
+  <Step title="Tạo Tag mới">
+    Vào **Tags**. Chọn **New** và đặt tên `Li2 Analytics - SDK Loader`
   </Step>
-  <Step title="Publish">
-    1. Click **Submit** ở góc trên bên phải của GTM workspace.
-    2. Thêm tên version mô tả — ví dụ: Add Li2 tracking.
-    3. Click **Publish**.
-       <Frame>
-         ![Tich Hop Google Tag Manager Voi Li2 6 1](/images/tich-hop-google-tag-manager-voi-li2-6-1.png)
-       </Frame>
+  <Step title="Cấu hình Tag">
+    - **Tag Type**: Chọn **Custom HTML**
+    - **HTML Content**: Paste script bên dưới
+    - **Triggering**: Chọn **All Pages**
+  </Step>
+</Steps>
+
+### Bước 2: Tạo biến click ID
+
+Variable (biến) này đọc cookie `li_cid` — mã được Li2 tự động ghi khi người dùng click vào link.
+
+<Steps>
+  <Step title="Tạo Variable mới">
+    Vào **Variables.** Chọn**  User-Defined Variables** click vào **New**
+  </Step>
+  <Step title="Cấu hình Variable">
+    - Chọn **Variable Type** → chọn **1st Party Cookie**. Đặt tên: `Li2 Click ID`
+    - Điền thông tin: **Cookie Name**: `li_cid`
+    - Click **Save** để lưu cấu hình. Từ bước này, bạn có thể dùng biến `{{Li2 Click ID}}` trong bất kỳ tag nào.
+  </Step>
+</Steps>
+
+### Bước 3: Publish
+
+<Steps>
+  <Step title="Click Submit ở góc trên bên phải của GTM workspace.">
+  </Step>
+  <Step title="Thêm tên version và mô tả ">
+    ví dụ: Add Li2 tracking.
+  </Step>
+  <Step title="Click Publish.">
   </Step>
 </Steps>
 
@@ -149,19 +119,21 @@ Thêm `?li2_debug=true` vào URL để bật verbose logging trong console — h
 
 ## Troubleshooting
 
-**Tag không fire trong GTM Preview**
+<AccordionGroup>
+  <Accordion title="Tag không fire trong GTM Preview">
+    Trigger condition không match. Mở GTM Debugger → phần **Tags Not Fired** → click vào tag để xem lý do cụ thể. Kiểm tra lại Page URL condition có chứa đúng đoạn text bạn cài không.
+  </Accordion>
 
-Trigger condition không match. Mở GTM Debugger → phần **Tags Not Fired** → click vào tag để xem lý do cụ thể. Kiểm tra lại Page URL condition có chứa đúng đoạn text bạn cài không.
+  <Accordion title="Lỗi li2Analytics is not defined">
+    SDK Loader tag chưa fire hoặc script bị block. Kiểm tra Network tab xem script từ [unpkg.com](http://unpkg.com) có load thành công không. Thử tắt Ad Blocker và test lại. Verify Publishable Key không bị typo.
+  </Accordion>
 
-**Lỗi `li2Analytics is not defined`**
+  <Accordion title="Cookie li_cid không có">
+    Người dùng không đến từ touch-point link của Li2. Test đúng cách bằng cách click vào short link trước, sau đó mới kiểm tra cookie.
+  </Accordion>
+</AccordionGroup>
 
-SDK Loader tag chưa fire hoặc script bị block. Kiểm tra Network tab xem script từ [unpkg.com](http://unpkg.com) có load thành công không. Thử tắt Ad Blocker và test lại. Verify Publishable Key không bị typo.
-
-**Cookie `li_cid` không có**
-
-Người dùng không đến từ touch-point link của Li2. Test đúng cách bằng cách click vào short link trước, sau đó mới kiểm tra cookie.
-
-Sau khi cài đặt xong, SDK đã chạy. Li2 bắt đầu thu thập dữ liệu hành vi ngay lập tức — bạn có thể vào xem tại:
+Sau khi cài đặt xong, SDK đã chạy. Li2 bắt đầu ghi nhận dữ liệu hành vi ngay lập tức — bạn có thể vào xem tại:
 
 - **Heatmap** — Li2 Dashboard → Heatmap → chọn trang cần xem.
 - **Funnels** — Li2 Dashboard → Funnels → tạo phễu phân tích đầu tiên.
