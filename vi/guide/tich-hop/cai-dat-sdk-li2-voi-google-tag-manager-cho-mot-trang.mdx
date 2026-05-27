@@ -1,0 +1,190 @@
+---
+title: "Cài Đặt SDK Li2 Với Google Tag Manager Theo URL"
+description: "Triển khai SDK Li2 qua Google Tag Manager chỉ cho một landing page hoặc URL cụ thể mà không cần chỉnh sửa mã nguồn website."
+hidden: true
+---
+
+Theo cấu hình mặc định, SDK thường được thiết lập để chạy trên **toàn bộ website**.
+
+Nếu bạn chỉ muốn sử dụng Li2 cho **một landing page, một funnel hoặc một nhóm URL cụ thể**, bạn có thể cấu hình GTM để chỉ kích hoạt SDK trên những trang đó.
+
+Cách làm này phù hợp khi bạn muốn:
+
+- thử nghiệm Li2 trước khi triển khai toàn website
+- chỉ ghi nhận dữ liệu cho landing page hoặc campaign
+- triển khai từng phần trước khi mở rộng toàn site
+
+Sau khi SDK hoạt động, Li2 sẽ bắt đầu ghi nhận dữ liệu trên những trang bạn chọn, bao gồm:
+
+- pageviews
+- heatmap & click patterns
+- funnel interactions
+- session activity
+
+Làm theo các bước dưới đây để cấu hình SDK Li2 cho một trang cụ thể.
+
+## Trước khi bắt đầu
+
+Đảm bảo bạn đã có:
+
+<Columns cols={2}>
+  <Column>
+    <Card title="Quyền Truy Cập" icon="sparkles">
+      Owner hoặc Manager role trong organization
+    </Card>
+
+    <Card title="Gói Pro+" icon="sparkles">
+      Pro plan hoặc cao hơn
+    </Card>
+  </Column>
+  <Column>
+    <Card title="GTM Container" icon="sparkles">
+      GTM script đã được cài trên website. Quyền tạo tags và variables
+    </Card>
+
+    <Card title="Website/App" icon="sparkles">
+      Landing page hoặc page cụ thể
+    </Card>
+  </Column>
+</Columns>
+
+Chưa cài GTM?
+
+Hoàn tất thiết lập Google Tag Manager trước, sau đó quay lại hướng dẫn này.
+
+## Bước 1: Tạo Custom HTML Tag
+
+<Steps>
+  <Step title="Mở GTM Container">
+    Đăng nhập vào **Google Tag Manager** và mở container của website.
+  </Step>
+  <Step title="Tạo Tag Mới">
+    Vào **Tags → New**. Đặt tên tag: `Li2 Analytics – SDK Loader`
+  </Step>
+  <Step title="Cấu Hình Tag">
+    - Trong **Tag Type**, chọn: **Custom HTML**
+    - **HTML Content**: Dán SDK script của Li2
+  </Step>
+</Steps>
+
+## Bước 2: Chỉ định trang cần chạy SDK
+
+<Steps>
+  <Step title="Tạo mới Trigger">
+    - Trong phần **Triggering**, chọn **New Trigger.**
+    - Đặt tên cho trigger. Ví dụ:`Landing Page Only`
+    - Tại **Trigger Type ,** chọn **Page View**
+    - Sau đó chọn: **Some Page Views**
+  </Step>
+  <Step title="Chạy SDK cho một URL cụ thể">
+    Nếu bạn muốn Li2 chỉ hoạt động trên một trang duy nhất, **cấu hình điều kiện URL**.
+
+    ```txt
+    Page Path equals /pricing
+    hoặc 
+    Page URL contains /summer-campaign
+    ```
+  </Step>
+  <Step title="Chạy SDK cho nhiều trang cùng lúc (optional)">
+    Bạn cũng có thể áp dụng SDK cho một nhóm trang.
+
+    ```txt
+    Page Path contains /blog/
+    hoặc
+    Page URL matches RegEx
+    ```
+  </Step>
+</Steps>
+
+Cách cấu hình này phù hợp nếu bạn muốn bật Li2 cho:
+
+- toàn bộ landing pages
+- funnel pages
+- khu vực blog
+- microsite campaign
+
+## Bước 3: Tạo biến Click ID
+
+<Steps>
+  <Step title="Tạo Variables (biến) mới">
+  </Step>
+</Steps>
+
+Biến này đọc cookie `li_cid` — mã mà Li2 tự động tạo khi người dùng truy cập website từ short link.
+
+Vào:
+
+**Variables → New**
+
+Trong phần **User-Defined Variables**, chọn **New**.
+
+Đặt tên:
+
+`Li2 Click ID`
+
+Tại **Variable Type**, chọn:
+
+**1st Party Cookie**
+
+Điền:
+
+```txt
+Cookie Name: li_cid
+```
+
+Nhấn **Save** để lưu cấu hình.
+
+Sau bước này, bạn có thể sử dụng biến `{{Li2 Click ID}}` trong các tag GTM khác nếu cần.
+
+## Bước 4: Publish thay đổi
+
+Sau khi hoàn tất cấu hình, nhấn **Submit** ở góc trên bên phải của GTM workspace.
+
+Thêm tên version và mô tả.
+
+Ví dụ:
+
+`Add Li2 SDK to Landing Page`
+
+Sau đó nhấn **Publish**.
+
+GTM sẽ bắt đầu áp dụng cấu hình mới lên website.
+
+## Bước 5: Kiểm tra hoạt động của SDK
+
+Mở đúng URL bạn vừa cấu hình trong GTM.
+
+Thử thực hiện một vài thao tác đơn giản như:
+
+- mở trang
+- nhấp vào nút hoặc liên kết
+- cuộn trang
+- chuyển qua các bước trong funnel
+
+Quay lại Li2 để kiểm tra dữ liệu bắt đầu xuất hiện.
+
+Nếu chưa thấy dữ liệu, hãy kiểm tra:
+
+- trigger đã chọn đúng URL chưa
+- tag đã được publish chưa
+- GTM container đã hoạt động trên website chưa
+
+## Khi nào nên dùng cấu hình này?
+
+Thiết lập theo từng trang phù hợp khi bạn muốn triển khai Li2 theo từng bước thay vì bật trên toàn website ngay từ đầu.
+
+Ví dụ:
+
+- thử nghiệm Li2 trên một landing page
+- chỉ phân tích dữ liệu của campaign page
+- giới hạn phạm vi triển khai cho một funnel cụ thể
+
+Nếu bạn muốn ghi nhận dữ liệu trên toàn website, hãy dùng cấu hình chuẩn với trigger **All Pages**.
+
+## Hoàn tất
+
+Bạn đã cấu hình thành công SDK Li2 cho một trang cụ thể bằng Google Tag Manager.
+
+Li2 sẽ chỉ bắt đầu ghi nhận dữ liệu trên những URL khớp với điều kiện bạn đã thiết lập trong GTM.
+
+Khi cần mở rộng phạm vi triển khai, bạn có thể cập nhật trigger hoặc chuyển sang cấu hình chạy trên toàn website.
