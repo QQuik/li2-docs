@@ -81,11 +81,10 @@
           {
             "tab": "Hướng dẫn sử dụng",
             "pages": [
-              "guide",
+              "vi/guide",
               {
                 "group": "MANAGING YOUR LINKS",
                 "pages": [
-                  "tong-quan-link",
                   {
                     "group": "Links",
                     "icon": "link",
@@ -128,12 +127,12 @@
               {
                 "group": "SDK Li2 Analytic",
                 "pages": [
-                  "vi/guide/tich-hop/tong-quan",
                   "vi/guide/tich-hop/cai-dat-sdk-li2-voi-google-tag-manager",
-                  "vi/guide/tich-hop/-tren-wordpress",
                   "vi/guide/tich-hop/thiet-lap-conversion-tracking-wordpress-voi-li2",
-                  "vi/guide/tich-hop/cai-dat-sdk-li2-voi-google-tag-manager-cho-mot-trang",
-                  "vi/guide/tich-hop/thiet-lap-behavior-analytics-qua-google-tag-manager"
+                  "vi/guide/tich-hop/thiet-lap-behavior-analytics-qua-google-tag-manager",
+                  "vi/guide/tich-hop/tong-quan",
+                  "vi/guide/tich-hop/-tren-wordpress",
+                  "vi/guide/tich-hop/cai-dat-sdk-li2-voi-google-tag-manager-cho-mot-trang"
                 ]
               },
               {
