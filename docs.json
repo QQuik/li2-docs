@@ -284,5 +284,8 @@
   },
   "search": {
     "prompt": "Search Li2.ai documentation..."
+  },
+  "interaction": {
+    "drilldown": true
   }
 }
