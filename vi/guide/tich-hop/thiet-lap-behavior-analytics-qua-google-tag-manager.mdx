@@ -51,280 +51,120 @@ Làm theo các bước dưới đây để hoàn tất thiết lập.
 
 <Steps>
   <Step title="Vào màn hình thiết lập">
-    Đăng nhập vào Li2. Từ menu bên trái, chọn **Bắt đầu**
-
-    Tại màn hình **"Bạn muốn thiết lập gì?"**, chọn **Phân tích hành vi**
-
-    Li2 sẽ hiển thị các mục tiêu thiết lập dành cho Behavior Analytics. Chọn **Cài đặt script theo dõi**
+    - Đăng nhập vào Li2. Từ menu bên trái, chọn **Bắt đầu**
+    - Tại màn hình **"Bạn muốn thiết lập gì?"**, chọn **Phân tích hành vi**
+    - Li2 sẽ hiển thị các mục tiêu thiết lập dành cho Behavior Analytics. Chọn **Cài đặt script theo dõi**
   </Step>
   <Step title="Thêm website">
-    Nhập **URL website** của bạn. Ví dụ: `https://yourwebsite.com`
-
-    Li2 tự động nhận diện nền tảng website và đề xuất cách cài đặt phù hợp
-
-    Nhấp vào ô nền tảng phù hợp **HTML/JavaScript** hoặc **WordPress**
-
-    Sau khi nhập URL, nhấn **Tiếp tục**.
+    - Nhập **URL website** của bạn. Ví dụ: `https://yourwebsite.com`
+    - Nhấp vào **HTML/JavaScript **
+    - Sau khi nhập URL, nhấn **Tiếp tục**.
   </Step>
-  <Step title="Lấy SDK script từ Li2">
-    Tại bước **Cài script**,
+  <Step title="Lấy SDK script Li2">
+    - Tab **HTML:  **Nhấn **Sao chép** để copy đoạn script. Chúng ta sẽ dùng script này trong Google Tag Manager ở bước tiếp theo.
 
-    1. Nếu chọn tab **HTML:  **Nhấn **Sao chép** để copy đoạn script. Chúng ta sẽ dùng script này trong Google Tag Manager ở bước tiếp theo.
-    2. Nếu chọn WordPress: 
+     
   </Step>
 </Steps>
 
 ## Bước 2: Tạo tag trong Google Tag Manager
 
+### Lưa chọn 1: SDK Li2 ghi nhận dữ liệu trên toàn bộ website
+
 <Steps>
   <Step title="Tạo Custom HTML Tag">
     Mở **Google Tag Manager** và chọn container của website.
   </Step>
+  <Step title="Tạo Trigger ">
+    - Trong phần **Triggering**, chọn **New Trigger. **Đặt tên cho Trigger. Ví dụ:`Trigger summer-sale`
+    -  Trigger Type, chọn **Page View. **
+    - Nhấn **Save** lưu cấu hình.
+  </Step>
   <Step title="Tạo Tag Mới">
-    Vào **Tags → New**. Đặt tên tag: `Li2 Analytics – SDK Loader`
-  </Step>
-  <Step title="Cấu Hình Tag">
+    - Vào **Tags → New**. Đặt tên tag: `Li2 Behavior Analytics.`
     - Trong **Tag Type**, chọn: **Custom HTML**
-    - **HTML Content**: Dán SDK script của Li2
+    - **HTML Content**: Dán SDK script Li2
+    - **Trigger:** chọn vừa tạo:`Trigger summer-sale`
+    - Nhấn **Save** lưu cấu hình.
   </Step>
-  <Step>
+  <Step title="Publish Tag">
+    Nhấn **Submit. **Thêm tên version.Ví dụ: `Add Li2 Behavior Analytics`
+
+    Sau đó nhấn **Publish**. GTM sẽ bắt đầu áp dụng SDK lên website.
   </Step>
 </Steps>
 
-Vào:
-
-**Tags → New**
-
-Đặt tên tag.
-
-Ví dụ:
-
-```txt
-Li2 Behavior Analytics
-```
-
-Trong **Tag Type**, chọn:
-
-**Custom HTML**
-
-Paste SDK script vừa copy từ Li2 vào phần **HTML Content**.
-
-\[SCREENSHOT — Create GTM Custom HTML Tag\]
-
-Tiếp theo, chọn nơi bạn muốn SDK hoạt động.
-
-## Bước 5: Chọn nơi SDK sẽ chạy
-
-Bạn có thể cấu hình SDK chạy trên toàn website hoặc chỉ một nhóm trang cụ thể.
-
-### Chạy trên toàn website
-
-Nếu bạn muốn Behavior Analytics ghi nhận dữ liệu trên toàn bộ website, trong phần **Triggering** chọn:
-
-**All Pages**
-
-\[SCREENSHOT — GTM All Pages Trigger\]
-
-Đây là cấu hình được khuyến nghị cho hầu hết website.
-
-SDK sẽ được tải trên mọi trang có GTM container hoạt động.
-
-Phù hợp khi bạn muốn:
-
-- phân tích toàn website
-- dùng heatmap trên nhiều trang
-- xây funnel nhiều bước
-- ghi nhận hành trình truy cập xuyên suốt website
-
-### Chỉ chạy trên một page cụ thể
-
-Nếu bạn chỉ muốn sử dụng Li2 cho **một URL duy nhất**, tạo trigger riêng thay vì dùng **All Pages**.
-
-Trong phần **Triggering**, chọn:
-
-**New Trigger**
-
-Đặt tên trigger.
-
-Ví dụ:
-
-```txt
-Pricing Page Only
-```
-
-Tại **Trigger Type**, chọn:
-
-**Page View**
-
-Sau đó chọn:
-
-**Some Page Views**
-
-Thiết lập điều kiện URL.
-
-Ví dụ:
-
-```txt
-Page Path equals /pricing
-```
-
-hoặc:
-
-```txt
-Page URL equals https://yourwebsite.com/pricing
-```
-
-\[SCREENSHOT — Single Page Trigger\]
-
-Li2 sẽ chỉ ghi nhận dữ liệu trên URL này.
-
-Những trang khác trên website sẽ không tải SDK.
-
----
-
-### Chạy trên một landing page hoặc campaign page
-
-Nếu bạn đang chạy chiến dịch marketing, bạn có thể giới hạn SDK cho landing page hoặc funnel riêng.
-
-Ví dụ:
-
-```txt
-Page URL contains /summer-sale
-```
-
-hoặc:
-
-```txt
-Page Path equals /landing/ebook-download
-```
-
-\[SCREENSHOT — Landing Page Trigger\]
-
-Cách cấu hình này phù hợp khi bạn muốn:
-
-- thử nghiệm Li2 trước khi triển khai toàn website
-- chỉ phân tích campaign page
-- đo hiệu quả landing page
-- triển khai theo từng giai đoạn
-
-Bạn cũng có thể áp dụng cho nhiều landing page cùng lúc.
-
-Ví dụ:
-
-```txt
-Page Path contains /landing/
-```
-
----
-
-### Chọn cấu hình phù hợp
-
-| Use case | Trigger nên dùng |
-| :-- | :-- |
-| Toàn website | All Pages |
-| Một URL duy nhất | Page Path equals |
-| Landing page / campaign | Page URL contains |
-| Nhóm landing pages | Page Path contains |
-
-Sau khi hoàn tất cấu hình trigger, tiếp tục publish GTM.
-
----
-
-## Bước 6: Publish thay đổi trong GTM
-
-Nhấn:
-
-**Submit**
-
-Thêm tên version.
-
-Ví dụ:
-
-```txt
-Add Li2 Behavior Analytics
-```
-
-Sau đó nhấn **Publish**.
-
-GTM sẽ bắt đầu áp dụng SDK lên website.
-
----
-
-## Bước 7: Xác minh cài đặt trong Li2
-
-Quay lại Li2.
-
-Tại bước **Xác minh cài đặt**, nhấn:
-
-**Open Site to Verify**
-
-Li2 sẽ tự động kiểm tra trạng thái SDK trên website.
-
-\[SCREENSHOT — Verify Installation\]
-
-Khi xác minh hoàn tất, nhấn **Tiếp tục**.
-
----
-
-## Bước 8: Chọn dữ liệu hành vi cần ghi nhận
-
-Sau khi SDK hoạt động, Li2 sẽ mở màn hình **Chọn tính năng theo dõi**.
-
-\[SCREENSHOT — Select Tracking Features\]
-
-Tại đây, bạn có thể bật hoặc tắt từng nhóm dữ liệu behavior.
-
-Ví dụ:
-
-**Theo dõi lượt xem trang**\
-Ghi nhận pageviews và điều hướng trang.
-
-**Theo dõi lượt nhấp**\
-Ghi nhận tương tác với nút, liên kết và thành phần giao diện.
-
-**Theo dõi cuộn trang**\
-Đo mức độ cuộn trên từng trang.
-
-**Theo dõi biểu mẫu**\
-Ghi nhận tương tác với biểu mẫu và trường nhập liệu.
-
-**Ghi lại phiên làm việc**\
-Cho phép xem lại hành trình tương tác trên website.
-
-**Theo dõi liên kết ngoài**\
-Ghi nhận lượt chuyển sang website khác.
+### Lựa chọn 2: SDK Li2 ghi nhận dữ liệu cho một URL duy nhất
+
+<Steps>
+  <Step title="Tạo Custom HTML Tag">
+    Mở **Google Tag Manager** và chọn container của website.
+  </Step>
+  <Step title="Tạo Trigger ">
+    - Trong phần **Triggering**, chọn **New Trigger. **Đặt tên cho Trigger. Ví dụ:`Trigger summer-sale`
+    -  Trigger Type, chọn **Page View. **
+
+    - This trigger fires on, chọn **Some Page Views**
+    - **Condition**: Page URL contains `/semmer-sale `(điều chỉnh theo URL của bạn).
+    - Nhấn **Save** lưu cấu hình.
+  </Step>
+  <Step title="Tạo Tag Mới">
+    - Vào **Tags → New**. Đặt tên tag: `Li2 Behavior Analytics.`
+    - Trong **Tag Type**, chọn: **Custom HTML**
+    - **HTML Content**: Dán SDK script Li2
+    - **Trigger:** chọn vừa tạo:`Trigger summer-sale`
+    - Nhấn **Save** lưu cấu hình.
+  </Step>
+  <Step title="Publish thay đổi trong GTM">
+    - Nhấn **Submit. **Thêm tên version.Ví dụ: `Add Li2 Behavior Analytics`
+    - Nhấn **Publish**. GTM sẽ bắt đầu áp dụng SDK Li2  trên URL này.
+  </Step>
+</Steps>
+
+## Bước 3: Xác minh cài đặt trong Li2
+
+- Quay lại Li2. Tại bước **Xác minh cài đặt**, nhấn **Open Site to Verify.** 
+- Li2 sẽ tự động kiểm tra trạng thái cài đặt trên website.
+- Khi xác minh hoàn tất, nhấn **Tiếp tục**.
+
+## Bước 4: Chọn dữ liệu hành vi cần ghi nhận
+
+Sau khi xác minh thành công, Li2 sẽ hiển thị màn hình cấu hình Behavior Analytics. Bạn có thể bật hoặc tắt từng loại dữ liệu theo nhu cầu.
+
+ Tại màn hình **Chọn tính năng theo dõi**. Bạn có thể bật hoặc tắt từng nhóm dữ liệu behavior.
+
+1. **Theo dõi lượt xem trang:** Ghi nhận pageviews và điều hướng trang.
+2. **Theo dõi lượt nhấp:** Ghi nhận tương tác với nút, liên kết và thành phần giao diện.
+3. **Theo dõi cuộn trang:** Đo mức độ cuộn trên từng trang. 
+4. **Theo dõi biểu mẫu:** Ghi nhận tương tác với biểu mẫu và trường nhập liệu.
+5. **Ghi lại phiên làm việc:** Cho phép xem lại hành trình tương tác trên website.
+6. **Theo dõi liên kết ngoài:** Ghi nhận lượt chuyển sang website khác.
 
 Bạn có thể thay đổi các thiết lập này bất kỳ lúc nào.
 
-Sau khi hoàn tất, nhấn:
+Sau khi hoàn tất, nhấn **Lưu & Hoàn thành**
 
-**Lưu & Hoàn thành**
-
----
-
-## Bước 9: Kiểm tra dữ liệu
+## Bước 5: Kiểm tra dữ liệu
 
 Mở website của bạn và thực hiện một vài thao tác đơn giản như:
 
-- mở nhiều trang
-- nhấp vào nút hoặc liên kết
-- cuộn trang
-- điền biểu mẫu
+- Mở nhiều trang
+- Nhấp vào nút hoặc liên kết
+- Cuộn trang
+- Điền biểu mẫu
 
 Quay lại Li2 để kiểm tra dữ liệu bắt đầu xuất hiện.
 
-Nếu chưa thấy dữ liệu, kiểm tra:
-
-- GTM container đã publish chưa
-- SDK script đã được paste đúng chưa
-- trigger đã cấu hình đúng chưa
-- website đã tải GTM container chưa
-
----
+<Accordion title="Nếu chưa thấy dữ liệu, kiểm tra:">
+  - GTM container đã publish chưa
+  - SDK script đã được paste đúng chưa
+  - trigger đã cấu hình đúng chưa
+  - website đã tải GTM container chưa
+</Accordion>
 
 ## Hoàn tất
 
-Bạn đã thiết lập thành công Behavior Analytics qua Google Tag Manager.
+Bạn đã thiết lập thành công Behavior Analytics Li2 qua Google Tag Manager.
 
 Từ đây, Li2 có thể bắt đầu ghi nhận dữ liệu hành vi website để hỗ trợ:
 
