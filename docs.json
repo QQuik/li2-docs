@@ -150,70 +150,7 @@
             ]
           }
         ]
-      },
-      {
-        "language": "en",
-        "tabs": [
-          {
-            "tab": "User Guide",
-            "groups": [
-              {
-                "group": "Getting Started",
-                "pages": [
-                  "en/getting-started/overview",
-                  "en/getting-started/account-setup",
-                  "en/getting-started/organizations",
-                  "en/getting-started/quick-start",
-                  "en/getting-started/dashboard"
-                ]
-              },
-              {
-                "group": "Conversion Tracking",
-                "pages": [
-                  "en/conversion-tracking/overview",
-                  "en/conversion-tracking/setup",
-                  "en/conversion-tracking/events",
-                  {
-                    "group": "Integrations",
-                    "pages": [
-                      "en/conversion-tracking/integrations/google-tag-manager"
-                    ]
-                  },
-                  "en/conversion-tracking/goals"
-                ]
-              },
-              {
-                "group": "Touch-Points",
-                "hidden": true,
-                "pages": [
-                  "en/core-features/touchpoints/overview",
-                  "en/core-features/touchpoints/creating",
-                  "en/core-features/touchpoints/short-links",
-                  "en/core-features/touchpoints/qr-codes"
-                ]
-              },
-              {
-                "group": "Organization",
-                "hidden": true,
-                "pages": [
-                  "en/core-features/collections/overview",
-                  "en/core-features/tags/overview"
-                ]
-              },
-              {
-                "group": "Analytics",
-                "hidden": true,
-                "pages": [
-                  "en/analytics/overview",
-                  "en/analytics/dashboard",
-                  "en/analytics/demographics",
-                  "en/analytics/filters"
-                ]
-              }
-            ]
-          }
-        ]
-      }
+      }      
     ]
   },
   "redirects": [
