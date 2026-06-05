@@ -1,0 +1,170 @@
+---
+title: "Tích Hợp Deep Link Trên iOS & Android"
+description: "Các bước tích hợp native để short link Li2 mở app của bạn, gồm cả deferred deep linking qua clipboard (iOS) và Google Play Install Referrer (Android)."
+sidebarTitle: "Tích Hợp App"
+icon: "mobile"
+---
+
+# Tích Hợp Deep Link Trên iOS & Android
+
+<Info>
+**Bạn sẽ học**: Cách khai báo Universal Link / App Link, xử lý link khi app đã cài (immediate), và khôi phục link trong lần mở đầu tiên khi app chưa cài (deferred). Mọi lời gọi mạng đều tới `POST /api/v1/track/open`.
+</Info>
+
+<Note>
+**Ứng dụng tham chiếu**: chưa có SDK đóng gói. Hãy đối chiếu trực tiếp với hai repo mẫu `li2-ios-sample` và `li2-android-sample` (mỗi repo có README hướng dẫn chi tiết). Các đoạn dưới đây là phần tối thiểu một app bên thứ ba cần làm.
+</Note>
+
+<Tabs>
+  <Tab title="iOS" icon="apple">
+    ### 1. Khai báo Associated Domains
+
+    Thêm domain Li2 của bạn vào file `.entitlements`:
+
+    ```xml
+    <key>com.apple.developer.associated-domains</key>
+    <array>
+        <string>applinks:your-domain.com</string>
+    </array>
+    ```
+
+    Domain này phải trùng với domain đã cấu hình trên dashboard và file AASA mà Li2 phục vụ.
+
+    ### 2. Xử lý Universal Link (app đã cài — immediate)
+
+    Trong entry point SwiftUI:
+
+    ```swift
+    WindowGroup {
+        ContentView()
+            .onOpenURL { url in
+                store.handleIncomingURL(url, source: "onOpenURL")
+            }
+            .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
+                guard let url = activity.webpageURL else { return }
+                store.handleIncomingURL(url, source: "userActivity")
+            }
+    }
+    ```
+
+    `handleIncomingURL` gọi `POST /track/open` với body `{ "deepLink": url.absoluteString }`. Đây là luồng immediate — không gửi `clipboardStatus`.
+
+    ### 3. Khôi phục deferred trong lần mở đầu tiên
+
+    Sau một khoảng chờ nhỏ (≈250ms để Universal Link kịp tới nếu có) và chỉ **một lần duy nhất** mỗi lần cài (cờ `firstLaunchRan`), hiển thị màn hình xin đồng ý rồi đọc clipboard:
+
+    - Nếu clipboard chứa link có tham số `li2_cid`:
+      `{ "deepLink": "<url>", "clipboardStatus": "read" }`
+    - Nếu clipboard không có `li2_cid`:
+      `{ "li2Domains": ["your-domain.com"], "clipboardStatus": "read" }`
+    - Nếu clipboard rỗng: `clipboardStatus: "empty"`
+    - Nếu người dùng từ chối quyền dán: `clipboardStatus: "denied"`
+    - Nếu người dùng bỏ qua (opt-out): `clipboardStatus: "optout"`
+
+    <Tip>
+    Dùng `UIPasteControl` (chính cú chạm của người dùng là sự đồng ý, không hiện alert hệ thống) cho production. Việc đọc trực tiếp `UIPasteboard.general.string` sẽ kích hoạt alert dán của iOS.
+    </Tip>
+
+    ### 4. Gọi API
+
+    ```swift
+    var req = URLRequest(url: URL(string: "\(baseURL)/track/open")!)
+    req.httpMethod = "POST"
+    req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    req.setValue(publishableKey, forHTTPHeaderField: "X-Li2-Key")
+    req.httpBody = try JSONEncoder().encode(request)
+    ```
+
+    `baseURL` phải bao gồm `/api/v1` (ví dụ `https://sapi-dev.quik.vn/api/v1`). Điều hướng theo `link.url` trong phản hồi; nếu `link == null`, hiển thị banner kèm `missReason`.
+  </Tab>
+
+  <Tab title="Android" icon="android">
+    ### 1. Khai báo App Link intent-filter
+
+    Trong `AndroidManifest.xml`:
+
+    ```xml
+    <activity android:launchMode="singleTask" ...>
+        <intent-filter android:autoVerify="true">
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+            <data android:host="your-domain.com" />
+        </intent-filter>
+    </activity>
+    ```
+
+    `android:autoVerify="true"` yêu cầu Android xác minh `assetlinks.json` lúc cài đặt. Thiếu nó, Android sẽ hiện hộp chọn ứng dụng thay vì mở thẳng app.
+
+    ### 2. Xử lý App Link (app đã cài — immediate)
+
+    ```kotlin
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        if (intent?.action == Intent.ACTION_VIEW) {
+            intent.data?.let { deepLinkViewModel.handleAppLink(it) }
+        }
+    }
+    ```
+
+    `handleAppLink` gọi `POST /track/open` với `{ "deepLink": uri.toString() }`.
+
+    ### 3. Khôi phục deferred qua Google Play Install Referrer
+
+    Trong lần mở đầu tiên, nếu **không** có App Link tới, gọi Install Referrer (chỉ một lần — cờ `firstLaunchRan` lưu trong DataStore):
+
+    ```kotlin
+    LaunchedEffect(Unit) {
+        delay(250L)
+        if (!deepLinkViewModel.hasReceivedAppLink) {
+            installReferrerManager.queryOnce()?.let { referrer ->
+                deepLinkViewModel.handleInstallReferrer(referrer)
+            }
+        }
+    }
+    ```
+
+    `ReferrerExtractor.extractDeepLink(raw)` giải mã tham số `li2_dl=<url-mã-hóa>` từ chuỗi referrer (Li2 đã ghép sẵn deep link vào referrer khi chuyển hướng tới Play Store). App gửi `{ "installReferrer": referrer }` tới `/track/open`.
+
+    ### 4. Publishable key trong local.properties
+
+    ```properties
+    LI2_PUBLISHABLE_KEY=li2_pk_xxxxxxxxxxxxxxxxxxxx
+    ```
+
+    `build.gradle.kts` đọc giá trị này và inject vào `BuildConfig`.
+
+    <Warning>
+    **Lỗi phổ biến nhất**: thiếu `LI2_PUBLISHABLE_KEY` trong `local.properties` → `BuildConfig.LI2_PUBLISHABLE_KEY` rỗng → **mọi** lời gọi `/track/open` trả về **401 Unauthenticated**. Thêm key rồi build lại.
+    </Warning>
+
+    ### 5. Buộc xác minh App Link
+
+    Sau khi cài hoặc sau khi cập nhật `assetlinks.json`:
+
+    ```bash
+    adb shell pm verify-app-links --re-verify your.package.name
+    adb shell pm get-app-links your.package.name
+    # Phải hiển thị: your-domain.com → verified
+    ```
+
+    Nếu thấy `1024` (chưa xác minh), SHA-256 trong dashboard không khớp chứng chỉ ký của APK đang cài.
+  </Tab>
+</Tabs>
+
+## Bước tiếp theo
+
+<CardGroup cols={2}>
+  <Card title="API: POST /track/open" icon="code" href="./track-open-api">
+    Chi tiết đầy đủ về request, response, matchMethod và missReason.
+  </Card>
+  <Card title="Cấu Hình Domain" icon="globe" href="./domain-setup">
+    Đảm bảo file AASA / assetlinks đã phục vụ đúng trước khi test trên thiết bị.
+  </Card>
+</CardGroup>

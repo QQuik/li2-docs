@@ -1,0 +1,98 @@
+---
+title: "Tổng Quan Deep Link"
+description: "Hiểu cách Deep Link của Li2 đưa người dùng từ short link/QR thẳng vào ứng dụng di động của bạn — kể cả khi họ chưa cài app (deferred deep linking)."
+sidebarTitle: "Tổng Quan"
+icon: "link"
+---
+
+# Tổng Quan Deep Link
+
+<Info>
+**Bạn sẽ học**: Deep Link là gì, sự khác nhau giữa hai cơ chế **immediate** và **deferred**, luồng hoạt động end-to-end, và những thứ bạn cần chuẩn bị trước khi tích hợp vào ứng dụng iOS/Android.
+</Info>
+
+<Note>
+**Beta**: Deep Link Attribution hiện đang ở giai đoạn **Beta** và yêu cầu gói **Pro** để xem phần analytics. Phần cấu hình domain và file xác minh khả dụng cho mọi gói. API và payload mô tả ở đây có thể thay đổi trong các bản cập nhật tới.
+</Note>
+
+## Deep Link là gì?
+
+**Deep Link** cho phép một short link hoặc QR code của Li2 **mở thẳng ứng dụng di động** của bạn thay vì mở trình duyệt, khi người dùng đã cài app trên thiết bị. Nếu họ **chưa cài app**, Li2 vẫn ghi nhận lượt chạm để ứng dụng có thể khôi phục đúng nội dung ngay trong lần mở đầu tiên sau khi cài đặt.
+
+Hiện tại Li2 không cung cấp SDK đóng gói riêng. Bạn tích hợp **trực tiếp qua HTTP API** (`POST /api/v1/track/open`), lấy hai ứng dụng mẫu `li2-ios-sample` và `li2-android-sample` làm tham chiếu.
+
+## Hai cơ chế hoạt động
+
+<CardGroup cols={2}>
+  <Card title="Immediate (Đã cài app)" icon="bolt">
+    Người dùng đã cài app, chạm vào link → hệ điều hành mở thẳng app qua **Universal Link** (iOS) hoặc **App Link** (Android). App gọi `/track/open` với `deepLink` để ghi nhận và điều hướng.
+  </Card>
+  <Card title="Deferred (Chưa cài app)" icon="hourglass-half">
+    Người dùng chưa cài app, chạm vào link → tải app từ store → lần mở đầu tiên app khôi phục link gốc qua **clipboard** (iOS) hoặc **Google Play Install Referrer** (Android).
+  </Card>
+</CardGroup>
+
+## Luồng hoạt động end-to-end
+
+<Steps>
+  <Step title="Người dùng chạm vào short link trên thiết bị di động">
+    Link nằm trên một **custom domain** đã bật Deep Link. Hệ điều hành đọc file `.well-known` của domain để biết app nào được phép xử lý link đó.
+  </Step>
+
+  <Step title="Hệ điều hành quyết định mở app hay không">
+    - **Đã cài app** → mở thẳng app (Universal Link / App Link). Đây là luồng **immediate**.
+    - **Chưa cài app** → hiển thị trang web hoặc chuyển tới App Store / Play Store.
+  </Step>
+
+  <Step title="Trường hợp chưa cài: app khôi phục link sau khi cài">
+    Trong lần mở đầu tiên, app đọc tín hiệu deferred:
+    - **iOS**: đọc clipboard, tìm tham số `li2_cid` trong link đã sao chép.
+    - **Android**: gọi Google Play Install Referrer, giải mã tham số `li2_dl`.
+  </Step>
+
+  <Step title="App gọi POST /track/open">
+    App gửi tín hiệu (`deepLink`, `installReferrer`, hoặc `clipboardStatus`) kèm **publishable key** trong header `X-Li2-Key`. Server đối chiếu và trả về `link.url` đích cùng `matchMethod`.
+  </Step>
+
+  <Step title="App điều hướng người dùng tới đúng nội dung">
+    Nếu khớp (`link != null`), app mở đúng màn hình. Nếu không khớp (`link == null`), app hiển thị fallback và đọc `missReason` để biết lý do.
+  </Step>
+</Steps>
+
+## Yêu cầu trước khi tích hợp
+
+<CardGroup cols={2}>
+  <Card title="Custom Domain đã xác minh" icon="globe">
+    Bắt buộc dùng **domain riêng** đã verify. Subdomain miễn phí `*.li2.link` không dùng được cho Deep Link vì là hạ tầng dùng chung.
+  </Card>
+  <Card title="Cấu hình App trên Dashboard" icon="gear">
+    Đăng ký iOS (Team ID + Bundle ID) và/hoặc Android (package name + SHA-256) để Li2 sinh file xác minh. Xem [Cấu Hình Domain](./domain-setup).
+  </Card>
+  <Card title="Publishable Key" icon="key">
+    Key dạng `li2_pk_...` gửi qua header `X-Li2-Key`. **Không** dùng server API key (`X-Li2-API-Key`) cho endpoint này.
+  </Card>
+  <Card title="Gói Pro (cho Analytics)" icon="crown">
+    Cấu hình deep link miễn phí, nhưng trang **Deep Link Analytics** yêu cầu gói Pro.
+  </Card>
+</CardGroup>
+
+<Note>
+**IP fallback đang tạm dừng**: Cơ chế đối chiếu deferred theo địa chỉ IP (`LI2_IP_FALLBACK_ENABLED=false`) hiện không hoạt động và là chi tiết nội bộ — bạn không cần tích hợp nó. Hai đường deferred đang chạy thật là **clipboard (iOS)** và **install referrer (Android)**.
+</Note>
+
+## Bước tiếp theo
+
+<CardGroup cols={2}>
+  <Card title="Cấu Hình Domain & File Xác Minh" icon="globe" href="./domain-setup">
+    Đăng ký app và để Li2 phục vụ `apple-app-site-association` + `assetlinks.json`.
+  </Card>
+  <Card title="Tích Hợp iOS & Android" icon="mobile" href="./mobile-integration">
+    Các bước cài đặt native cho từng nền tảng, kèm payload mẫu.
+  </Card>
+  <Card title="API: POST /track/open" icon="code" href="./track-open-api">
+    Hợp đồng API đầy đủ: request, response, matchMethod, missReason.
+  </Card>
+  <Card title="Hướng dẫn cho người dùng" icon="book" href="/vi/guide/deep-links/deep-link-la-gi-li2">
+    Góc nhìn marketer: cấu hình và đọc analytics trên dashboard.
+  </Card>
+</CardGroup>

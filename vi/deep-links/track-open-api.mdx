@@ -1,0 +1,131 @@
+---
+title: "API: POST /track/open"
+description: "Hợp đồng API đầy đủ của endpoint giải quyết Deep Link: xác thực bằng publishable key, request, response, các giá trị matchMethod và missReason."
+sidebarTitle: "API /track/open"
+icon: "code"
+---
+
+# API: POST /track/open
+
+<Info>
+**Bạn sẽ học**: Toàn bộ hợp đồng của endpoint `POST /api/v1/track/open` — cách xác thực, các trường request, server chọn đường xử lý ra sao, hình dạng response, và ý nghĩa từng giá trị `matchMethod` / `missReason`.
+</Info>
+
+## Endpoint
+
+```
+POST /api/v1/track/open
+```
+
+Endpoint đi qua các middleware: CORS, rate limit, và `AuthMobileApikeyMiddleware`.
+
+## Xác thực
+
+Gửi **publishable key** trong header:
+
+```
+X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx
+```
+
+- Fallback cho caller không đặt được custom header (ví dụ `sendBeacon`): tham số query `?li2_key=...`.
+- **Không** dùng server API key (`X-Li2-API-Key`) cho endpoint này — sẽ trả về **401**. Endpoint mobile chỉ chấp nhận key dạng `li2_pk_*`.
+
+<Note>
+**Vì sao publishable key an toàn khi nhúng trong app**: với request từ web (có `Origin`/`Referer`), server kiểm tra origin theo whitelist của key. Với app native (không có `Origin`/`Referer`), server bỏ qua bước origin và **kiểm tra phía server rằng domain được track thuộc đúng organization của key**. Key không thể dùng để track domain tùy ý hay truy cập dữ liệu org khác.
+</Note>
+
+## Request
+
+```json
+{
+  "deepLink": "https://your-domain.com/slug?li2_cid=<16-ký-tự-base62>",
+  "li2Domains": ["your-domain.com"],
+  "clipboardStatus": "read | empty | denied | optout",
+  "installReferrer": "<chuỗi-referrer-thô-từ-Play>"
+}
+```
+
+| Trường | Bắt buộc | Ghi chú |
+|--------|----------|---------|
+| `deepLink` | Có điều kiện | URL hợp lệ, có host và path slug khác rỗng |
+| `li2Domains` | Có điều kiện | Mảng hostname (không kèm scheme/path) |
+| `clipboardStatus` | Không | Chỉ nhận `read`, `empty`, `denied`, `optout`; giá trị khác → 400 |
+| `installReferrer` | Có điều kiện | Chuỗi referrer thô từ Google Play |
+
+Phải có **ít nhất một** trong `deepLink`, `li2Domains`, hoặc `installReferrer`.
+
+## Server chọn đường xử lý như thế nào
+
+| Điều kiện | Đường xử lý | Ý nghĩa |
+|-----------|-------------|---------|
+| Có `installReferrer` | Android deferred | Giải mã referrer, lấy `li2_cid`, đối chiếu deferred |
+| Có `deepLink` **và** có `li2_cid` | iOS clipboard deferred | Đối chiếu deferred theo clipboard token |
+| Có `deepLink`, **không** có `li2_cid` | Immediate | App đã cài, link mở bình thường |
+| Chỉ có `li2Domains` | IP fallback | **Đang tạm dừng** (`LI2_IP_FALLBACK_ENABLED=false`) |
+
+Trước khi xử lý, server kiểm tra org có gói Pro (`deep_link_attribution`) và suy ra `platform` (`ios`/`android`) từ User-Agent.
+
+## Response
+
+```json
+{
+  "clickId": "1a2b3c4d5e6f7g8h",
+  "link": {
+    "id": "<touch-point-uuid>",
+    "domain": "your-domain.com",
+    "key": "slug",
+    "url": "https://destination.example.com/path"
+  },
+  "matchMethod": "universal_link | app_link | clipboard | install_referrer | ip | ip_ua",
+  "missReason": "no_candidate | ...",
+  "platform": "ios | android"
+}
+```
+
+- Khi **khớp**: `link` được điền, `missReason` **bị bỏ qua**.
+- Khi **trượt** (deferred không đối chiếu được): `link` là `null`, `missReason` được điền.
+- `clickId` luôn có: dùng id của click gốc khi khớp, hoặc một id ngẫu nhiên khi trượt (đồng thời ghi một dòng `deferred_miss`).
+
+## Giá trị `matchMethod`
+
+| Giá trị | Ý nghĩa |
+|---------|---------|
+| `universal_link` | iOS, app đã cài (immediate) |
+| `app_link` | Android, app đã cài (immediate) |
+| `clipboard` | iOS deferred, khớp qua `li2_cid` trên clipboard |
+| `install_referrer` | Android deferred, khớp qua Google Play Install Referrer |
+| `ip` | Fallback theo IP (đang tạm dừng) |
+| `ip_ua` | Fallback theo IP + UA (đang tạm dừng) |
+
+## Giá trị `missReason`
+
+| Giá trị | Ý nghĩa |
+|---------|---------|
+| `no_candidate` | Tra cứu clipboard/IP không có kết quả (hoặc bản ghi đã hết hạn) |
+| `ambiguous_candidate` | Tra cứu IP trả về nhiều ứng viên (không kết luận được) |
+| `ua_mismatch` | Ứng viên IP có UA hash không khớp |
+| `clipboard_denied` | Người dùng chặn quyền dán trên iOS |
+| `clipboard_empty` | Clipboard rỗng (không có link Li2) |
+| `opt_out` | Người dùng chủ động bỏ qua |
+| `cross_tenant_blocked` | Hostname thuộc organization khác — bị chặn theo cô lập tenant |
+
+## Mã trạng thái
+
+| Status | Khi nào |
+|--------|---------|
+| `200` | Thành công (kể cả khi trượt — `link: null` + `missReason`) |
+| `400` | Body sai định dạng / `clipboardStatus` không hợp lệ |
+| `401` | Thiếu hoặc sai `X-Li2-Key` (hoặc gửi nhầm server API key) |
+| `403` | Org không có gói Pro, domain không thuộc org, hoặc deep link bị tắt |
+| `404` | Không tìm thấy slug (touch point) |
+
+## Bước tiếp theo
+
+<CardGroup cols={2}>
+  <Card title="Tích Hợp iOS & Android" icon="mobile" href="./mobile-integration">
+    Xem cách gọi endpoint này từ app native.
+  </Card>
+  <Card title="Tổng Quan Deep Link" icon="link" href="./overview">
+    Quay lại bức tranh tổng thể về immediate vs deferred.
+  </Card>
+</CardGroup>

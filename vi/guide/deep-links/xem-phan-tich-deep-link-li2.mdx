@@ -1,0 +1,95 @@
+---
+title: "Xem Phân Tích Deep Link"
+description: "Đọc hiểu trang Deep Link Analytics trong Li2: Clicks, Direct Opens, New Installs, Link Restored, tỷ lệ khôi phục, lý do trượt và bảng xếp hạng."
+---
+
+# Xem Phân Tích Deep Link
+
+Trang **Deep Link Analytics** cho bạn thấy short link nào đang đưa người dùng vào app, bao nhiêu lượt cài mới được khôi phục đúng link, và vì sao một số lượt khôi phục thất bại.
+
+<Note>
+**Yêu cầu gói Pro · Beta**: Trang này thuộc tính năng **Deep Link Attribution**, hiện ở giai đoạn **Beta** và yêu cầu gói **Pro**. Phần cấu hình Deep Link thì khả dụng cho mọi gói.
+</Note>
+
+## Mở trang phân tích
+
+- Từ thanh bên trái, chọn mục **Deep Links**.
+- Hoặc từ danh sách/chi tiết một short link, nhấn **View Deep Link Analytics** — trang sẽ mở sẵn bộ lọc cho đúng link đó (**per-link view**).
+
+{/* TODO: chèn ảnh chụp tổng quan trang Deep Link Analytics */}
+<Frame>
+  ![Trang Deep Link Analytics](/images/deep-link-analytics-overview.png)
+</Frame>
+
+## Bốn thẻ chỉ số chính
+
+Hàng thẻ trên cùng kể câu chuyện một cách trung thực. **Hai thẻ đầu là bối cảnh** (viền nét đứt), **hai thẻ sau** mới là phễu thật được nối bằng một mũi tên.
+
+| Thẻ | Ý nghĩa |
+|-----|---------|
+| **Clicks** *(bối cảnh)* | Tổng lượt chạm vào các link dùng domain đã bật Deep Link — tính cả desktop. Đây là con số tiếp cận. |
+| **Direct Opens** *(bối cảnh)* | Người dùng **đã cài app**, chạm link trên di động và app mở ngay. Không cần cài đặt. |
+| **New Installs** ▶ | Lượt **chưa cài app**: app phát hiện một lần mở đầu tiên có chủ đích và thử khôi phục link gốc. |
+| **▶ Link Restored** | Trong nhóm New Installs, bao nhiêu lượt **khôi phục thành công** và được đưa tới đúng nội dung trong app. |
+
+<Warning>
+**Đừng cộng dồn** Direct Opens với New Installs — đó là hai nhóm người dùng khác nhau (đã cài vs chưa cài). Ngoài ra, "New Installs" là số lần app phát hiện một lần mở đầu tiên có chủ đích, **không phải** số lượt cài đặt tuyệt đối (cài lại cũng có thể kích hoạt; người bỏ qua lời mời thì không).
+</Warning>
+
+## Link Restore Rate (Tỷ lệ khôi phục)
+
+Một thẻ số lớn cho biết: trong mỗi lượt cài mới có chủ đích, bao nhiêu phần trăm được đưa tới đúng nội dung.
+
+```
+Link Restore Rate = Link Restored / (Link Restored + số lượt trượt)
+```
+
+## Vì sao một số lượt khôi phục thất bại
+
+Biểu đồ **Miss Reasons** giải thích lý do trượt, bằng ngôn ngữ dễ hiểu:
+
+| Lý do | Nghĩa là gì |
+|-------|-------------|
+| **clipboard_denied** | Người dùng iOS từ chối quyền dán nên app không đọc được dữ liệu lượt chạm. |
+| **clipboard_empty** | App kiểm tra clipboard lúc mở đầu nhưng không thấy mã lượt chạm của Li2. |
+| **opt_out** | Người dùng chủ động chọn không cho theo dõi. |
+| **no_candidate** | Có mã hợp lệ nhưng bản ghi phía server đã hết hạn hoặc không còn. |
+| **cross_tenant_blocked** | Mã thuộc domain của một tổ chức khác — bị chặn theo cơ chế cô lập an toàn. |
+
+## Biểu đồ xu hướng
+
+Biểu đồ theo thời gian hiển thị:
+- **Deferred Opens** — vùng tô: toàn bộ nhóm cài mới theo thời gian.
+- **Matched** — đường liền: số khôi phục thành công (khoảng cách với vùng tô là phần chưa khôi phục được).
+- **Clicks** — đường nét đứt mờ: bối cảnh, là nhóm dân số riêng, **không cộng dồn**.
+
+## Bảng xếp hạng
+
+<CardGroup cols={2}>
+  <Card title="Top Deep Links" icon="ranking-star">
+    Xếp theo **Link / Tags / Spaces**, mỗi dòng có **Clicks · Direct Opens · Matched**. Nhấn một dòng để lọc cả trang theo link/tag/space đó.
+  </Card>
+  <Card title="Click Sources" icon="signs-post">
+    Phân tích nguồn lượt chạm theo **Referrer / UTM / Channel** (Direct, Referral, Social...).
+  </Card>
+</CardGroup>
+
+## Phân bổ nền tảng & cách mở app
+
+- **Platform Split** — biểu đồ tròn iOS vs Android.
+- **How the App Was Opened** — chia hai nhóm: *Đã cài* (universal_link, app_link) và *Cài mới* (clipboard trên iOS, install_referrer trên Android), giúp bạn biết phương thức nào đang hiệu quả trên từng nền tảng.
+
+## Bộ lọc
+
+Thanh bộ lọc ở đầu trang cho phép thu hẹp theo: **khoảng thời gian** (mặc định 7 ngày gần nhất), **touch points** (link cụ thể), **tags**, **spaces**, **UTM**, và bật/tắt **loại trừ bot**.
+
+## Bước tiếp theo
+
+<CardGroup cols={2}>
+  <Card title="Cấu hình Deep Link cho ứng dụng" icon="gear" href="/vi/guide/deep-links/cau-hinh-deep-link-cho-ung-dung-li2">
+    Quay lại phần cấu hình app trên custom domain.
+  </Card>
+  <Card title="Deep Link là gì?" icon="circle-question" href="/vi/guide/deep-links/deep-link-la-gi-li2">
+    Ôn lại khái niệm immediate vs deferred.
+  </Card>
+</CardGroup>

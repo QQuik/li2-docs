@@ -47,6 +47,15 @@
                 ]
               },
               {
+                "group": "Deep Link (Liên kết sâu)",
+                "pages": [
+                  "vi/deep-links/overview",
+                  "vi/deep-links/domain-setup",
+                  "vi/deep-links/mobile-integration",
+                  "vi/deep-links/track-open-api"
+                ]
+              },
+              {
                 "group": "Touchpoint (Điểm Chạm)",
                 "hidden": true,
                 "pages": [
@@ -122,6 +131,15 @@
                       "vi/guide/analytics/cach-loc-va-xem-analytics-theo-loai-tuong-tac"
                     ]
                   }
+                ]
+              },
+              {
+                "group": "DEEP LINKS",
+                "icon": "mobile-screen",
+                "pages": [
+                  "vi/guide/deep-links/deep-link-la-gi-li2",
+                  "vi/guide/deep-links/cau-hinh-deep-link-cho-ung-dung-li2",
+                  "vi/guide/deep-links/xem-phan-tich-deep-link-li2"
                 ]
               },
               {

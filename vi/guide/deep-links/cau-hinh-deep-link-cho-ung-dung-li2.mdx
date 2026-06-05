@@ -1,0 +1,112 @@
+---
+title: "Cấu Hình Deep Link Cho Ứng Dụng"
+description: "Hướng dẫn từng bước bật Deep Link cho ứng dụng iOS/Android trên một custom domain trong Li2, và xác minh file liên kết đã hoạt động."
+---
+
+# Cấu Hình Deep Link Cho Ứng Dụng
+
+Deep Link được bật ở cấp **domain**, không phải từng link riêng lẻ. Sau khi bạn gắn một hoặc nhiều ứng dụng vào một custom domain, **mọi short link** dùng domain đó đều có thể mở thẳng app.
+
+<Note>
+Bạn cần một **custom domain đã xác minh** (DNS verified) và **không phải** subdomain `*.li2.link`. Phần cấu hình này khả dụng cho mọi gói; trang **Deep Link Analytics** mới cần gói Pro.
+</Note>
+
+## Các bước cấu hình
+
+<Steps>
+  <Step title="Mở Configure Deep Links">
+    Vào **Settings → Custom Domains**. Ở hàng domain đã xác minh, mở menu dấu ba chấm và chọn **Configure Deep Links** (biểu tượng điện thoại).
+
+    {/* TODO: chèn ảnh chụp menu Configure Deep Links */}
+    <Frame>
+      ![Mở Configure Deep Links](/images/deep-link-configure-menu.png)
+    </Frame>
+
+    <Note>
+    Nếu không thấy tùy chọn này: domain của bạn chưa xác minh, hoặc là subdomain `*.li2.link` (không hỗ trợ Deep Link).
+    </Note>
+  </Step>
+
+  <Step title="Bật công tắc Enable">
+    Trong hộp thoại, bật công tắc **Enable** để kích hoạt Deep Link cho domain. Tắt công tắc sẽ ngừng phục vụ file liên kết mà không xóa thông tin app đã nhập.
+  </Step>
+
+  <Step title="Thêm ứng dụng iOS">
+    Chọn ô **iOS App** và nhập:
+    - **Apple Team ID** — 10 ký tự, lấy trong Apple Developer Portal.
+    - **Bundle Identifier** — ví dụ `com.example.app`.
+    - **App Store URL** (tùy chọn) — dùng làm phương án dự phòng.
+
+    {/* TODO: chèn ảnh chụp form iOS */}
+    <Frame>
+      ![Cấu hình ứng dụng iOS](/images/deep-link-ios-form.png)
+    </Frame>
+  </Step>
+
+  <Step title="Thêm ứng dụng Android">
+    Chọn ô **Android App** và nhập:
+    - **Package Name** — trùng `applicationId` trong `build.gradle`, ví dụ `com.example.app`.
+    - **SHA-256 Certificate Fingerprints** — mỗi khóa ký một dòng (khóa debug và release khác nhau), lấy từ keystore hoặc Play Console.
+    - **Play Store URL** (tùy chọn).
+
+    {/* TODO: chèn ảnh chụp form Android */}
+    <Frame>
+      ![Cấu hình ứng dụng Android](/images/deep-link-android-form.png)
+    </Frame>
+  </Step>
+
+  <Step title="Lưu cấu hình">
+    Nhấn **Save**. Li2 sẽ tự sinh và phục vụ hai file liên kết cho domain của bạn:
+    - `apple-app-site-association` (cho iOS)
+    - `assetlinks.json` (cho Android)
+  </Step>
+
+  <Step title="Xác minh file liên kết">
+    Bảng **Verification** chạy kiểm tra tự động và hiển thị trạng thái cho từng file: **Live & correct** (xanh) là đạt. Dùng nút **Re-check** để kiểm tra lại sau khi cập nhật.
+
+    {/* TODO: chèn ảnh chụp bảng Verification */}
+    <Frame>
+      ![Bảng xác minh Deep Link](/images/deep-link-verification.png)
+    </Frame>
+
+    Sau khi cấu hình thành công, hàng domain sẽ hiển thị huy hiệu **"Deep Links Active"** màu xanh.
+  </Step>
+</Steps>
+
+<Warning>
+File liên kết bị **cache**: Apple tải `apple-app-site-association` qua CDN với thời gian cache khoảng **6 giờ**, nên thay đổi cấu hình iOS có thể mất tới ~6 giờ để có hiệu lực trên thiết bị. Hãy kiên nhẫn sau khi cập nhật.
+</Warning>
+
+<Note>
+Phần việc trên dashboard tới đây là xong. Hai bước **trong app** do lập trình viên thực hiện: thêm **Associated Domains** (Xcode) cho iOS và intent-filter `autoVerify` cho Android. Xem [tài liệu cho lập trình viên](/vi/deep-links/mobile-integration).
+</Note>
+
+## Xử lý sự cố
+
+<AccordionGroup>
+  <Accordion title="Không thấy tùy chọn 'Configure Deep Links'?">
+    Tùy chọn chỉ xuất hiện với **custom domain đã xác minh DNS** và **không phải** subdomain `*.li2.link`. Hãy xác minh domain trước, hoặc dùng một domain riêng của bạn.
+  </Accordion>
+
+  <Accordion title="Bảng Verification báo 404 hoặc 'Content mismatch'?">
+    - **404**: file chưa được phục vụ — kiểm tra công tắc **Enable** đã bật và đã **Save**.
+    - **Content mismatch**: Team ID/Bundle ID (iOS) hoặc package name/SHA-256 (Android) nhập sai. Sửa lại và nhấn **Re-check**. Lưu ý cache Apple ~6h có thể khiến iOS cập nhật chậm.
+  </Accordion>
+
+  <Accordion title="App vẫn mở trình duyệt thay vì mở app?">
+    - Đảm bảo lập trình viên đã thêm **Associated Domains** (iOS) / intent-filter `autoVerify` (Android) trùng đúng domain.
+    - Trên Android, buộc xác minh lại: `adb shell pm verify-app-links --re-verify <package>`.
+    - Trên iOS, gỡ và cài lại app sau khi file AASA đã đúng (do cache CDN).
+  </Accordion>
+</AccordionGroup>
+
+## Bước tiếp theo
+
+<CardGroup cols={2}>
+  <Card title="Xem phân tích Deep Link" icon="chart-mixed" href="/vi/guide/deep-links/xem-phan-tich-deep-link-li2">
+    Theo dõi lượt mở app, tỷ lệ khôi phục link và lý do trượt.
+  </Card>
+  <Card title="Tài liệu cho lập trình viên" icon="code" href="/vi/deep-links/mobile-integration">
+    Các bước tích hợp native iOS/Android.
+  </Card>
+</CardGroup>

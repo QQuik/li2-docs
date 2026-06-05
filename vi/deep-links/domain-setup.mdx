@@ -1,0 +1,139 @@
+---
+title: "Cấu Hình Domain & File Xác Minh"
+description: "Cách Li2 phục vụ apple-app-site-association và assetlinks.json cho custom domain của bạn, những thông tin cần đăng ký, và cách xác minh."
+sidebarTitle: "Cấu Hình Domain"
+icon: "globe"
+---
+
+# Cấu Hình Domain & File Xác Minh
+
+<Info>
+**Bạn sẽ học**: Hệ điều hành cần file gì để tin tưởng domain của bạn, Li2 phục vụ các file đó như thế nào, bạn cần đăng ký thông tin gì trên dashboard, và cách kiểm tra file đã đúng.
+</Info>
+
+## Hai file mà hệ điều hành cần
+
+Để iOS Universal Link và Android App Link hoạt động, domain phục vụ short link **phải** phục vụ thêm hai file xác minh tại đường dẫn `/.well-known/`:
+
+| Nền tảng | Đường dẫn | Mục đích |
+|----------|-----------|----------|
+| iOS | `https://{domain}/.well-known/apple-app-site-association` | Khai báo Team ID + Bundle ID được phép xử lý link |
+| Android | `https://{domain}/.well-known/assetlinks.json` | Khai báo package name + SHA-256 fingerprint được phép xử lý link |
+
+Li2 **tự động sinh và phục vụ** hai file này ngay khi bạn lưu cấu hình app (xem [Cấu hình trên dashboard](/vi/guide/deep-links/cau-hinh-deep-link-cho-ung-dung-li2)). Nginx proxy các đường dẫn `/.well-known/` công khai về li2-be, và hostname của request được đọc từ header `X-Forwarded-Host`.
+
+## Bạn cần đăng ký gì
+
+Thông tin app được lưu trong cột `deep_link_apps` (JSONB) của domain. Mỗi app là một entry.
+
+<CardGroup cols={2}>
+  <Card title="iOS App" icon="apple">
+    - `team_id`: Apple Team ID (10 ký tự, ví dụ `V63B584NW3`)
+    - `bundle_id`: ví dụ `com.example.app`
+    - `app_store_url` (tùy chọn): để fallback khi chưa cài app
+    - `paths`: mặc định `["/*"]`
+  </Card>
+  <Card title="Android App" icon="android">
+    - `package_name`: ví dụ `com.example.app`
+    - `sha256_fingerprints`: mảng fingerprint dạng hex có dấu hai chấm (mỗi khóa ký một dòng — debug & release khác nhau)
+    - `play_store_url` (tùy chọn)
+    - `paths`: mặc định `["/*"]`
+  </Card>
+</CardGroup>
+
+## Hình dạng file phản hồi
+
+**`apple-app-site-association`** (nhiều iOS app → nhiều entry trong `details`):
+
+```json
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "<TeamID>.<BundleID>",
+        "paths": ["/*"]
+      }
+    ]
+  }
+}
+```
+
+**`assetlinks.json`** (một phần tử mảng cho mỗi Android app):
+
+```json
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.example.app",
+      "sha256_cert_fingerprints": ["AA:BB:CC:..."]
+    }
+  }
+]
+```
+
+## Điều kiện để domain đủ tư cách
+
+Một domain chỉ phục vụ file xác minh khi:
+
+- `IsVerified = true` (đã xác minh DNS),
+- **không** phải subdomain `*.li2.link` và không phải domain mặc định của hệ thống,
+- `deep_link_apps.enabled = true`.
+
+<Warning>
+Subdomain miễn phí `deep.li2.link` / `*.li2.link` **không** dùng được cho Deep Link của bên thứ ba: đó là hạ tầng dùng chung, app không thể "entitle" một domain được nhiều khách hàng dùng chung. Hãy dùng **custom domain riêng**.
+</Warning>
+
+## Caching — vì sao thay đổi cần thời gian
+
+```
+200 (file tồn tại):  Cache-Control: max-age=900   (15 phút)
+404 (chưa cấu hình): Cache-Control: no-cache
+```
+
+<Warning>
+**Apple CDN ghi đè max-age**: Apple tải AASA qua CDN riêng với TTL khoảng **6 giờ**, bất kể header `max-age` của bạn. Vì vậy thay đổi cấu hình iOS có thể mất tới ~6 giờ để lan tới thiết bị. Android tôn trọng `max-age` của origin nên cập nhật nhanh hơn.
+</Warning>
+
+li2-be còn giữ một cache nội bộ TTL 1 giờ; khi truy vấn DB lỗi, server phục vụ bản tốt gần nhất (last-known-good).
+
+## Kiểm tra file xác minh
+
+<Tabs>
+  <Tab title="iOS (AASA)" icon="apple">
+    Kiểm tra trực tiếp bằng curl:
+
+    ```bash
+    curl -s https://your-domain.com/.well-known/apple-app-site-association | jq
+    ```
+
+    Xác nhận `applinks.details[].appID` đúng dạng `<TeamID>.<BundleID>` của bạn.
+  </Tab>
+  <Tab title="Android (assetlinks)" icon="android">
+    Kiểm tra file và buộc thiết bị xác minh lại sau khi đổi fingerprint:
+
+    ```bash
+    curl -s https://your-domain.com/.well-known/assetlinks.json | jq
+    adb shell pm verify-app-links --re-verify your.package.name
+    adb shell pm get-app-links your.package.name
+    # Kết quả mong đợi: domain của bạn → verified (không phải 1024)
+    ```
+  </Tab>
+</Tabs>
+
+<Tip>
+Dashboard có sẵn **Verification panel** trong "Configure Deep Links" để kiểm tra hai file này và báo trạng thái "Live & correct" — dùng nút **Re-check** sau khi cập nhật.
+</Tip>
+
+## Bước tiếp theo
+
+<CardGroup cols={2}>
+  <Card title="Tích Hợp iOS & Android" icon="mobile" href="./mobile-integration">
+    Cài đặt entitlement / intent-filter và gọi `/track/open` từ app.
+  </Card>
+  <Card title="API: POST /track/open" icon="code" href="./track-open-api">
+    Hợp đồng API đầy đủ.
+  </Card>
+</CardGroup>

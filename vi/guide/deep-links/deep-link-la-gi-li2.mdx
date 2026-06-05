@@ -1,0 +1,49 @@
+---
+title: "Deep Link Là Gì?"
+description: "Tìm hiểu Deep Link trong Li2: mở thẳng ứng dụng di động của bạn từ short link/QR, kể cả khi người dùng chưa cài app, và đo lường bằng Deep Link Analytics."
+---
+
+# Deep Link Là Gì?
+
+Bình thường, khi ai đó chạm vào một short link trên điện thoại, link sẽ mở trong **trình duyệt**. Với **Deep Link**, Li2 đưa người dùng **thẳng vào ứng dụng di động của bạn** khi họ đã cài app — và nếu họ **chưa cài**, Li2 vẫn ghi nhớ lượt chạm để app mở đúng nội dung ngay trong lần đầu sử dụng sau khi cài đặt.
+
+Điều này biến mỗi short link và QR code thành một cây cầu mượt mà dẫn người dùng vào đúng màn hình trong app của bạn — thay vì bỏ họ lại ở một trang web.
+
+## Hai tình huống thường gặp
+
+<CardGroup cols={2}>
+  <Card title="Người dùng đã cài app" icon="bolt">
+    Chạm vào link → app **mở ngay lập tức** đúng nội dung (gọi là **Direct Open**). Trên iOS dùng **Universal Link**, trên Android dùng **App Link**.
+  </Card>
+  <Card title="Người dùng chưa cài app" icon="hourglass-half">
+    Chạm vào link → tải app từ store → lần mở đầu tiên app **khôi phục đúng link** và đưa họ tới nội dung mong muốn. Đây gọi là **deferred** ("New Install → Link Restored").
+  </Card>
+</CardGroup>
+
+## Vì sao Deep Link hữu ích
+
+- **Trải nghiệm liền mạch**: người dùng vào thẳng sản phẩm/bài viết trong app, không lạc giữa web và app.
+- **Không mất dấu người mới cài**: ngay cả khách hàng chưa có app vẫn được dẫn đúng chỗ sau khi cài.
+- **Đo lường rõ ràng**: bạn biết bao nhiêu lượt chạm mở app, bao nhiêu lượt cài mới được khôi phục đúng link.
+
+## Bạn cần chuẩn bị gì
+
+<Note>
+- **Một custom domain riêng đã xác minh.** Subdomain miễn phí `*.li2.link` **không** dùng được cho Deep Link vì là hạ tầng dùng chung của Li2.
+- **Một ứng dụng di động bạn sở hữu** (iOS và/hoặc Android) để lập trình viên tích hợp.
+- Phần **cấu hình** Deep Link khả dụng cho **mọi gói**. Riêng trang **Deep Link Analytics** yêu cầu gói **Pro**.
+</Note>
+
+## Bước tiếp theo
+
+<CardGroup cols={2}>
+  <Card title="Cấu hình Deep Link cho ứng dụng" icon="gear" href="/vi/guide/deep-links/cau-hinh-deep-link-cho-ung-dung-li2">
+    Đăng ký app iOS/Android trên custom domain và xác minh.
+  </Card>
+  <Card title="Xem phân tích Deep Link" icon="chart-mixed" href="/vi/guide/deep-links/xem-phan-tich-deep-link-li2">
+    Hiểu các chỉ số: Clicks, Direct Opens, New Installs, Link Restored.
+  </Card>
+  <Card title="Tài liệu cho lập trình viên" icon="code" href="/vi/deep-links/overview">
+    Hướng dẫn tích hợp native iOS/Android và API `/track/open`.
+  </Card>
+</CardGroup>
