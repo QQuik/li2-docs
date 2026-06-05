@@ -76,6 +76,22 @@ Hiện tại Li2 không cung cấp SDK đóng gói riêng. Bạn tích hợp **t
   </Card>
 </CardGroup>
 
+## Lộ trình tích hợp
+
+Ba bước, theo đúng thứ tự:
+
+<Steps>
+  <Step title="Cấu hình domain & file xác minh">
+    Đăng ký app trên dashboard và để Li2 phục vụ `apple-app-site-association` + `assetlinks.json` cho custom domain. → [Cấu Hình Domain](./domain-setup)
+  </Step>
+  <Step title="Khai báo native & gọi /track/open">
+    Thêm Associated Domains (iOS) / intent-filter `autoVerify` (Android), rồi gọi `POST /track/open` cho cả luồng immediate lẫn deferred. → [Tích Hợp iOS & Android](./mobile-integration)
+  </Step>
+  <Step title="Tra cứu hợp đồng API">
+    Đối chiếu request/response, `matchMethod`, `missReason` và mã trạng thái khi cần. → [API: POST /track/open](./track-open-api)
+  </Step>
+</Steps>
+
 ## Bước tiếp theo
 
 <CardGroup cols={2}>

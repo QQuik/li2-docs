@@ -86,6 +86,110 @@ Trước khi xử lý, server kiểm tra org có gói Pro (`deep_link_attributio
 - Khi **trượt** (deferred không đối chiếu được): `link` là `null`, `missReason` được điền.
 - `clickId` luôn có: dùng id của click gốc khi khớp, hoặc một id ngẫu nhiên khi trượt (đồng thời ghi một dòng `deferred_miss`).
 
+## Ví dụ theo từng luồng
+
+Mỗi tab là một lệnh `curl` chạy được (thay `your-domain.com` và `li2_pk_...` bằng giá trị của bạn) kèm response mẫu.
+
+<Tabs>
+  <Tab title="Immediate (đã cài app)">
+    App đã cài, mở qua Universal Link / App Link — chỉ gửi `deepLink`, **không** có `li2_cid`:
+
+    ```bash
+    curl -X POST https://api.li2.ai/api/v1/track/open \
+      -H "Content-Type: application/json" \
+      -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
+      -d '{ "deepLink": "https://your-domain.com/sale" }'
+    ```
+
+    ```json
+    {
+      "clickId": "1a2b3c4d5e6f7g8h",
+      "link": {
+        "id": "0e7c9b12-...",
+        "domain": "your-domain.com",
+        "key": "sale",
+        "url": "https://shop.example.com/sale"
+      },
+      "matchMethod": "universal_link",
+      "platform": "ios"
+    }
+    ```
+
+    Trên Android, cùng request này trả về `"matchMethod": "app_link"` và `"platform": "android"`.
+  </Tab>
+
+  <Tab title="iOS deferred (khớp)">
+    Lần mở đầu sau khi cài: clipboard chứa link có `li2_cid` → gửi cả `deepLink` lẫn `clipboardStatus: "read"`:
+
+    ```bash
+    curl -X POST https://api.li2.ai/api/v1/track/open \
+      -H "Content-Type: application/json" \
+      -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
+      -d '{ "deepLink": "https://your-domain.com/sale?li2_cid=Ab3xK9pQ2mN7vR1t", "clipboardStatus": "read" }'
+    ```
+
+    ```json
+    {
+      "clickId": "Ab3xK9pQ2mN7vR1t",
+      "link": {
+        "id": "0e7c9b12-...",
+        "domain": "your-domain.com",
+        "key": "sale",
+        "url": "https://shop.example.com/sale"
+      },
+      "matchMethod": "clipboard",
+      "platform": "ios"
+    }
+    ```
+  </Tab>
+
+  <Tab title="Android deferred (khớp)">
+    Lần mở đầu sau khi cài: gửi nguyên chuỗi Install Referrer thô (server tự giải mã `li2_dl`):
+
+    ```bash
+    curl -X POST https://api.li2.ai/api/v1/track/open \
+      -H "Content-Type: application/json" \
+      -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
+      -d '{ "installReferrer": "li2_dl=https%3A%2F%2Fyour-domain.com%2Fsale%3Fli2_cid%3DAb3xK9pQ2mN7vR1t&utm_source=li2" }'
+    ```
+
+    ```json
+    {
+      "clickId": "Ab3xK9pQ2mN7vR1t",
+      "link": {
+        "id": "0e7c9b12-...",
+        "domain": "your-domain.com",
+        "key": "sale",
+        "url": "https://shop.example.com/sale"
+      },
+      "matchMethod": "install_referrer",
+      "platform": "android"
+    }
+    ```
+  </Tab>
+
+  <Tab title="Deferred (trượt)">
+    Clipboard rỗng / bị từ chối / bị bỏ qua → chỉ gửi `li2Domains` + `clipboardStatus`. Vẫn trả `200`, nhưng `link` là `null` và có `missReason`:
+
+    ```bash
+    curl -X POST https://api.li2.ai/api/v1/track/open \
+      -H "Content-Type: application/json" \
+      -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
+      -d '{ "li2Domains": ["your-domain.com"], "clipboardStatus": "empty" }'
+    ```
+
+    ```json
+    {
+      "clickId": "f0e1d2c3b4a59687",
+      "link": null,
+      "matchMethod": "",
+      "missReason": "clipboard_empty",
+      "platform": "ios"
+    }
+    ```
+  </Tab>
+</Tabs>
+
 ## Giá trị `matchMethod`
 
 | Giá trị | Ý nghĩa |

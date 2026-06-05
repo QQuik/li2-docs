@@ -1,6 +1,6 @@
 ---
 title: "Xem Phân Tích Deep Link"
-description: "Đọc hiểu trang Deep Link Analytics trong Li2: Clicks, Direct Opens, New Installs, Link Restored, tỷ lệ khôi phục, lý do trượt và bảng xếp hạng."
+description: "Đọc hiểu trang Deep Link Analytics trong Li2: Lượt click, Mở app, Lượt cài đặt mới, Lượt khôi phục Link, tỷ lệ dẫn đúng đích, lý do trượt và bảng xếp hạng."
 ---
 
 # Xem Phân Tích Deep Link
@@ -23,61 +23,57 @@ Trang **Deep Link Analytics** cho bạn thấy short link nào đang đưa ngư�
 
 ## Bốn thẻ chỉ số chính
 
-Hàng thẻ trên cùng kể câu chuyện một cách trung thực. **Hai thẻ đầu là bối cảnh** (viền nét đứt), **hai thẻ sau** mới là phễu thật được nối bằng một mũi tên.
+Hàng thẻ trên cùng kể câu chuyện một cách trung thực. **Hai thẻ đầu là bối cảnh** (viền nét đứt); **hai thẻ sau** mới là phễu thật, nối với nhau bằng một mũi tên.
 
-| Thẻ | Ý nghĩa |
+| Thẻ (đúng tên trên dashboard) | Ý nghĩa |
 |-----|---------|
-| **Clicks** *(bối cảnh)* | Tổng lượt chạm vào các link dùng domain đã bật Deep Link — tính cả desktop. Đây là con số tiếp cận. |
-| **Direct Opens** *(bối cảnh)* | Người dùng **đã cài app**, chạm link trên di động và app mở ngay. Không cần cài đặt. |
-| **New Installs** ▶ | Lượt **chưa cài app**: app phát hiện một lần mở đầu tiên có chủ đích và thử khôi phục link gốc. |
-| **▶ Link Restored** | Trong nhóm New Installs, bao nhiêu lượt **khôi phục thành công** và được đưa tới đúng nội dung trong app. |
+| **Lượt click** *(bối cảnh)* | Lượt click link từ người chưa cài app — tính cả desktop. Đây là con số tiếp cận. |
+| **Mở app** *(bối cảnh)* | Người dùng **đã có app sẵn**, chạm link trên di động và app mở ngay. Không cần cài đặt. |
+| **Lượt cài đặt mới** ▶ | Lần **đầu mở app sau khi cài mới**: app phát hiện một lần mở có chủ đích và thử khôi phục link gốc. |
+| **▶ Lượt khôi phục Link** | Trong nhóm cài đặt mới, bao nhiêu lượt được **đưa tới đúng nội dung** mà link trỏ tới. |
 
 <Warning>
-**Đừng cộng dồn** Direct Opens với New Installs — đó là hai nhóm người dùng khác nhau (đã cài vs chưa cài). Ngoài ra, "New Installs" là số lần app phát hiện một lần mở đầu tiên có chủ đích, **không phải** số lượt cài đặt tuyệt đối (cài lại cũng có thể kích hoạt; người bỏ qua lời mời thì không).
+**Đừng cộng dồn** *Mở app* với *Lượt cài đặt mới* — đó là hai nhóm người dùng khác nhau (đã cài vs chưa cài). Ngoài ra, *Lượt cài đặt mới* là số lần app phát hiện một lần mở có chủ đích, **không phải** số lượt cài đặt tuyệt đối (cài lại cũng có thể kích hoạt; người bỏ qua lời mời thì không).
 </Warning>
 
-## Link Restore Rate (Tỷ lệ khôi phục)
+## Tỷ lệ dẫn đúng đích
 
-Một thẻ số lớn cho biết: trong mỗi lượt cài mới có chủ đích, bao nhiêu phần trăm được đưa tới đúng nội dung.
+Một thẻ số lớn cho biết: **trong số lượt cài đặt mới, có bao nhiêu được dẫn đúng nội dung**. Nói cách khác, đây là tỷ lệ *Lượt khôi phục Link* trên tổng số lượt cài mới có chủ đích (gồm cả những lượt khôi phục thất bại).
 
-```
-Link Restore Rate = Link Restored / (Link Restored + số lượt trượt)
-```
+## Vì sao một số lượt cài đặt không khôi phục được
 
-## Vì sao một số lượt khôi phục thất bại
+Biểu đồ cùng tên giải thích lý do trượt bằng ngôn ngữ dễ hiểu (đúng nhãn hiển thị trên dashboard):
 
-Biểu đồ **Miss Reasons** giải thích lý do trượt, bằng ngôn ngữ dễ hiểu:
-
-| Lý do | Nghĩa là gì |
+| Lý do (trên dashboard) | Nghĩa là gì |
 |-------|-------------|
-| **clipboard_denied** | Người dùng iOS từ chối quyền dán nên app không đọc được dữ liệu lượt chạm. |
-| **clipboard_empty** | App kiểm tra clipboard lúc mở đầu nhưng không thấy mã lượt chạm của Li2. |
-| **opt_out** | Người dùng chủ động chọn không cho theo dõi. |
-| **no_candidate** | Có mã hợp lệ nhưng bản ghi phía server đã hết hạn hoặc không còn. |
-| **cross_tenant_blocked** | Mã thuộc domain của một tổ chức khác — bị chặn theo cơ chế cô lập an toàn. |
+| **Người dùng bỏ qua bước copy** | Người dùng iOS không hoàn tất bước dán nên app không đọc được dữ liệu lượt chạm. |
+| **Không có dữ liệu để khôi phục** | App kiểm tra clipboard lúc mở đầu nhưng không thấy mã lượt chạm của Li2. |
+| **Người dùng từ chối** | Người dùng chủ động chọn không cho theo dõi. |
+| **Không tìm thấy lượt nhấp khớp** | Người dùng cài app mà chưa nhấp link nào trước đó, hoặc lượt nhấp đã quá lâu để hệ thống còn lưu. |
+| **Khác tài khoản (đã chặn)** | Mã thuộc domain của một tổ chức khác — bị chặn theo cơ chế cô lập an toàn. |
 
-## Biểu đồ xu hướng
+## Biểu đồ theo thời gian
 
-Biểu đồ theo thời gian hiển thị:
-- **Deferred Opens** — vùng tô: toàn bộ nhóm cài mới theo thời gian.
-- **Matched** — đường liền: số khôi phục thành công (khoảng cách với vùng tô là phần chưa khôi phục được).
-- **Clicks** — đường nét đứt mờ: bối cảnh, là nhóm dân số riêng, **không cộng dồn**.
+Biểu đồ **"Lượt cài đặt được khôi phục theo thời gian"** hiển thị:
+- **Lượt cài đặt mới** — vùng tô: toàn bộ nhóm cài mới theo thời gian.
+- **Lượt khôi phục Link** — đường liền: số khôi phục thành công (khoảng cách với vùng tô là phần chưa khôi phục được).
+- **Lượt click** — đường nét đứt mờ: bối cảnh, là nhóm dân số riêng, **không cộng dồn**.
 
 ## Bảng xếp hạng
 
 <CardGroup cols={2}>
-  <Card title="Top Deep Links" icon="ranking-star">
-    Xếp theo **Link / Tags / Spaces**, mỗi dòng có **Clicks · Direct Opens · Matched**. Nhấn một dòng để lọc cả trang theo link/tag/space đó.
+  <Card title="Top Deep link" icon="ranking-star">
+    Xếp theo **Theo Link / Tags / Spaces**, mỗi dòng có **Lượt click · Mở app · Lượt khôi phục**. Nhấn một dòng để lọc cả trang theo link/tag/space đó.
   </Card>
-  <Card title="Click Sources" icon="signs-post">
+  <Card title="Click sources" icon="signs-post">
     Phân tích nguồn lượt chạm theo **Referrer / UTM / Channel** (Direct, Referral, Social...).
   </Card>
 </CardGroup>
 
-## Phân bổ nền tảng & cách mở app
+## Nền tảng & cách ứng dụng được mở
 
-- **Platform Split** — biểu đồ tròn iOS vs Android.
-- **How the App Was Opened** — chia hai nhóm: *Đã cài* (universal_link, app_link) và *Cài mới* (clipboard trên iOS, install_referrer trên Android), giúp bạn biết phương thức nào đang hiệu quả trên từng nền tảng.
+- **Nền tảng** — biểu đồ tròn iOS vs Android.
+- **Cách ứng dụng được mở** — chia hai nhóm: *Đã cài đặt sẵn* (Universal Link, App Link) và *Cài đặt mới* (Clipboard trên iOS, Install Referrer trên Android), giúp bạn biết phương thức nào đang hiệu quả trên từng nền tảng.
 
 ## Bộ lọc
 

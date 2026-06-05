@@ -26,7 +26,56 @@ icon: "mobile"
 
     Domain này phải trùng với domain đã cấu hình trên dashboard và file AASA mà Li2 phục vụ.
 
-    ### 2. Xử lý Universal Link (app đã cài — immediate)
+    ### 2. Định nghĩa model & lời gọi API dùng chung
+
+    Cả luồng immediate lẫn deferred đều gọi cùng một endpoint với cùng một cặp model. Định nghĩa một lần rồi tái sử dụng:
+
+    ```swift
+    struct TrackOpenRequest: Encodable {
+        var deepLink: String? = nil
+        var li2Domains: [String]? = nil
+        var clipboardStatus: String? = nil   // "read" | "empty" | "denied" | "optout"
+        var installReferrer: String? = nil   // chỉ dùng cho Android
+    }
+
+    struct TrackOpenResponse: Decodable {
+        struct Link: Decodable {
+            let id: String
+            let domain: String
+            let key: String
+            let url: String
+        }
+        let clickId: String
+        let link: Link?          // nil khi deferred không đối chiếu được
+        let matchMethod: String?
+        let missReason: String?
+        let platform: String?
+    }
+
+    // baseURL PHẢI gồm /api/v1, ví dụ "https://api.li2.ai/api/v1"
+    func trackOpen(_ body: TrackOpenRequest) async throws -> TrackOpenResponse {
+        var req = URLRequest(url: URL(string: "\(baseURL)/track/open")!)
+        req.httpMethod = "POST"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        req.setValue(publishableKey, forHTTPHeaderField: "X-Li2-Key")  // li2_pk_...
+        req.httpBody = try JSONEncoder().encode(body)
+
+        let (data, _) = try await URLSession.shared.data(for: req)
+        return try JSONDecoder().decode(TrackOpenResponse.self, from: data)
+    }
+
+    // Điều hướng theo phản hồi: khớp → mở đúng màn hình; trượt → fallback + lý do
+    @MainActor
+    func route(_ res: TrackOpenResponse) {
+        if let dest = res.link?.url {
+            router.open(dest)
+        } else {
+            router.showFallbackBanner(missReason: res.missReason)
+        }
+    }
+    ```
+
+    ### 3. Xử lý Universal Link (app đã cài — immediate)
 
     Trong entry point SwiftUI:
 
@@ -34,44 +83,60 @@ icon: "mobile"
     WindowGroup {
         ContentView()
             .onOpenURL { url in
-                store.handleIncomingURL(url, source: "onOpenURL")
+                store.handleIncomingURL(url)
             }
             .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
                 guard let url = activity.webpageURL else { return }
-                store.handleIncomingURL(url, source: "userActivity")
+                store.handleIncomingURL(url)
             }
     }
     ```
 
-    `handleIncomingURL` gọi `POST /track/open` với body `{ "deepLink": url.absoluteString }`. Đây là luồng immediate — không gửi `clipboardStatus`.
+    `handleIncomingURL` chỉ gửi `deepLink` — đây là luồng immediate, **không** kèm `clipboardStatus`:
 
-    ### 3. Khôi phục deferred trong lần mở đầu tiên
+    ```swift
+    func handleIncomingURL(_ url: URL) {
+        hasReceivedUniversalLink = true   // chặn luồng deferred ở bước 4
+        Task {
+            let res = try await trackOpen(.init(deepLink: url.absoluteString))
+            await route(res)
+        }
+    }
+    ```
 
-    Sau một khoảng chờ nhỏ (≈250ms để Universal Link kịp tới nếu có) và chỉ **một lần duy nhất** mỗi lần cài (cờ `firstLaunchRan`), hiển thị màn hình xin đồng ý rồi đọc clipboard:
+    ### 4. Khôi phục deferred trong lần mở đầu tiên
 
-    - Nếu clipboard chứa link có tham số `li2_cid`:
-      `{ "deepLink": "<url>", "clipboardStatus": "read" }`
-    - Nếu clipboard không có `li2_cid`:
-      `{ "li2Domains": ["your-domain.com"], "clipboardStatus": "read" }`
-    - Nếu clipboard rỗng: `clipboardStatus: "empty"`
-    - Nếu người dùng từ chối quyền dán: `clipboardStatus: "denied"`
-    - Nếu người dùng bỏ qua (opt-out): `clipboardStatus: "optout"`
+    Sau một khoảng chờ nhỏ (≈250ms để Universal Link kịp tới nếu có) và chỉ **một lần duy nhất** mỗi lần cài (cờ `firstLaunchRan`), hiển thị màn hình xin đồng ý rồi đọc clipboard. Mỗi nhánh map thẳng vào `TrackOpenRequest`:
+
+    ```swift
+    func recoverDeferredOnce() {
+        guard !firstLaunchRan, !hasReceivedUniversalLink else { return }
+        firstLaunchRan = true
+
+        let body: TrackOpenRequest
+        switch clipboardOutcome {       // kết quả sau khi người dùng tương tác PasteControl
+        case .read(let copied) where copied.contains("li2_cid"):
+            body = .init(deepLink: copied, clipboardStatus: "read")
+        case .read:                                   // có nội dung nhưng không phải link Li2
+            body = .init(li2Domains: ["your-domain.com"], clipboardStatus: "read")
+        case .empty:
+            body = .init(li2Domains: ["your-domain.com"], clipboardStatus: "empty")
+        case .denied:                                 // người dùng chặn quyền dán
+            body = .init(li2Domains: ["your-domain.com"], clipboardStatus: "denied")
+        case .optout:                                 // người dùng bỏ qua
+            body = .init(li2Domains: ["your-domain.com"], clipboardStatus: "optout")
+        }
+
+        Task {
+            let res = try await trackOpen(body)
+            await route(res)
+        }
+    }
+    ```
 
     <Tip>
     Dùng `UIPasteControl` (chính cú chạm của người dùng là sự đồng ý, không hiện alert hệ thống) cho production. Việc đọc trực tiếp `UIPasteboard.general.string` sẽ kích hoạt alert dán của iOS.
     </Tip>
-
-    ### 4. Gọi API
-
-    ```swift
-    var req = URLRequest(url: URL(string: "\(baseURL)/track/open")!)
-    req.httpMethod = "POST"
-    req.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    req.setValue(publishableKey, forHTTPHeaderField: "X-Li2-Key")
-    req.httpBody = try JSONEncoder().encode(request)
-    ```
-
-    `baseURL` phải bao gồm `/api/v1` (ví dụ `https://api.li2.ai/api/v1`). Điều hướng theo `link.url` trong phản hồi; nếu `link == null`, hiển thị banner kèm `missReason`.
   </Tab>
 
   <Tab title="Android" icon="android">
@@ -93,7 +158,51 @@ icon: "mobile"
 
     `android:autoVerify="true"` yêu cầu Android xác minh `assetlinks.json` lúc cài đặt. Thiếu nó, Android sẽ hiện hộp chọn ứng dụng thay vì mở thẳng app.
 
-    ### 2. Xử lý App Link (app đã cài — immediate)
+    ### 2. Định nghĩa model & API dùng chung
+
+    Cả luồng immediate lẫn deferred dùng chung một cặp model và một lời gọi:
+
+    ```kotlin
+    data class TrackOpenRequest(
+        val deepLink: String? = null,
+        val li2Domains: List<String>? = null,
+        val clipboardStatus: String? = null,   // không dùng trên Android
+        val installReferrer: String? = null,
+    )
+
+    data class TrackOpenResponse(
+        val clickId: String,
+        val link: Link?,            // null khi deferred không đối chiếu được
+        val matchMethod: String?,
+        val missReason: String?,
+        val platform: String?,
+    ) {
+        data class Link(val id: String, val domain: String, val key: String, val url: String)
+    }
+
+    interface Li2Api {
+        @POST("track/open")
+        suspend fun trackOpen(
+            @Header("X-Li2-Key") publishableKey: String,   // li2_pk_...
+            @Body body: TrackOpenRequest,
+        ): TrackOpenResponse
+    }
+
+    // baseUrl PHẢI gồm /api/v1/, ví dụ "https://api.li2.ai/api/v1/"
+    val api: Li2Api = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(Li2Api::class.java)
+
+    // Điều hướng theo phản hồi: khớp → mở đúng màn hình; trượt → fallback + lý do
+    private fun route(res: TrackOpenResponse) {
+        res.link?.url?.let { router.open(it) }
+            ?: router.showFallbackBanner(res.missReason)
+    }
+    ```
+
+    ### 3. Xử lý App Link (app đã cài — immediate)
 
     ```kotlin
     override fun onNewIntent(intent: Intent) {
@@ -109,9 +218,22 @@ icon: "mobile"
     }
     ```
 
-    `handleAppLink` gọi `POST /track/open` với `{ "deepLink": uri.toString() }`.
+    `handleAppLink` chỉ gửi `deepLink` (luồng immediate):
 
-    ### 3. Khôi phục deferred qua Google Play Install Referrer
+    ```kotlin
+    fun handleAppLink(uri: Uri) {
+        hasReceivedAppLink = true   // chặn luồng deferred ở bước 4
+        viewModelScope.launch {
+            val res = api.trackOpen(
+                BuildConfig.LI2_PUBLISHABLE_KEY,
+                TrackOpenRequest(deepLink = uri.toString()),
+            )
+            route(res)
+        }
+    }
+    ```
+
+    ### 4. Khôi phục deferred qua Google Play Install Referrer
 
     Trong lần mở đầu tiên, nếu **không** có App Link tới, gọi Install Referrer (chỉ một lần — cờ `firstLaunchRan` lưu trong DataStore):
 
@@ -126,9 +248,21 @@ icon: "mobile"
     }
     ```
 
-    `ReferrerExtractor.extractDeepLink(raw)` giải mã tham số `li2_dl=<url-mã-hóa>` từ chuỗi referrer (Li2 đã ghép sẵn deep link vào referrer khi chuyển hướng tới Play Store). App gửi `{ "installReferrer": referrer }` tới `/track/open`.
+    `handleInstallReferrer` gửi nguyên chuỗi referrer thô — server tự giải mã tham số `li2_dl=<url-mã-hóa>` mà Li2 đã ghép vào referrer khi chuyển hướng tới Play Store:
 
-    ### 4. Publishable key trong local.properties
+    ```kotlin
+    fun handleInstallReferrer(referrer: String) {
+        viewModelScope.launch {
+            val res = api.trackOpen(
+                BuildConfig.LI2_PUBLISHABLE_KEY,
+                TrackOpenRequest(installReferrer = referrer),
+            )
+            route(res)
+        }
+    }
+    ```
+
+    ### 5. Publishable key trong local.properties
 
     ```properties
     LI2_PUBLISHABLE_KEY=li2_pk_xxxxxxxxxxxxxxxxxxxx
@@ -140,7 +274,7 @@ icon: "mobile"
     **Lỗi phổ biến nhất**: thiếu `LI2_PUBLISHABLE_KEY` trong `local.properties` → `BuildConfig.LI2_PUBLISHABLE_KEY` rỗng → **mọi** lời gọi `/track/open` trả về **401 Unauthenticated**. Thêm key rồi build lại.
     </Warning>
 
-    ### 5. Buộc xác minh App Link
+    ### 6. Buộc xác minh App Link
 
     Sau khi cài hoặc sau khi cập nhật `assetlinks.json`:
 
