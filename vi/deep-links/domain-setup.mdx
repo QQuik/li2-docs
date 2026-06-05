@@ -20,7 +20,7 @@ icon: "globe"
 | iOS | `https://{domain}/.well-known/apple-app-site-association` | Khai báo Team ID + Bundle ID được phép xử lý link |
 | Android | `https://{domain}/.well-known/assetlinks.json` | Khai báo package name + SHA-256 fingerprint được phép xử lý link |
 
-Li2 **tự động sinh và phục vụ** hai file này ngay khi bạn lưu cấu hình app (xem [Cấu hình trên dashboard](/vi/guide/deep-links/cau-hinh-deep-link-cho-ung-dung-li2)). Nginx proxy các đường dẫn `/.well-known/` công khai về li2-be, và hostname của request được đọc từ header `X-Forwarded-Host`.
+Li2 **tự động sinh và phục vụ** hai file này ngay khi bạn lưu cấu hình app (xem [Cấu hình trên dashboard](/vi/guide/deep-links/cau-hinh-deep-link-cho-ung-dung-li2)). Nginx proxy các đường dẫn `/.well-known/` công khai về Li2 server, và hostname của request được đọc từ header `X-Forwarded-Host`.
 
 ## Bạn cần đăng ký gì
 
@@ -99,7 +99,7 @@ Subdomain miễn phí `*.li2.link` / `*.li2.sh` **không** dùng được cho De
 **Apple CDN ghi đè max-age**: Apple tải AASA qua CDN riêng với TTL khoảng **6 giờ**, bất kể header `max-age` của bạn. Vì vậy thay đổi cấu hình iOS có thể mất tới ~6 giờ để lan tới thiết bị. Android tôn trọng `max-age` của origin nên cập nhật nhanh hơn.
 </Warning>
 
-li2-be còn giữ một cache nội bộ TTL 1 giờ; khi truy vấn DB lỗi, server phục vụ bản tốt gần nhất (last-known-good).
+Li2 server còn giữ một cache nội bộ TTL 1 giờ; khi truy vấn DB lỗi, server phục vụ bản tốt gần nhất (last-known-good).
 
 ## Kiểm tra file xác minh
 

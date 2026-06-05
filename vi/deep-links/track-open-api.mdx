@@ -36,7 +36,7 @@ X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx
 
 ## Request
 
-```json
+```json Request
 {
   "deepLink": "https://your-domain.com/slug?li2_cid=<16-ký-tự-base62>",
   "li2Domains": ["your-domain.com"],
@@ -67,7 +67,7 @@ Trước khi xử lý, server kiểm tra org có gói Pro (`deep_link_attributio
 
 ## Response
 
-```json
+```json Response
 {
   "clickId": "1a2b3c4d5e6f7g8h",
   "link": {
@@ -94,14 +94,14 @@ Mỗi tab là một lệnh `curl` chạy được (thay `your-domain.com` và `l
   <Tab title="Immediate (đã cài app)">
     App đã cài, mở qua Universal Link / App Link — chỉ gửi `deepLink`, **không** có `li2_cid`:
 
-    ```bash
+    ```bash Request
     curl -X POST https://api.li2.ai/api/v1/track/open \
       -H "Content-Type: application/json" \
       -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
       -d '{ "deepLink": "https://your-domain.com/sale" }'
     ```
 
-    ```json
+    ```json Response · 200
     {
       "clickId": "1a2b3c4d5e6f7g8h",
       "link": {
@@ -121,14 +121,14 @@ Mỗi tab là một lệnh `curl` chạy được (thay `your-domain.com` và `l
   <Tab title="iOS deferred (khớp)">
     Lần mở đầu sau khi cài: clipboard chứa link có `li2_cid` → gửi cả `deepLink` lẫn `clipboardStatus: "read"`:
 
-    ```bash
+    ```bash Request
     curl -X POST https://api.li2.ai/api/v1/track/open \
       -H "Content-Type: application/json" \
       -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
       -d '{ "deepLink": "https://your-domain.com/sale?li2_cid=Ab3xK9pQ2mN7vR1t", "clipboardStatus": "read" }'
     ```
 
-    ```json
+    ```json Response · 200
     {
       "clickId": "Ab3xK9pQ2mN7vR1t",
       "link": {
@@ -146,14 +146,14 @@ Mỗi tab là một lệnh `curl` chạy được (thay `your-domain.com` và `l
   <Tab title="Android deferred (khớp)">
     Lần mở đầu sau khi cài: gửi nguyên chuỗi Install Referrer thô (server tự giải mã `li2_dl`):
 
-    ```bash
+    ```bash Request
     curl -X POST https://api.li2.ai/api/v1/track/open \
       -H "Content-Type: application/json" \
       -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
       -d '{ "installReferrer": "li2_dl=https%3A%2F%2Fyour-domain.com%2Fsale%3Fli2_cid%3DAb3xK9pQ2mN7vR1t&utm_source=li2" }'
     ```
 
-    ```json
+    ```json Response · 200
     {
       "clickId": "Ab3xK9pQ2mN7vR1t",
       "link": {
@@ -171,14 +171,14 @@ Mỗi tab là một lệnh `curl` chạy được (thay `your-domain.com` và `l
   <Tab title="Deferred (trượt)">
     Clipboard rỗng / bị từ chối / bị bỏ qua → chỉ gửi `li2Domains` + `clipboardStatus`. Vẫn trả `200`, nhưng `link` là `null` và có `missReason`:
 
-    ```bash
+    ```bash Request
     curl -X POST https://api.li2.ai/api/v1/track/open \
       -H "Content-Type: application/json" \
       -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
       -d '{ "li2Domains": ["your-domain.com"], "clipboardStatus": "empty" }'
     ```
 
-    ```json
+    ```json Response · 200 (trượt)
     {
       "clickId": "f0e1d2c3b4a59687",
       "link": null,
