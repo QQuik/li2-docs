@@ -11,10 +11,6 @@ icon: "mobile"
 **Bạn sẽ học**: Cách khai báo Universal Link / App Link, xử lý link khi app đã cài (immediate), và khôi phục link trong lần mở đầu tiên khi app chưa cài (deferred). Mọi lời gọi mạng đều tới `POST /api/v1/track/open`.
 </Info>
 
-<Note>
-**Ứng dụng tham chiếu**: chưa có SDK đóng gói. Hãy đối chiếu trực tiếp với hai repo mẫu `li2-ios-sample` và `li2-android-sample` (mỗi repo có README hướng dẫn chi tiết). Các đoạn dưới đây là phần tối thiểu một app bên thứ ba cần làm.
-</Note>
-
 <Tabs>
   <Tab title="iOS" icon="apple">
     ### 1. Khai báo Associated Domains
@@ -75,7 +71,7 @@ icon: "mobile"
     req.httpBody = try JSONEncoder().encode(request)
     ```
 
-    `baseURL` phải bao gồm `/api/v1` (ví dụ `https://sapi-dev.quik.vn/api/v1`). Điều hướng theo `link.url` trong phản hồi; nếu `link == null`, hiển thị banner kèm `missReason`.
+    `baseURL` phải bao gồm `/api/v1` (ví dụ `https://api.li2.ai/api/v1`). Điều hướng theo `link.url` trong phản hồi; nếu `link == null`, hiển thị banner kèm `missReason`.
   </Tab>
 
   <Tab title="Android" icon="android">

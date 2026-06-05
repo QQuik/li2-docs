@@ -28,7 +28,7 @@ Thông tin app được lưu trong cột `deep_link_apps` (JSONB) của domain. 
 
 <CardGroup cols={2}>
   <Card title="iOS App" icon="apple">
-    - `team_id`: Apple Team ID (10 ký tự, ví dụ `V63B584NW3`)
+    - `team_id`: Apple Team ID (10 ký tự, ví dụ `ABCDE12345`)
     - `bundle_id`: ví dụ `com.example.app`
     - `app_store_url` (tùy chọn): để fallback khi chưa cài app
     - `paths`: mặc định `["/*"]`
@@ -78,12 +78,14 @@ Thông tin app được lưu trong cột `deep_link_apps` (JSONB) của domain. 
 
 Một domain chỉ phục vụ file xác minh khi:
 
-- `IsVerified = true` (đã xác minh DNS),
-- **không** phải subdomain `*.li2.link` và không phải domain mặc định của hệ thống,
-- `deep_link_apps.enabled = true`.
+- **Domain đã được xác minh DNS** trong Li2 (trạng thái "Verified").
+- **Không** phải subdomain `*.li2.link` và không phải domain mặc định của hệ thống.
+- **Deep Link đã được bật** cho domain (công tắc *Enable* trong bảng "Configure Deep Links").
+
+Cả ba điều kiện trên đều được thiết lập trên dashboard. Xem hướng dẫn kèm ảnh minh họa: [Cấu hình Deep Link cho ứng dụng](/vi/guide/deep-links/cau-hinh-deep-link-cho-ung-dung-li2#cấu-hình-deep-link-cho-ứng-dụng).
 
 <Warning>
-Subdomain miễn phí `deep.li2.link` / `*.li2.link` **không** dùng được cho Deep Link của bên thứ ba: đó là hạ tầng dùng chung, app không thể "entitle" một domain được nhiều khách hàng dùng chung. Hãy dùng **custom domain riêng**.
+Subdomain miễn phí `*.li2.link` / `*.li2.sh` **không** dùng được cho Deep Link của bên thứ ba: đó là hạ tầng dùng chung, app không thể "entitle" một domain được nhiều khách hàng dùng chung. Hãy dùng **custom domain riêng**.
 </Warning>
 
 ## Caching — vì sao thay đổi cần thời gian

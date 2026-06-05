@@ -19,7 +19,7 @@ icon: "link"
 
 **Deep Link** cho phép một short link hoặc QR code của Li2 **mở thẳng ứng dụng di động** của bạn thay vì mở trình duyệt, khi người dùng đã cài app trên thiết bị. Nếu họ **chưa cài app**, Li2 vẫn ghi nhận lượt chạm để ứng dụng có thể khôi phục đúng nội dung ngay trong lần mở đầu tiên sau khi cài đặt.
 
-Hiện tại Li2 không cung cấp SDK đóng gói riêng. Bạn tích hợp **trực tiếp qua HTTP API** (`POST /api/v1/track/open`), lấy hai ứng dụng mẫu `li2-ios-sample` và `li2-android-sample` làm tham chiếu.
+Hiện tại Li2 không cung cấp SDK đóng gói riêng. Bạn tích hợp **trực tiếp qua HTTP API** (`POST /api/v1/track/open`).
 
 ## Hai cơ chế hoạt động
 
@@ -75,10 +75,6 @@ Hiện tại Li2 không cung cấp SDK đóng gói riêng. Bạn tích hợp **t
     Cấu hình deep link miễn phí, nhưng trang **Deep Link Analytics** yêu cầu gói Pro.
   </Card>
 </CardGroup>
-
-<Note>
-**IP fallback đang tạm dừng**: Cơ chế đối chiếu deferred theo địa chỉ IP (`LI2_IP_FALLBACK_ENABLED=false`) hiện không hoạt động và là chi tiết nội bộ — bạn không cần tích hợp nó. Hai đường deferred đang chạy thật là **clipboard (iOS)** và **install referrer (Android)**.
-</Note>
 
 ## Bước tiếp theo
 

@@ -61,7 +61,7 @@ Phải có **ít nhất một** trong `deepLink`, `li2Domains`, hoặc `installR
 | Có `installReferrer` | Android deferred | Giải mã referrer, lấy `li2_cid`, đối chiếu deferred |
 | Có `deepLink` **và** có `li2_cid` | iOS clipboard deferred | Đối chiếu deferred theo clipboard token |
 | Có `deepLink`, **không** có `li2_cid` | Immediate | App đã cài, link mở bình thường |
-| Chỉ có `li2Domains` | IP fallback | **Đang tạm dừng** (`LI2_IP_FALLBACK_ENABLED=false`) |
+| Chỉ có `li2Domains` (kèm `clipboardStatus`) | Ghi nhận miss | iOS báo clipboard rỗng / từ chối / bỏ qua → ghi `deferred_miss` |
 
 Trước khi xử lý, server kiểm tra org có gói Pro (`deep_link_attribution`) và suy ra `platform` (`ios`/`android`) từ User-Agent.
 
@@ -76,7 +76,7 @@ Trước khi xử lý, server kiểm tra org có gói Pro (`deep_link_attributio
     "key": "slug",
     "url": "https://destination.example.com/path"
   },
-  "matchMethod": "universal_link | app_link | clipboard | install_referrer | ip | ip_ua",
+  "matchMethod": "universal_link | app_link | clipboard | install_referrer",
   "missReason": "no_candidate | ...",
   "platform": "ios | android"
 }
@@ -94,16 +94,12 @@ Trước khi xử lý, server kiểm tra org có gói Pro (`deep_link_attributio
 | `app_link` | Android, app đã cài (immediate) |
 | `clipboard` | iOS deferred, khớp qua `li2_cid` trên clipboard |
 | `install_referrer` | Android deferred, khớp qua Google Play Install Referrer |
-| `ip` | Fallback theo IP (đang tạm dừng) |
-| `ip_ua` | Fallback theo IP + UA (đang tạm dừng) |
 
 ## Giá trị `missReason`
 
 | Giá trị | Ý nghĩa |
 |---------|---------|
-| `no_candidate` | Tra cứu clipboard/IP không có kết quả (hoặc bản ghi đã hết hạn) |
-| `ambiguous_candidate` | Tra cứu IP trả về nhiều ứng viên (không kết luận được) |
-| `ua_mismatch` | Ứng viên IP có UA hash không khớp |
+| `no_candidate` | Tra cứu clipboard không có kết quả (hoặc bản ghi đã hết hạn) |
 | `clipboard_denied` | Người dùng chặn quyền dán trên iOS |
 | `clipboard_empty` | Clipboard rỗng (không có link Li2) |
 | `opt_out` | Người dùng chủ động bỏ qua |
