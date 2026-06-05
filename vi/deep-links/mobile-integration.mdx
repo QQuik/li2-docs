@@ -9,10 +9,12 @@ icon: "mobile"
 
 <Info>
 **Bạn sẽ học**: Cách khai báo Universal Link / App Link, xử lý link khi app đã cài (immediate), và khôi phục link trong lần mở đầu tiên khi app chưa cài (deferred). Mọi lời gọi mạng đều tới `POST /api/v1/track/open`.
+
+Ví dụ dùng **SwiftUI (Swift)** và **Jetpack Compose (Kotlin)**; bạn có thể chuyển các đoạn entry-point sang UIKit / View truyền thống tương ứng.
 </Info>
 
 <Tabs>
-  <Tab title="iOS" icon="apple">
+  <Tab title="iOS (Swift)" icon="apple">
     ### 1. Khai báo Associated Domains
 
     Thêm domain Li2 của bạn vào file `.entitlements`:
@@ -139,7 +141,7 @@ icon: "mobile"
     </Tip>
   </Tab>
 
-  <Tab title="Android" icon="android">
+  <Tab title="Android (Kotlin)" icon="android">
     ### 1. Khai báo App Link intent-filter
 
     Trong `AndroidManifest.xml`:
