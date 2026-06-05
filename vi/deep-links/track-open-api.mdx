@@ -11,13 +11,15 @@ icon: "code"
 **Bạn sẽ học**: Toàn bộ hợp đồng của endpoint `POST /api/v1/track/open` — cách xác thực, các trường request, server chọn đường xử lý ra sao, hình dạng response, và ý nghĩa từng giá trị `matchMethod` / `missReason`.
 </Info>
 
-## Endpoint
+## Endpoint & môi trường
 
 ```
-POST /api/v1/track/open
+POST https://api.li2.ai/api/v1/track/open
 ```
 
-Endpoint đi qua các middleware: CORS, rate limit, và `AuthMobileApikeyMiddleware`.
+Đây là **base URL production duy nhất** — dùng chung cho mọi organization, không có host sandbox/staging riêng. Bạn test ngay trên production bằng custom domain đã verify của mình và một bản cài thật từ store (TestFlight/internal-test) — xem [Kiểm thử trên production](./mobile-integration#kiểm-thử-trên-production).
+
+Endpoint đi qua các middleware: CORS, **rate limit (1000 request/phút/IP)**, và `AuthMobileApikeyMiddleware`.
 
 ## Xác thực
 
@@ -27,6 +29,7 @@ Gửi **publishable key** trong header:
 X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx
 ```
 
+- **Lấy publishable key ở đâu**: dashboard → **Settings → Analytics → Publishable Key** (dạng `li2_pk_...`). Key được tạo tự động khi bật Analytics; chi tiết tại [Thiết lập Conversion Tracking](/vi/conversion-tracking/setup).
 - Fallback cho caller không đặt được custom header (ví dụ `sendBeacon`): tham số query `?li2_key=...`.
 - **Không** dùng server API key (`X-Li2-API-Key`) cho endpoint này — sẽ trả về **401**. Endpoint mobile chỉ chấp nhận key dạng `li2_pk_*`.
 
@@ -48,7 +51,7 @@ X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx
 | Trường | Bắt buộc | Ghi chú |
 |--------|----------|---------|
 | `deepLink` | Có điều kiện | URL hợp lệ, có host và path slug khác rỗng |
-| `li2Domains` | Có điều kiện | Mảng hostname (không kèm scheme/path) |
+| `li2Domains` | Có điều kiện | Mảng hostname (không kèm scheme/path) mà app được entitle. Thường chỉ **một**; gửi nhiều nếu app trải trên nhiều custom domain. Khi clipboard rỗng/từ chối, trường này cho server biết domain/org nào để ghi nhận `deferred_miss` đúng chỗ. |
 | `clipboardStatus` | Không | Chỉ nhận `read`, `empty`, `denied`, `optout`; giá trị khác → 400 |
 | `installReferrer` | Có điều kiện | Chuỗi referrer thô từ Google Play |
 
@@ -85,10 +88,15 @@ Trước khi xử lý, server kiểm tra org có gói Pro (`deep_link_attributio
 - Khi **khớp**: `link` được điền, `missReason` **bị bỏ qua**.
 - Khi **trượt** (deferred không đối chiếu được): `link` là `null`, `missReason` được điền.
 - `clickId` luôn có: dùng id của click gốc khi khớp, hoặc một id ngẫu nhiên khi trượt (đồng thời ghi một dòng `deferred_miss`).
+- `link.id` là **UUID của touch point** (cấu hình link trong Li2), **không** phải id của short link hiển thị hay của click. Điều hướng người dùng bằng `link.url`; `link.key` là slug, `link.domain` là host.
 
 ## Ví dụ theo từng luồng
 
 Mỗi tab là một lệnh `curl` chạy được (thay `your-domain.com` và `li2_pk_...` bằng giá trị của bạn) kèm response mẫu.
+
+<Note>
+**`platform` và `matchMethod` suy ra từ User-Agent.** Server đọc UA của request để phân loại `ios`/`android`. Một lệnh `curl` mặc định (UA `curl/8.x`) khớp **không** nền tảng nào → trả về `platform: null` và `matchMethod` rỗng. Vì vậy các ví dụ dưới đây đều kèm header `-A` giả lập UA thiết bị để response khớp như minh họa. Từ app thật, UA của `URLSession`/`okhttp` đã chứa sẵn dấu hiệu nền tảng nên bạn không cần làm gì thêm.
+</Note>
 
 <Tabs>
   <Tab title="Immediate (đã cài app)">
@@ -98,6 +106,7 @@ Mỗi tab là một lệnh `curl` chạy được (thay `your-domain.com` và `l
     curl -X POST https://api.li2.ai/api/v1/track/open \
       -H "Content-Type: application/json" \
       -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
+      -A "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)" \
       -d '{ "deepLink": "https://your-domain.com/sale" }'
     ```
 
@@ -125,6 +134,7 @@ Mỗi tab là một lệnh `curl` chạy được (thay `your-domain.com` và `l
     curl -X POST https://api.li2.ai/api/v1/track/open \
       -H "Content-Type: application/json" \
       -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
+      -A "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)" \
       -d '{ "deepLink": "https://your-domain.com/sale?li2_cid=Ab3xK9pQ2mN7vR1t", "clipboardStatus": "read" }'
     ```
 
@@ -150,6 +160,7 @@ Mỗi tab là một lệnh `curl` chạy được (thay `your-domain.com` và `l
     curl -X POST https://api.li2.ai/api/v1/track/open \
       -H "Content-Type: application/json" \
       -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
+      -A "Dalvik/2.1.0 (Linux; U; Android 14; Pixel 8 Build/UP1A)" \
       -d '{ "installReferrer": "li2_dl=https%3A%2F%2Fyour-domain.com%2Fsale%3Fli2_cid%3DAb3xK9pQ2mN7vR1t&utm_source=li2" }'
     ```
 
@@ -179,6 +190,7 @@ Mỗi tab là một lệnh `curl` chạy được (thay `your-domain.com` và `l
     curl -X POST https://api.li2.ai/api/v1/track/open \
       -H "Content-Type: application/json" \
       -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
+      -A "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)" \
       -d '{ "li2Domains": ["your-domain.com"], "clipboardStatus": "empty" }'
     ```
 
@@ -220,8 +232,41 @@ Mỗi tab là một lệnh `curl` chạy được (thay `your-domain.com` và `l
 | `200` | Thành công (kể cả khi trượt — `link: null` + `missReason`) |
 | `400` | Body sai định dạng / `clipboardStatus` không hợp lệ |
 | `401` | Thiếu hoặc sai `X-Li2-Key` (hoặc gửi nhầm server API key) |
-| `403` | Org không có gói Pro, domain không thuộc org, hoặc deep link bị tắt |
+| `403` | Org không có gói Pro; hoặc (luồng immediate) domain không thuộc org / deep link bị tắt |
 | `404` | Không tìm thấy slug (touch point) |
+| `429` | Vượt **1000 request/phút/IP**. Server đặt header `X-RateLimit-Limit` / `X-RateLimit-Remaining` / `X-RateLimit-Reset`; hãy backoff theo đó. |
+
+<Note>
+Cô lập tenant ở **luồng deferred** (clipboard/referrer) không trả 403 mà trả **`200` + `missReason: cross_tenant_blocked`** (`link: null`) — để không lộ việc hostname có thuộc org khác hay không. Chỉ luồng **immediate** mới trả `403` khi domain không thuộc org.
+</Note>
+
+## Hình dạng body lỗi
+
+Response **thành công** là object phẳng (`{ clickId, link, ... }` như trên — không bọc envelope). Response **lỗi** hiện có **hai dạng** tùy nhánh kiểm tra nào trượt — hãy xử lý cả hai:
+
+<CodeGroup>
+```json Dạng A · envelope chung
+{
+  "code": 404,
+  "message": "...",   // thông điệp chung theo HTTP status
+  "data": null
+}
+```
+
+```json Dạng B · lỗi xác thực field (có i18n_key)
+{
+  "error": "Deep link attribution requires Pro plan",
+  "i18n_key": "domain:deepLink.errors.attribution_plan_required"
+}
+```
+</CodeGroup>
+
+- **Dạng A** (`code`/`message`/`data`): body sai định dạng (`400`), không tìm thấy slug (`404`), ownership ở luồng immediate (`403`), lỗi server (`5xx`).
+- **Dạng B** (`error`/`i18n_key`): lỗi validate cụ thể — `clipboardStatus` không hợp lệ và `li2_cid` sai định dạng (`400`), và **gói Pro bắt buộc** (`403`).
+
+<Tip>
+Đừng dựa vào một khóa JSON cố định để biết lỗi — **lấy phân loại chính từ HTTP status code**, rồi đọc thêm `message` hoặc `error`/`i18n_key` nếu có. `data` luôn `null` khi lỗi.
+</Tip>
 
 ## Bước tiếp theo
 

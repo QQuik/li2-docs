@@ -106,9 +106,19 @@ Ví dụ dùng **SwiftUI (Swift)** và **Jetpack Compose (Kotlin)**; bạn có t
     }
     ```
 
+    <Note>
+    **Universal Link immediate không mang `li2_cid`** — nên gửi nguyên `url.absoluteString` là an toàn, server sẽ phân loại đúng là immediate. `li2_cid` chỉ được Li2 *gieo* trên đường **chưa cài app** (clipboard / install referrer); một cú chạm khi app đã cài được iOS chặn ở chính short link gốc, trước khi có bất kỳ redirect nào sinh `li2_cid`. (Server quyết định immediate vs deferred dựa trên việc `deepLink` **có** `li2_cid` hay không — xem bảng định tuyến trong [API](./track-open-api#server-chọn-đường-xử-lý-như-thế-nào).)
+    </Note>
+
     ### 4. Khôi phục deferred trong lần mở đầu tiên
 
-    Sau một khoảng chờ nhỏ (≈250ms để Universal Link kịp tới nếu có) và chỉ **một lần duy nhất** mỗi lần cài (cờ `firstLaunchRan`), hiển thị màn hình xin đồng ý rồi đọc clipboard. Mỗi nhánh map thẳng vào `TrackOpenRequest`:
+    Khi người dùng chưa cài app, trang trung gian của Li2 đã **chép sẵn link đích kèm `li2_cid` vào clipboard** trước khi đẩy sang App Store. Việc của app chỉ là **đọc** clipboard đó ở lần mở đầu rồi gửi cho `/track/open` — bạn không tự dựng `li2_cid`.
+
+    Hai điều kiện về thời điểm:
+    - **Chờ ≈250ms trước** để một Universal Link (nếu có) kịp tới — nếu nó tới, `hasReceivedUniversalLink` được bật và nhánh deferred bị bỏ qua. 250ms chỉ là đệm; **cờ `hasReceivedUniversalLink` mới là chốt chặn thật**, không phải con số thời gian.
+    - Chạy **đúng một lần mỗi lần cài** (cờ `firstLaunchRan`, lưu bền) để không đọc clipboard / ghi sự kiện lặp ở các lần mở sau.
+
+    Mỗi nhánh kết quả map thẳng vào `TrackOpenRequest`:
 
     ```swift
     func recoverDeferredOnce() {
@@ -136,8 +146,75 @@ Ví dụ dùng **SwiftUI (Swift)** và **Jetpack Compose (Kotlin)**; bạn có t
     }
     ```
 
+    #### Lấy `clipboardOutcome` bằng `UIPasteControl` (không bật alert hệ thống)
+
+    Bốn nhánh ở trên (`.read/.empty/.denied/.optout`) đến từ màn hình xin đồng ý. Dùng `UIPasteControl`: **chính cú chạm của người dùng là sự đồng ý**, nên iOS không hiện alert "Allow Paste". Đọc thẳng `UIPasteboard.general.string` thì sẽ bật alert đó — tránh.
+
+    `UIPasteControl` không có bản SwiftUI gốc, phải bọc UIKit. **Cạm bẫy quyết định**: đặt trong `fullScreenCover`, control sẽ **xám/disabled** vì nó dò `target` qua responder chain mà không tới được — phải **gán `control.target` tường minh** và override `canPaste(_:)` / `paste(itemProviders:)`:
+
+    ```swift
+    struct ClipboardPasteButton: UIViewRepresentable {
+        var onPaste: (String?) -> Void   // nil = không có gì dán được
+
+        func makeUIView(context: Context) -> PasteReceiverView {
+            let receiver = PasteReceiverView()
+            receiver.onPaste = onPaste
+
+            let config = UIPasteControl.Configuration()
+            config.displayMode = .iconAndLabel
+            config.cornerStyle = .capsule
+
+            let control = UIPasteControl(configuration: config)
+            control.translatesAutoresizingMaskIntoConstraints = false
+            control.target = receiver          // ← dòng quyết định: trỏ target tường minh
+            receiver.addSubview(control)
+            NSLayoutConstraint.activate([
+                control.topAnchor.constraint(equalTo: receiver.topAnchor),
+                control.bottomAnchor.constraint(equalTo: receiver.bottomAnchor),
+                control.leadingAnchor.constraint(equalTo: receiver.leadingAnchor),
+                control.trailingAnchor.constraint(equalTo: receiver.trailingAnchor),
+            ])
+            return receiver
+        }
+
+        func updateUIView(_ v: PasteReceiverView, context: Context) { v.onPaste = onPaste }
+    }
+
+    final class PasteReceiverView: UIView {
+        var onPaste: ((String?) -> Void)?
+
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            pasteConfiguration = UIPasteConfiguration(
+                acceptableTypeIdentifiers: [UTType.url.identifier, UTType.plainText.identifier])
+        }
+        @available(*, unavailable) required init?(coder: NSCoder) { fatalError() }
+
+        // Quyết định control bật/tắt — iOS gọi với item providers của clipboard hiện tại.
+        override func canPaste(_ providers: [NSItemProvider]) -> Bool {
+            providers.contains {
+                $0.hasItemConformingToTypeIdentifier(UTType.url.identifier)
+                    || $0.hasItemConformingToTypeIdentifier(UTType.plainText.identifier)
+            }
+        }
+
+        override func paste(itemProviders: [NSItemProvider]) {
+            guard let p = itemProviders.first else { return deliver(nil) }
+            if p.canLoadObject(ofClass: NSURL.self) {
+                p.loadObject(ofClass: NSURL.self) { [weak self] o, _ in self?.deliver((o as? URL)?.absoluteString) }
+            } else if p.canLoadObject(ofClass: NSString.self) {
+                p.loadObject(ofClass: NSString.self) { [weak self] o, _ in self?.deliver((o as? NSString) as String?) }
+            } else { deliver(nil) }
+        }
+
+        private func deliver(_ v: String?) { DispatchQueue.main.async { [weak self] in self?.onPaste?(v) } }
+    }
+    ```
+
+    Ánh xạ kết quả về `clipboardOutcome`: người dùng chạm Paste và nhận chuỗi chứa `li2_cid` → `.read`; chạm Paste nhưng rỗng/không phải link Li2 → `.empty`; bỏ qua màn hình (nút "Skip") → `.optout`; iOS chặn đọc → `.denied`.
+
     <Tip>
-    Dùng `UIPasteControl` (chính cú chạm của người dùng là sự đồng ý, không hiện alert hệ thống) cho production. Việc đọc trực tiếp `UIPasteboard.general.string` sẽ kích hoạt alert dán của iOS.
+    Cần `import UniformTypeIdentifiers` cho `UTType`. Control tự quản label/icon ("Paste") — bạn chỉ chỉnh được màu, bo góc và display mode.
     </Tip>
   </Tab>
 
@@ -235,6 +312,10 @@ Ví dụ dùng **SwiftUI (Swift)** và **Jetpack Compose (Kotlin)**; bạn có t
     }
     ```
 
+    <Note>
+    Giống iOS, **App Link immediate không mang `li2_cid`** nên gửi nguyên `uri.toString()` là an toàn — server phân loại đúng là immediate. `li2_cid` chỉ nằm trong `li2_dl` của Install Referrer ở luồng **chưa cài app**.
+    </Note>
+
     ### 4. Khôi phục deferred qua Google Play Install Referrer
 
     Trong lần mở đầu tiên, nếu **không** có App Link tới, gọi Install Referrer (chỉ một lần — cờ `firstLaunchRan` lưu trong DataStore):
@@ -297,6 +378,34 @@ Ví dụ dùng **SwiftUI (Swift)** và **Jetpack Compose (Kotlin)**; bạn có t
     Nếu thấy `1024` (chưa xác minh), SHA-256 trong dashboard không khớp chứng chỉ ký của APK đang cài.
   </Tab>
 </Tabs>
+
+## Idempotency & thử lại
+
+- **Phân giải là idempotent**: server *đọc* bản ghi deferred trên Redis (không tiêu thụ/xóa), nên gọi lại trả về **đúng `link` cũ** cho tới khi bản ghi hết hạn (TTL). Một lần thử lại do timeout mạng vẫn khớp như cũ.
+- **Nhưng mỗi lần gọi thành công đều ghi một sự kiện analytics.** Không có idempotency key phía client → để tránh đếm trùng, **gọi `/track/open` đúng một lần mỗi lần cài** (cờ `firstLaunchRan` + `hasReceived*`), và chỉ retry **trong cùng một lần mở** khi gặp lỗi mạng/5xx — đừng retry xuyên nhiều lần mở.
+
+## Kiểm thử trên production
+
+Không có host sandbox riêng — bạn kiểm thử ngay trên `api.li2.ai` bằng hạ tầng thật của mình:
+
+<Steps>
+  <Step title="Chuẩn bị domain & app thật">
+    Custom domain đã **Verified** + **Deep Links Active**, file AASA/assetlinks báo "Live & correct" (xem [Cấu Hình Domain](./domain-setup)).
+  </Step>
+  <Step title="Test immediate (app đã cài)">
+    Cài bản dev qua **TestFlight** (iOS) / **internal-test track** hoặc cài trực tiếp (Android), rồi chạm một short link trên domain đó. App phải mở thẳng và `/track/open` trả `universal_link` / `app_link`.
+  </Step>
+  <Step title="Test deferred (chưa cài)">
+    **Gỡ app** → chạm short link → đi qua trang trung gian → cài lại từ store → mở lần đầu. iOS: chạm Paste trên màn hình đồng ý; Android: Install Referrer tự có. Kỳ vọng `clipboard` / `install_referrer`.
+
+    <Warning>
+    Android Install Referrer **chỉ trả referrer thật khi cài qua Play Store** (internal-test track) — **không** hoạt động với `adb install` APK cục bộ. Clipboard của iOS thì test được với mọi kiểu cài.
+    </Warning>
+  </Step>
+  <Step title="Đối chiếu kết quả">
+    Đọc thẳng `matchMethod` / `missReason` trong response, hoặc xem [Deep Link Analytics](/vi/guide/deep-links/xem-phan-tich-deep-link-li2) (gói Pro) để xác nhận match/miss.
+  </Step>
+</Steps>
 
 ## Bước tiếp theo
 

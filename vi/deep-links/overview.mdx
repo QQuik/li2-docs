@@ -59,6 +59,20 @@ Hiện tại Li2 không cung cấp SDK đóng gói riêng. Bạn tích hợp **t
   </Step>
 </Steps>
 
+## Ba định danh bạn sẽ gặp
+
+Luồng deferred đi qua vài định danh khác nhau — phân biệt rõ để không nhầm khi ghép code:
+
+| Định danh | Xuất hiện ở đâu | Là gì | Ai tạo |
+|-----------|-----------------|-------|--------|
+| `li2_cid` | Trong link trên **clipboard** (iOS) và bên trong giá trị `li2_dl` (Android) | Token 16 ký tự base62 định danh **cú click gốc**; bằng đúng `visits.li2_cid` để nối lượt cài về click | **Li2** sinh phía server |
+| `li2_dl` | Tham số trong **Google Play Install Referrer** (Android) | "Bao" chứa URL đích đã URL-encode (gồm cả `li2_cid`) mà Li2 ghép vào referrer khi chuyển tới Play Store | **Li2** sinh phía server |
+| `clickId` | Trường trong **response** `/track/open` | Id của click khi khớp (bằng `li2_cid`), hoặc id ngẫu nhiên khi trượt | Server trả về |
+
+<Info>
+**Bạn không tự tạo các định danh này.** Li2 *gieo* chúng ở phía hạ tầng: trang trung gian (chỉ phục vụ khi **chưa cài app**) chép link kèm `li2_cid` vào clipboard, và bản chuyển hướng tới Play Store ghép sẵn `li2_dl` vào referrer. Phía app, bạn chỉ **đọc** rồi gửi nguyên trạng cho `/track/open`.
+</Info>
+
 ## Yêu cầu trước khi tích hợp
 
 <CardGroup cols={2}>
@@ -69,7 +83,7 @@ Hiện tại Li2 không cung cấp SDK đóng gói riêng. Bạn tích hợp **t
     Đăng ký iOS (Team ID + Bundle ID) và/hoặc Android (package name + SHA-256) để Li2 sinh file xác minh. Xem [Cấu Hình Domain](./domain-setup).
   </Card>
   <Card title="Publishable Key" icon="key">
-    Key dạng `li2_pk_...` gửi qua header `X-Li2-Key`. **Không** dùng server API key (`X-Li2-API-Key`) cho endpoint này.
+    Key dạng `li2_pk_...` gửi qua header `X-Li2-Key`. Lấy tại **Settings → Analytics → Publishable Key** trong dashboard (xem [Thiết lập Conversion Tracking](/vi/conversion-tracking/setup) nếu chưa bật Analytics). **Không** dùng server API key (`X-Li2-API-Key`) cho endpoint này.
   </Card>
   <Card title="Gói Pro (cho Analytics)" icon="crown">
     Cấu hình deep link miễn phí, nhưng trang **Deep Link Analytics** yêu cầu gói Pro.
