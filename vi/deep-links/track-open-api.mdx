@@ -242,31 +242,32 @@ Cô lập tenant ở **luồng deferred** (clipboard/referrer) không trả 403 
 
 ## Hình dạng body lỗi
 
-Response **thành công** là object phẳng (`{ clickId, link, ... }` như trên — không bọc envelope). Response **lỗi** hiện có **hai dạng** tùy nhánh kiểm tra nào trượt — hãy xử lý cả hai:
+Response **thành công** là object phẳng (`{ clickId, link, ... }` như trên — không bọc envelope). Mọi response **lỗi** dùng chung **một** envelope:
 
-<CodeGroup>
-```json Dạng A · envelope chung
+```json Error
 {
-  "code": 404,
-  "message": "...",   // thông điệp chung theo HTTP status
-  "data": null
+  "code": 403,
+  "message": "Deep link attribution requires the Pro plan",
+  "data": null,
+  "error_code": "FEATURE_NOT_ALLOWED"
 }
 ```
 
-```json Dạng B · lỗi xác thực field (có i18n_key)
-{
-  "error": "Deep link attribution requires Pro plan",
-  "i18n_key": "domain:deepLink.errors.attribution_plan_required"
-}
-```
-</CodeGroup>
+- `code` = HTTP status; `message` = mô tả tiếng Anh dễ đọc; `data` luôn `null` khi lỗi.
+- `error_code` là **mã ổn định, máy đọc được** — hãy branch theo nó thay vì so khớp chuỗi `message`. Mọi lỗi phía client (4xx) đều kèm `error_code`; lỗi server (5xx) trả cùng envelope nhưng **không** có `error_code` (chỉ cần retry/backoff).
 
-- **Dạng A** (`code`/`message`/`data`): body sai định dạng (`400`), không tìm thấy slug (`404`), ownership ở luồng immediate (`403`), lỗi server (`5xx`).
-- **Dạng B** (`error`/`i18n_key`): lỗi validate cụ thể — `clipboardStatus` không hợp lệ và `li2_cid` sai định dạng (`400`), và **gói Pro bắt buộc** (`403`).
+### Các `error_code` của endpoint
 
-<Tip>
-Đừng dựa vào một khóa JSON cố định để biết lỗi — **lấy phân loại chính từ HTTP status code**, rồi đọc thêm `message` hoặc `error`/`i18n_key` nếu có. `data` luôn `null` khi lỗi.
-</Tip>
+| HTTP | `error_code` | Khi nào |
+|------|--------------|---------|
+| 400 | `INVALID_JSON` | Body không parse được |
+| 400 | `MISSING_REQUIRED_FIELD` | Thiếu cả `deepLink`, `li2Domains` lẫn `installReferrer` |
+| 400 | `INVALID_FIELD_FORMAT` | `clipboardStatus`/`li2Domains` sai định dạng, hoặc `deepLink` không phải URL hợp lệ |
+| 400 | `INVALID_CLICK_ID` | `li2_cid` không đúng 16 ký tự base62 |
+| 401 | `MISSING_API_KEY` | Thiếu / không xác thực được `X-Li2-Key` |
+| 403 | `FEATURE_NOT_ALLOWED` | Org không có gói Pro |
+| 403 | `CROSS_ORG_ATTRIBUTION` | (luồng immediate) domain không thuộc org của key |
+| 404 | `LINK_NOT_FOUND` | Không tìm thấy slug (touch point) |
 
 ## Bước tiếp theo
 
