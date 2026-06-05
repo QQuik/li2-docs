@@ -262,6 +262,14 @@ icon: "mobile"
     }
     ```
 
+    <Note>
+    **Referrer được Google Play lưu lúc cài, không phụ thuộc cách mở app.** Một hiểu lầm phổ biến là người dùng phải bấm **"Open"** trên Play Store ngay sau khi cài. Thực tế: Play Store ghi nhận chuỗi referrer tại thời điểm cài và giữ lại để truy xuất — bạn lấy được nó ở **lần mở đầu tiên dù app được mở bằng cách nào** (nút *Open*, icon ngoài màn hình chính vài giờ/ngày sau, hay từ thông báo). Không có cửa sổ "mở ngay kẻo mất".
+
+    Hai điều kiện thật sự để có deferred match:
+    - Người dùng tới Play Store **qua chính link Li2** (URL mang tham số referrer). Nếu họ tự tìm app trên store thì không có `li2_dl` → trượt với `no_candidate`.
+    - App **gọi `InstallReferrerClient` ở lần mở đầu** (như trên). Hãy truy vấn **một lần** rồi lưu kết quả lại, đừng phụ thuộc vào việc gọi lại nhiều lần.
+    </Note>
+
     ### 5. Publishable key trong local.properties
 
     ```properties

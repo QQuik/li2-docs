@@ -166,6 +166,10 @@ Mỗi tab là một lệnh `curl` chạy được (thay `your-domain.com` và `l
       "platform": "android"
     }
     ```
+
+    <Note>
+    **Người dùng không cần bấm "Open" ngay trên Play Store.** Google Play lưu chuỗi referrer ngay lúc cài và trả về khi app gọi `InstallReferrerClient` ở **lần mở đầu tiên — bất kể mở bằng cách nào** (nút *Open*, icon ngoài màn hình chính vài giờ sau, hay từ một thông báo). Điều kiện thật sự là người dùng phải tới Play Store **qua chính link Li2** (URL mang tham số referrer); nếu họ tự tìm app trên store thì sẽ không có `li2_dl` → trượt với `no_candidate`.
+    </Note>
   </Tab>
 
   <Tab title="Deferred (trượt)">
