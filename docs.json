@@ -19,76 +19,7 @@
         "default": true,
         "tabs": [
           {
-            "tab": "Tài liệu hướng dẫn dành cho nhà phát triển",
-            "groups": [
-              {
-                "group": "Bắt Đầu",
-                "pages": [
-                  "vi/getting-started/overview",
-                  "vi/getting-started/account-setup",
-                  "vi/getting-started/organizations",
-                  "vi/getting-started/quick-start",
-                  "vi/getting-started/dashboard"
-                ]
-              },
-              {
-                "group": "Đo Lường Chuyển Đổi",
-                "pages": [
-                  "vi/conversion-tracking/overview",
-                  "vi/conversion-tracking/setup",
-                  "vi/conversion-tracking/events",
-                  {
-                    "group": "Integrations",
-                    "pages": [
-                      "vi/conversion-tracking/integrations/google-tag-manager"
-                    ]
-                  },
-                  "vi/conversion-tracking/goals"
-                ]
-              },
-              {
-                "group": "Deep Link (Liên kết sâu)",
-                "pages": [
-                  "vi/deep-links/overview",
-                  "vi/deep-links/domain-setup",
-                  "vi/deep-links/mobile-integration",
-                  "vi/deep-links/track-open-api"
-                ]
-              },
-              {
-                "group": "Touchpoint (Điểm Chạm)",
-                "hidden": true,
-                "pages": [
-                  "vi/core-features/touchpoints/overview",
-                  "vi/core-features/touchpoints/creating",
-                  "vi/core-features/touchpoints/short-links",
-                  "vi/core-features/touchpoints/qr-codes",
-                  "vi/core-features/touchpoints/managing",
-                  "vi/core-features/touchpoints/custom-domains"
-                ]
-              },
-              {
-                "group": "Quản Lý & Tổ Chức",
-                "hidden": true,
-                "pages": [
-                  "vi/core-features/collections/overview",
-                  "vi/core-features/tags/overview"
-                ]
-              },
-              {
-                "group": "Phân Tích & Báo Cáo",
-                "hidden": true,
-                "pages": [
-                  "vi/analytics/overview",
-                  "vi/analytics/dashboard",
-                  "vi/analytics/demographics",
-                  "vi/analytics/filters"
-                ]
-              }
-            ]
-          },
-          {
-            "tab": "Hướng dẫn sử dụng",
+            "tab": "Trung tâm hỗ trợ",
             "pages": [
               "vi/guide",
               {
@@ -165,7 +96,76 @@
                 ]
               }
             ]
-          }
+          },
+          {
+            "tab": "Tài liệu cho Developers",
+            "groups": [
+              {
+                "group": "Bắt Đầu",
+                "pages": [
+                  "vi/getting-started/overview",
+                  "vi/getting-started/account-setup",
+                  "vi/getting-started/organizations",
+                  "vi/getting-started/quick-start",
+                  "vi/getting-started/dashboard"
+                ]
+              },
+              {
+                "group": "Đo Lường Chuyển Đổi",
+                "pages": [
+                  "vi/conversion-tracking/overview",
+                  "vi/conversion-tracking/setup",
+                  "vi/conversion-tracking/events",
+                  {
+                    "group": "Integrations",
+                    "pages": [
+                      "vi/conversion-tracking/integrations/google-tag-manager"
+                    ]
+                  },
+                  "vi/conversion-tracking/goals"
+                ]
+              },
+              {
+                "group": "Deep Link (Liên kết sâu)",
+                "pages": [
+                  "vi/deep-links/overview",
+                  "vi/deep-links/domain-setup",
+                  "vi/deep-links/mobile-integration",
+                  "vi/deep-links/track-open-api"
+                ]
+              },
+              {
+                "group": "Touchpoint (Điểm Chạm)",
+                "hidden": true,
+                "pages": [
+                  "vi/core-features/touchpoints/overview",
+                  "vi/core-features/touchpoints/creating",
+                  "vi/core-features/touchpoints/short-links",
+                  "vi/core-features/touchpoints/qr-codes",
+                  "vi/core-features/touchpoints/managing",
+                  "vi/core-features/touchpoints/custom-domains"
+                ]
+              },
+              {
+                "group": "Quản Lý & Tổ Chức",
+                "hidden": true,
+                "pages": [
+                  "vi/core-features/collections/overview",
+                  "vi/core-features/tags/overview"
+                ]
+              },
+              {
+                "group": "Phân Tích & Báo Cáo",
+                "hidden": true,
+                "pages": [
+                  "vi/analytics/overview",
+                  "vi/analytics/dashboard",
+                  "vi/analytics/demographics",
+                  "vi/analytics/filters"
+                ]
+              }
+            ]
+          }          
         ]
       }      
     ]
