@@ -254,7 +254,7 @@ Response **thành công** là object phẳng (`{ clickId, link, ... }` như trê
 ```
 
 - `code` = HTTP status; `message` = mô tả tiếng Anh dễ đọc; `data` luôn `null` khi lỗi.
-- `error_code` là **mã ổn định, máy đọc được** — hãy branch theo nó thay vì so khớp chuỗi `message`. Mọi lỗi phía client (4xx) đều kèm `error_code`; lỗi server (5xx) trả cùng envelope nhưng **không** có `error_code` (chỉ cần retry/backoff).
+- `error_code` là **mã ổn định, máy đọc được** — hãy branch theo nó thay vì so khớp chuỗi `message`. Hầu hết lỗi phía client (4xx) đều kèm `error_code`; lỗi server (5xx) trả cùng envelope nhưng **không** có `error_code` (chỉ cần retry/backoff). **Ngoại lệ quan trọng**: lỗi xác thực sinh ở tầng middleware (key thiếu/sai, origin sai) **không** kèm `error_code` — xem cảnh báo bên dưới.
 
 ### Các `error_code` của endpoint
 
@@ -268,6 +268,16 @@ Response **thành công** là object phẳng (`{ clickId, link, ... }` như trê
 | 403 | `FEATURE_NOT_ALLOWED` | Org không có gói Pro |
 | 403 | `CROSS_ORG_ATTRIBUTION` | (luồng immediate) domain không thuộc org của key |
 | 404 | `LINK_NOT_FOUND` | Không tìm thấy slug (touch point) |
+
+<Warning>
+**Lỗi xác thực ở tầng middleware không có `error_code`.** Bảng trên là các mã do *controller* phát ra sau khi đã qua xác thực. Nhưng khi `X-Li2-Key` **thiếu hoặc sai**, hoặc **origin không hợp lệ** (luồng web SDK), request bị chặn ngay ở middleware (`AuthMobileApikeyMiddleware`) — và những phản hồi đó dùng envelope cũ **không có trường `error_code`**:
+
+```json
+{ "code": 401, "message": "Missing X-Li2-Key header", "data": null }
+```
+
+Hệ quả thực tế cho client: với **lỗi xác thực (401/403 từ middleware)** hãy branch theo **HTTP status**; chỉ với **lỗi validation/nghiệp vụ (4xx từ controller)** mới có `error_code` để branch. Cụ thể: `MISSING_API_KEY` (401) chỉ xuất hiện ở một nhánh nội bộ của controller, **không** phải mã bạn nhận khi gửi key sai — trường hợp đó là 401 không kèm `error_code`. Tương tự, `CROSS_ORG_ATTRIBUTION` là mã của controller (luồng immediate, domain không thuộc org); còn 403 do origin sai ở middleware thì không kèm `error_code`.
+</Warning>
 
 ## Bước tiếp theo
 
