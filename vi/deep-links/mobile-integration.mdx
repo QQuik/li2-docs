@@ -18,8 +18,14 @@ Ví dụ dùng **SwiftUI (Swift)** và **Jetpack Compose (Kotlin)**; bạn có t
     ### Cách nhanh nhất: dùng Li2 Deep-Link Kit
 
     <Note>
-    **Khuyến nghị.** Thay vì tự viết toàn bộ luồng bên dưới, hãy dùng **Li2 Deep-Link Kit** (`li2-deeplink-kit/ios/`) — một Swift Package "thả vào" (drop-in, không publish lên registry; thêm như local package hoặc copy thẳng `Sources/Li2DeepLink/`). Kit gói sẵn: lời gọi `/track/open`, cổng "một lần mỗi lần cài" (`firstLaunchRan`), cửa sổ chờ 250ms, `UIPasteControl` (đọc clipboard **không** bật alert "Allow Paste"), và việc bóc `li2_cid` khỏi URL đích. Bạn chỉ viết phần **điều hướng**.
+    **Khuyến nghị.** Thay vì tự viết toàn bộ luồng bên dưới, hãy dùng **Li2 Deep-Link Kit** — một Swift Package "thả vào" (drop-in, không publish lên registry; thêm bằng Swift Package Manager qua URL hoặc copy thẳng `Sources/Li2DeepLink/`). Kit gói sẵn: lời gọi `/track/open`, cổng "một lần mỗi lần cài" (`firstLaunchRan`), cửa sổ chờ 250ms, `UIPasteControl` (đọc clipboard **không** bật alert "Allow Paste"), và việc bóc `li2_cid` khỏi URL đích. Bạn chỉ viết phần **điều hướng**.
     </Note>
+
+    **Cài đặt (Swift Package Manager — URL):**
+    ```text
+    File → Add Package Dependencies → https://github.com/QQuik/li2-deeplink-kit-ios
+    ```
+    Hoặc clone và thêm như local package.
 
     Kit trả về một `Li2DeepLinkOutcome` (`matched` / `missed` / `failed`); bạn `switch` rồi điều hướng. Toàn bộ phần "bạn phải viết":
 
@@ -266,8 +272,22 @@ Ví dụ dùng **SwiftUI (Swift)** và **Jetpack Compose (Kotlin)**; bạn có t
     ### Cách nhanh nhất: dùng Li2 Deep-Link Kit
 
     <Note>
-    **Khuyến nghị.** Thay vì tự viết luồng bên dưới, hãy đưa module **`:li2deeplink`** từ **Li2 Deep-Link Kit** (`li2-deeplink-kit/android/`) vào build (drop-in, không publish lên Maven; hoặc copy thẳng `li2deeplink/src/main/java/ai/li2/deeplink/`). Module **không** phụ thuộc Compose/ViewModel. Kit gói sẵn: lời gọi `/track/open`, cổng một-lần-mỗi-lần-cài (DataStore `ai.li2.firstLaunchRan`), cửa sổ chờ 250ms, đọc Google Play Install Referrer (an toàn với process-death), bóc `li2_dl` và `li2_cid`. Bạn chỉ viết phần **điều hướng**.
+    **Khuyến nghị.** Thay vì tự viết luồng bên dưới, hãy đưa module **`:li2deeplink`** từ **Li2 Deep-Link Kit** vào build (drop-in, không publish lên Maven; hoặc copy thẳng `li2deeplink/src/main/java/ai/li2/deeplink/`). Module **không** phụ thuộc Compose/ViewModel. Kit gói sẵn: lời gọi `/track/open`, cổng một-lần-mỗi-lần-cài (DataStore `ai.li2.firstLaunchRan`), cửa sổ chờ 250ms, đọc Google Play Install Referrer (an toàn với process-death), bóc `li2_dl` và `li2_cid`. Bạn chỉ viết phần **điều hướng**.
     </Note>
+
+    **Cài đặt (Gradle — clone):**
+    ```bash
+    git clone https://github.com/QQuik/li2-deeplink-kit-android
+    ```
+    Thêm vào `settings.gradle.kts`:
+    ```kotlin
+    include(":li2deeplink")
+    project(":li2deeplink").projectDir = file("../li2-deeplink-kit-android/li2deeplink")
+    ```
+    Hoặc dùng **JitPack** (thêm `maven("https://jitpack.io")` vào `repositories`):
+    ```kotlin
+    implementation("com.github.QQuik:li2-deeplink-kit-android:master-SNAPSHOT")
+    ```
 
     Kit phát ra `Li2DeepLinkOutcome` (`Matched` / `Missed` / `Failed`) qua `outcomes: SharedFlow`. Toàn bộ phần "bạn phải viết":
 
