@@ -155,13 +155,18 @@ Tab iOS dùng **Li2 SDK + SwiftUI** (có phần UIKit riêng). Tab Android dùng
 
         @ViewBuilder
         private var primaryButton: some View {
-            if #available(iOS 16.0, *) {
+            if #available(iOS 16.0, *), clipboardHasContent != false {
                 // iOS 16+: dùng Li2PasteButton — cú chạm của người dùng là sự đồng ý,
                 // iOS không hiện alert "Allow Paste".
                 Li2PasteButton { raw in
                     resolver.submitPasteControlResult(raw)
                 }
                 .frame(height: 52)
+            } else if clipboardHasContent == false {
+                // (a) Clipboard rỗng: Li2PasteButton tự disable, không thể chạm.
+                // Phải có nút thay thế — không thì người dùng bị kẹt và
+                // outcome `empty` không bao giờ được gửi.
+                Button("Tiếp tục") { resolver.submitPasteControlEmpty() }
             } else {
                 // iOS 15: beginRawProbeOptIn() đọc clipboard trực tiếp.
                 // iOS sẽ hiện alert "Allow Paste" hoặc banner — đây là hành vi hệ thống
@@ -174,20 +179,6 @@ Tab iOS dùng **Li2 SDK + SwiftUI** (có phần UIKit riêng). Tab Android dùng
 
     <Note>
     **`beginRawProbeOptIn()` có thể dùng trên iOS 16+ không?** Có — nhưng iOS sẽ hiện alert "Allow Paste / Don't Allow". Dùng `Li2PasteButton` trên iOS 16+ để tránh alert đó: cú chạm vào nút Paste của hệ thống chính là sự đồng ý, nên iOS bỏ qua bước hỏi thêm.
-    </Note>
-
-    <Note>
-    **(a) Xử lý clipboard rỗng:** Khi clipboard không có gì, `Li2PasteButton` tự disable — người dùng không thể chạm. Nếu bạn muốn cung cấp lối thoát rõ ràng (thay vì chỉ có nút "Bỏ qua"), hãy thêm một nhánh kiểm tra `clipboardHasContent == false` và hiện nút "Tiếp tục" gọi `resolver.submitPasteControlEmpty()`. Ví dụ:
-
-    ```swift
-    if #available(iOS 16.0, *) {
-        if clipboardHasContent == false {
-            Button("Tiếp tục") { resolver.submitPasteControlEmpty() }
-        } else {
-            Li2PasteButton { resolver.submitPasteControlResult($0) }.frame(height: 52)
-        }
-    }
-    ```
     </Note>
 
     **Tại sao hai chi tiết trên quan trọng:**
@@ -442,7 +433,9 @@ Tab iOS dùng **Li2 SDK + SwiftUI** (có phần UIKit riêng). Tab Android dùng
             } else { deliver(nil) }
         }
 
-        private func deliver(_ v: String?) { DispatchQueue.main.async { [weak self] in self?.onPaste?(v) } }
+        private nonisolated func deliver(_ v: String?) {
+            Task { @MainActor [weak self] in self?.onPaste?(v) }
+        }
     }
     ```
 
