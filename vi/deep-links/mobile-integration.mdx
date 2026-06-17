@@ -1,6 +1,6 @@
 ---
 title: "Tích Hợp Deep Link Trên iOS & Android"
-description: "Các bước tích hợp native để short link Li2 mở app của bạn, gồm cả deferred deep linking qua clipboard (iOS) và Google Play Install Referrer (Android)."
+description: "Tích hợp Li2 SDK (iOS Swift Package) hoặc HTTP API trực tiếp để short link Li2 mở app của bạn, gồm cả deferred deep linking qua clipboard (iOS) và Google Play Install Referrer (Android)."
 sidebarTitle: "Tích Hợp App"
 icon: "mobile"
 ---
@@ -8,77 +8,262 @@ icon: "mobile"
 # Tích Hợp Deep Link Trên iOS & Android
 
 <Info>
-**Bạn sẽ học**: Cách khai báo Universal Link / App Link, xử lý link khi app đã cài (immediate), và khôi phục link trong lần mở đầu tiên khi app chưa cài (deferred). Mọi lời gọi mạng đều tới `POST /api/v1/track/open`.
+**Bạn sẽ học**: Cách tích hợp **Li2 SDK** (iOS, Swift Package) hoặc gọi thẳng HTTP API cho cả hai luồng immediate (app đã cài, Universal Link / App Link) và deferred (app chưa cài, clipboard / Install Referrer). Mọi lời gọi mạng đều tới `POST /api/v1/track/open`.
 
-Ví dụ dùng **SwiftUI (Swift)** và **Jetpack Compose (Kotlin)**; bạn có thể chuyển các đoạn entry-point sang UIKit / View truyền thống tương ứng.
+Tab iOS dùng **Li2 SDK + SwiftUI** (có phần UIKit riêng). Tab Android dùng **Jetpack Compose** và HTTP API trực tiếp.
 </Info>
 
 <Tabs>
   <Tab title="iOS (Swift)" icon="apple">
-    ### Cách nhanh nhất: dùng Li2 Deep-Link Kit
+    ### Cách nhanh nhất: dùng Li2 SDK
 
     <Note>
-    **Khuyến nghị.** Thay vì tự viết toàn bộ luồng bên dưới, hãy dùng **Li2 Deep-Link Kit** — một Swift Package "thả vào" (drop-in, không publish lên registry; thêm bằng Swift Package Manager qua URL hoặc copy thẳng `Sources/Li2DeepLink/`). Kit gói sẵn: lời gọi `/track/open`, cổng "một lần mỗi lần cài" (`firstLaunchRan`), cửa sổ chờ 250ms, `UIPasteControl` (đọc clipboard **không** bật alert "Allow Paste"), và việc bóc `li2_cid` khỏi URL đích. Bạn chỉ viết phần **điều hướng**.
+    **Khuyến nghị.** Li2 cung cấp **Li2 SDK** chính thức — Swift Package, iOS 15+, hỗ trợ cả SwiftUI và UIKit. SDK gói sẵn: lời gọi `/track/open`, cổng "một lần mỗi lần cài", cửa sổ chờ 250ms, `Li2PasteButton` (đọc clipboard **không** bật alert "Allow Paste"), và việc bóc `li2_cid` khỏi URL đích. Bạn chỉ viết phần **điều hướng** và **màn hình đồng ý**.
     </Note>
 
-    **Cài đặt (Swift Package Manager — URL):**
-    ```text
-    File → Add Package Dependencies → https://github.com/QQuik/li2-deeplink-kit-ios
-    ```
-    Hoặc clone và thêm như local package.
+    #### Cài đặt (Swift Package Manager)
 
-    Kit trả về một `Li2DeepLinkOutcome` (`matched` / `missed` / `failed`); bạn `switch` rồi điều hướng. Toàn bộ phần "bạn phải viết":
+    Trong Xcode: **File ▸ Add Package Dependencies…** và nhập URL:
+
+    ```text
+    https://github.com/QQuik/li2-swift-sdk
+    ```
+
+    Ghim **Up to Next Major Version** từ `0.1.0`. Thêm library product **`Li2SDK`** vào app target.
+
+    **Yêu cầu:** iOS 15.0+, Xcode 15+. `Li2PasteButton` (đọc clipboard không alert) yêu cầu iOS 16; iOS 15 tự động fallback sang `beginRawProbeOptIn()` (xem phần màn hình đồng ý bên dưới).
+
+    #### 1. Cấu hình SDK một lần khi khởi động
 
     ```swift
-    import Li2DeepLink
+    import SwiftUI
+    import Li2SDK
 
-    @StateObject var resolver = Li2DeepLinkResolver(
-        config: .init(publishableKey: "li2_pk_…", deepLinkDomains: ["your-domain.com"]),
-        onOutcome: { outcome in
-            switch outcome {
-            case .matched(let url, _): router.open(url)   // điều hướng của bạn
-            case .missed:              router.showHome()
-            case .failed:              router.showHome()
-            }
+    @main
+    struct MyApp: App {
+        init() {
+            Li2.configure(
+                publishableKey: "li2_pk_your_key",
+                deepLinkDomains: ["app.example.com"]
+            )
         }
-    )
 
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .onOpenURL { resolver.handle(url: $0) }                       // immediate UL
-                .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) {
-                    if let url = $0.webpageURL { resolver.handle(url: url) }
-                }
-                .task { resolver.requestFirstLaunchConsentAfterGrace() }      // deferred gate
-                .sheet(isPresented: $resolver.isConsentPending) {
-                    VStack {
-                        Li2ClipboardPasteButton { resolver.submitPasteControlResult($0) }
-                        Button("Bỏ qua") { resolver.submitOptOut() }
+        @StateObject private var deepLinks = DeepLinkModel()
+
+        var body: some Scene {
+            WindowGroup {
+                RootView()
+                    .environmentObject(deepLinks)
+                    .li2DeepLink(using: deepLinks.resolver)   // nối UL + deferred grace
+                    .fullScreenCover(isPresented: $deepLinks.showConsent) {
+                        ConsentSheet(resolver: deepLinks.resolver)
                     }
-                }
+            }
         }
     }
     ```
 
-    Bạn vẫn cần khai báo Associated Domains (mục 1 bên dưới) và cấu hình domain trên dashboard. Phần còn lại của tab này mô tả **luồng tự dựng (manual)** — dùng khi bạn không muốn nhúng kit, hoặc cần tùy biến sâu.
+    Modifier `.li2DeepLink(using:)` tự nối `.onOpenURL`, `.onContinueUserActivity`, và `.task { requestFirstLaunchConsentAfterGrace() }` — bạn không cần viết lại ba dòng đó.
+
+    #### 2. Sở hữu một resolver; điều hướng theo outcome
+
+    SDK gọi closure `onOutcome` cho mọi kết quả. **Bạn điều hướng** — SDK không bao giờ tự điều hướng.
+
+    ```swift
+    import SwiftUI
+    import Combine
+    import Li2SDK
+
+    @MainActor
+    final class DeepLinkModel: ObservableObject {
+        @Published var route: URL?
+        @Published var showConsent = false
+
+        private(set) lazy var resolver = Li2DeepLinkResolver { [weak self] outcome in
+            switch outcome {
+            case let .matched(destination, clickId):
+                // Điều hướng theo destination (đã bóc li2_cid).
+                self?.route = destination
+            case let .missed(reason):
+                // Không khớp link nào — hiển thị màn hình chính bình thường.
+                break
+            case let .failed(error):
+                // Lỗi mạng / HTTP / parse — xử lý tùy app.
+                break
+            }
+        }
+
+        private var bag = Set<AnyCancellable>()
+        init() {
+            // Phản chiếu cờ đồng ý của SDK để điều khiển sheet.
+            resolver.$isConsentPending
+                .receive(on: RunLoop.main)
+                .sink { [weak self] in self?.showConsent = $0 }
+                .store(in: &bag)
+        }
+    }
+    ```
+
+    | Outcome | Ý nghĩa |
+    |---|---|
+    | `.matched(destination, clickId)` | Khớp link; điều hướng tới `destination` (đã bóc `li2_cid`) |
+    | `.missed(reason)` | Không khớp; hiển thị màn hình chính |
+    | `.failed(error)` | Lỗi mạng/HTTP/parse; xử lý graceful |
+
+    #### 3. Màn hình đồng ý (copy-paste — đã kiểm chứng trên thiết bị)
+
+    Màn hình này là phần **bạn tự sở hữu** (SDK không cung cấp sẵn UI). Dưới đây là pattern hoàn chỉnh đã được kiểm chứng. Hai chi tiết được đánh dấu **không thể bỏ qua** — bỏ là sinh bug.
+
+    ```swift
+    import SwiftUI
+    import UIKit
+    import Li2SDK
+
+    struct ConsentSheet: View {
+        let resolver: Li2DeepLinkResolver
+        @Environment(\.scenePhase) private var scenePhase
+
+        /// nil = đang probe, true/false = clipboard có nội dung hay không.
+        @State private var clipboardHasContent: Bool?
+
+        var body: some View {
+            VStack(spacing: 24) {
+                Spacer()
+                Text("Chào mừng").font(.largeTitle.bold())
+                Text("Bạn đến từ một link chia sẻ. Tiếp tục để mở đúng nội dung đó.")
+                    .multilineTextAlignment(.center)
+                Spacer()
+
+                primaryButton
+
+                Button("Bỏ qua") { resolver.submitOptOut() }
+            }
+            .padding(24)
+            .onAppear(perform: probeClipboard)
+            // (b) Re-probe khi foreground: người dùng có thể tắt app, copy link, quay lại.
+            // Không có dòng này, trạng thái nút sẽ bị cũ.
+            .onChange(of: scenePhase) { phase in
+                if phase == .active { probeClipboard() }
+            }
+        }
+
+        // Chỉ kiểm tra sự có mặt (hasStrings/hasURLs) — không bao giờ bật alert hệ thống.
+        private func probeClipboard() {
+            clipboardHasContent = UIPasteboard.general.hasStrings
+                || UIPasteboard.general.hasURLs
+        }
+
+        @ViewBuilder
+        private var primaryButton: some View {
+            if #available(iOS 16.0, *) {
+                // iOS 16+: dùng Li2PasteButton — cú chạm của người dùng là sự đồng ý,
+                // iOS không hiện alert "Allow Paste".
+                Li2PasteButton { raw in
+                    resolver.submitPasteControlResult(raw)
+                }
+                .frame(height: 52)
+            } else {
+                // iOS 15: beginRawProbeOptIn() đọc clipboard trực tiếp.
+                // iOS sẽ hiện alert "Allow Paste" hoặc banner — đây là hành vi hệ thống
+                // trên iOS 15, không tránh được.
+                Button("Tiếp tục") { resolver.beginRawProbeOptIn() }
+            }
+        }
+    }
+    ```
+
+    <Note>
+    **`beginRawProbeOptIn()` có thể dùng trên iOS 16+ không?** Có — nhưng iOS sẽ hiện alert "Allow Paste / Don't Allow". Dùng `Li2PasteButton` trên iOS 16+ để tránh alert đó: cú chạm vào nút Paste của hệ thống chính là sự đồng ý, nên iOS bỏ qua bước hỏi thêm.
+    </Note>
+
+    <Note>
+    **(a) Xử lý clipboard rỗng:** Khi clipboard không có gì, `Li2PasteButton` tự disable — người dùng không thể chạm. Nếu bạn muốn cung cấp lối thoát rõ ràng (thay vì chỉ có nút "Bỏ qua"), hãy thêm một nhánh kiểm tra `clipboardHasContent == false` và hiện nút "Tiếp tục" gọi `resolver.submitPasteControlEmpty()`. Ví dụ:
+
+    ```swift
+    if #available(iOS 16.0, *) {
+        if clipboardHasContent == false {
+            Button("Tiếp tục") { resolver.submitPasteControlEmpty() }
+        } else {
+            Li2PasteButton { resolver.submitPasteControlResult($0) }.frame(height: 52)
+        }
+    }
+    ```
+    </Note>
+
+    **Tại sao hai chi tiết trên quan trọng:**
+    - **(a) Empty-clipboard affordance** — `Li2PasteButton` tự disable khi clipboard rỗng, nên nếu không có nút thay thế, người dùng clipboard rỗng bị kẹt và outcome `empty` không bao giờ được gửi.
+    - **(b) `scenePhase` re-probe** — clipboard có thể thay đổi trong khi sheet đang mở (người dùng chuyển sang Safari, copy link, quay lại). Probe chỉ trong `onAppear` sẽ hiện trạng thái nút bị cũ.
+
+    #### UIKit integration
+
+    Modifier `.li2DeepLink(using:)` chỉ dành cho SwiftUI. Với UIKit, nối thủ công từ scene delegate:
+
+    ```swift
+    import UIKit
+    import Li2SDK
+
+    final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+
+        let resolver = Li2DeepLinkResolver { outcome in
+            // switch outcome — điều hướng như ví dụ SwiftUI
+        }
+
+        // Universal Link cold launch / continuation
+        func scene(_ scene: UIScene,
+                   continue userActivity: NSUserActivity) {
+            guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+                  let url = userActivity.webpageURL else { return }
+            resolver.handle(url: url)
+        }
+
+        // Universal Link / custom scheme khi app đang chạy
+        func scene(_ scene: UIScene,
+                   openURLContexts contexts: Set<UIOpenURLContext>) {
+            for ctx in contexts { resolver.handle(url: ctx.url) }
+        }
+
+        // Kích hoạt deferred gate — gọi một lần, sau cửa sổ chờ.
+        func sceneDidBecomeActive(_ scene: UIScene) {
+            resolver.requestFirstLaunchConsentAfterGrace()
+        }
+    }
+    ```
+
+    Theo dõi `resolver.isConsentPending` (là `@Published`) qua KVO/Combine để biết khi nào hiện màn hình đồng ý, rồi gọi cùng các method `submitPasteControlResult` / `submitPasteControlEmpty` / `beginRawProbeOptIn` / `submitOptOut`.
+
+    <Note>
+    **Không có zero-grace entry point.** Nếu bạn muốn trì hoãn prompt (ví dụ: sau màn hình onboarding), chỉ cần gọi `requestFirstLaunchConsentAfterGrace()` muộn hơn — các guard nội bộ đảm bảo lời gọi muộn vẫn đúng, và Universal Link đến trong thời gian đó sẽ tự tắt prompt.
+    </Note>
+
+    #### Troubleshooting
+
+    | Triệu chứng | Nguyên nhân / cách sửa |
+    |---|---|
+    | **401 mọi lời gọi** | Sai loại key. Dùng **publishable key** (`li2_pk_…`), không phải server API key. |
+    | **Universal Link không mở app** | Cache AASA của Apple CDN (~24h) hoặc thiếu entitlement `applinks:`. Kiểm tra domain trên dashboard. |
+    | **`Li2PasteButton` luôn disabled** | Clipboard đang rỗng (behavior đúng) — thêm nhánh `clipboardHasContent == false` như hướng dẫn ở trên. |
+    | **Màn hình đồng ý xuất hiện lại sau Universal Link** | Bình thường nếu UL tới trong cửa sổ grace — UL thắng và sheet tự dismiss. |
 
     ---
 
-    ### 1. Khai báo Associated Domains
+    ### Tích hợp thủ công (nâng cao)
+
+    Phần dưới đây dành cho trường hợp bạn không dùng SDK và muốn tự gọi HTTP API trực tiếp, hoặc cần tùy biến sâu ngoài những gì SDK cung cấp.
+
+    #### 1. Khai báo Associated Domains
 
     Thêm domain Li2 của bạn vào file `.entitlements`:
 
     ```xml
     <key>com.apple.developer.associated-domains</key>
     <array>
-        <string>applinks:your-domain.com</string>
+        <string>applinks:app.example.com</string>
     </array>
     ```
 
     Domain này phải trùng với domain đã cấu hình trên dashboard và file AASA mà Li2 phục vụ.
 
-    ### 2. Định nghĩa model & lời gọi API dùng chung
+    #### 2. Định nghĩa model & lời gọi API dùng chung
 
     Cả luồng immediate lẫn deferred đều gọi cùng một endpoint với cùng một cặp model. Định nghĩa một lần rồi tái sử dụng:
 
@@ -127,7 +312,7 @@ Ví dụ dùng **SwiftUI (Swift)** và **Jetpack Compose (Kotlin)**; bạn có t
     }
     ```
 
-    ### 3. Xử lý Universal Link (app đã cài — immediate)
+    #### 3. Xử lý Universal Link (app đã cài — immediate)
 
     Trong entry point SwiftUI:
 
@@ -160,7 +345,7 @@ Ví dụ dùng **SwiftUI (Swift)** và **Jetpack Compose (Kotlin)**; bạn có t
     **Universal Link immediate không mang `li2_cid`** — nên gửi nguyên `url.absoluteString` là an toàn, server sẽ phân loại đúng là immediate. `li2_cid` chỉ được Li2 *gieo* trên đường **chưa cài app** (clipboard / install referrer); một cú chạm khi app đã cài được iOS chặn ở chính short link gốc, trước khi có bất kỳ redirect nào sinh `li2_cid`. (Server quyết định immediate vs deferred dựa trên việc `deepLink` **có** `li2_cid` hay không — xem bảng định tuyến trong [API](./track-open-api#server-chọn-đường-xử-lý-như-thế-nào).)
     </Note>
 
-    ### 4. Khôi phục deferred trong lần mở đầu tiên
+    #### 4. Khôi phục deferred trong lần mở đầu tiên
 
     Khi người dùng chưa cài app, trang trung gian của Li2 đã **chép sẵn link đích kèm `li2_cid` vào clipboard** trước khi đẩy sang App Store. Việc của app chỉ là **đọc** clipboard đó ở lần mở đầu rồi gửi cho `/track/open` — bạn không tự dựng `li2_cid`.
 
@@ -180,13 +365,13 @@ Ví dụ dùng **SwiftUI (Swift)** và **Jetpack Compose (Kotlin)**; bạn có t
         case .read(let copied) where copied.contains("li2_cid"):
             body = .init(deepLink: copied, clipboardStatus: "read")
         case .read:                                   // có nội dung nhưng không phải link Li2
-            body = .init(li2Domains: ["your-domain.com"], clipboardStatus: "read")
+            body = .init(li2Domains: ["app.example.com"], clipboardStatus: "read")
         case .empty:
-            body = .init(li2Domains: ["your-domain.com"], clipboardStatus: "empty")
+            body = .init(li2Domains: ["app.example.com"], clipboardStatus: "empty")
         case .denied:                                 // người dùng chặn quyền dán
-            body = .init(li2Domains: ["your-domain.com"], clipboardStatus: "denied")
+            body = .init(li2Domains: ["app.example.com"], clipboardStatus: "denied")
         case .optout:                                 // người dùng bỏ qua
-            body = .init(li2Domains: ["your-domain.com"], clipboardStatus: "optout")
+            body = .init(li2Domains: ["app.example.com"], clipboardStatus: "optout")
         }
 
         Task {
