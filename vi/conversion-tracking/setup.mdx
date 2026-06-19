@@ -344,6 +344,10 @@ Bạn đã cài đặt xong conversion tracking! Các bước tiếp theo:
   <Card title="Advanced Setup" icon="gear-complex" href="./goals">
     Cấu hình conversion goals và custom events
   </Card>
+
+  <Card title="Track từ app iOS?" icon="apple" href="/vi/deep-links/mobile-integration#đo-lường-chuyển-đổi-conversion-tracking">
+    Li2 Swift SDK: API conversion tự gắn về deep-link match (`trackAttributedSale`, `identify`)
+  </Card>
 </CardGroup>
 
 ---
@@ -375,10 +379,11 @@ Bạn đã cài đặt xong conversion tracking! Các bước tiếp theo:
     ```
   </Accordion>
 
-  <Accordion title="Tracking không hoạt động trên mobile app?">
-    Li2 Analytics SDK hiện chỉ hỗ trợ **web tracking** (JavaScript).
+  <Accordion title="Tracking conversion từ mobile app (iOS / Android)?">
+    Trang này nói về **Li2 Analytics SDK (web/JavaScript)** — không chạy trong app native.
 
-    **Cho mobile apps**: Sử dụng **Server-side tracking** với API keys. Xem [Events Tracking - Server-side](./events#server-side-tracking).
+    - **App iOS có deep link**: dùng **Li2 Swift SDK** (`0.2.0+`). Nó có API conversion định kiểu riêng (`trackDirectLead` / `trackAttributedLead` / `trackAttributedSale` / `identify`) tự gắn về deep-link match qua `Li2.lastClickId` — không cần truyền click ID thủ công. Xem [Đo lường chuyển đổi trong Tích Hợp App](/vi/deep-links/mobile-integration#đo-lường-chuyển-đổi-conversion-tracking).
+    - **Android / nền tảng khác**, hoặc khi không có deep link: dùng **server-side tracking** với secret key (`li2_sk_...`) và truyền `clickId` thủ công. Xem [Events Tracking - Server-side](./events#cách-track-lead).
   </Accordion>
 
   <Accordion title="Làm sao biết touchpoint nào đã enable conversion tracking?">
