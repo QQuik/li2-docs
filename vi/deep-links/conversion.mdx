@@ -31,6 +31,10 @@ Một deep link khớp (`.matched`) để lại một **click id**. Mọi lead/s
 | **iOS (SDK)** | SDK tự lưu `Li2.lastClickId` khi `.matched` (TTL 30 ngày) | Các biến **attributed/anonymous** **tự đọc** `Li2.lastClickId` — bạn không truyền tay |
 | **Android (HTTP)** | Đọc `outcome.clickId` từ `Li2DeepLinkOutcome.Matched` và **tự lưu** | Truyền chính chuỗi đó vào `click_id` của request |
 
+<Note>
+**Hệ thống hiện chỉ hỗ trợ 2 loại tiền: `USD` và `VND`.** Loại tiền khác không có cấu hình chính thức (server mặc định coi như không có số thập phân). Nếu org bạn cần loại tiền khác, hãy liên hệ trước khi gửi `sale`.
+</Note>
+
 <Tabs>
   <Tab title="iOS (Li2 SDK)" icon="apple">
     Từ `0.2.0`, SDK gói sẵn conversion: `trackLead` (3 biến), `trackSale` (2 biến) và `identify`. API được **định kiểu theo ý định** — chọn đúng phương thức, quy tắc click id được xử lý sẵn (không còn bẫy `nil` vs `""` như web SDK).
@@ -65,14 +69,19 @@ Một deep link khớp (`.matched`) để lại một **click id**. Mọi lead/s
 
     #### Sale
 
-    `amount` tính bằng **đơn vị nhỏ nhất (cents/xu)** và phải **> 0** — server từ chối 0. `currency` tùy chọn; bỏ trống để dùng mặc định của org.
+    `amount` tính bằng **đơn vị nhỏ nhất của loại tiền** và phải **> 0** — server từ chối 0. `currency` tùy chọn; bỏ trống để dùng mặc định của org.
+
+    <Note>
+    Đơn vị nhỏ nhất phụ thuộc loại tiền. Tiền có 2 chữ số thập phân (USD, EUR…) tính bằng **cent/xu**: `4999` = $49.99. Tiền **không có** số thập phân (VND, JPY…) thì `amount` **chính là số đơn vị tiền** — với VND, `amount` là **số đồng trực tiếp** (không nhân /100): `10000` = 10.000đ.
+    </Note>
 
     ```swift
-    // Sale trực tiếp.
+    // Sale trực tiếp — USD có 2 số thập phân nên amount tính bằng cent.
     let s = try await Li2.trackDirectSale(externalId: "user_42", amount: 4999)  // $49.99
 
     // Sale attributed — tự đọc Li2.lastClickId, link visit / touch-point.
-    try await Li2.trackAttributedSale(externalId: "user_42", amount: 4999, currency: "vnd")
+    // VND không có số thập phân → amount là số đồng trực tiếp.
+    try await Li2.trackAttributedSale(externalId: "user_42", amount: 10000, currency: "vnd")  // 10.000đ
     ```
 
     #### `identify` — ẩn danh ➜ định danh
@@ -158,16 +167,21 @@ Một deep link khớp (`.matched`) để lại một **click id**. Mọi lead/s
 
     #### `POST /track/sale`
 
-    `amount` là **số nguyên đơn vị nhỏ nhất (xu/cents)**, **bắt buộc > 0** — server từ chối 0. `currency` bỏ trống để dùng mặc định của org.
+    `amount` là **số nguyên đơn vị nhỏ nhất của loại tiền**, **bắt buộc > 0** — server từ chối 0. `currency` bỏ trống để dùng mặc định của org.
+
+    <Note>
+    Đơn vị nhỏ nhất phụ thuộc loại tiền. Tiền có 2 chữ số thập phân (USD, EUR…) tính bằng **cent/xu**: `4999` = $49.99. Tiền **không có** số thập phân (VND, JPY…) thì `amount` **chính là số đơn vị tiền** — với VND, `amount` là **số đồng trực tiếp**: `10000` = 10.000đ.
+    </Note>
 
     ```bash
+    # VND không có số thập phân → amount là số đồng trực tiếp (10000 = 10.000đ).
     curl -X POST https://api.li2.ai/api/v1/track/sale \
       -H "Content-Type: application/json" \
       -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
       -d '{
         "click_id": "Ab3xK9pQ2mN7vR1t",
         "external_id": "user_42",
-        "amount": 4999,
+        "amount": 10000,
         "currency": "vnd"
       }'
     ```
@@ -176,7 +190,7 @@ Một deep link khớp (`.matched`) để lại một **click id**. Mọi lead/s
     |--------|----------|---------|
     | `click_id` | **Có** | `""` cho Direct; click id thật cho attributed |
     | `external_id` | **Có** | Sale **luôn** phân giải khách hàng theo `external_id` — không có đường ẩn danh |
-    | `amount` | **Có** | Số nguyên xu (`4999` = $49.99). **0 bị từ chối** |
+    | `amount` | **Có** | Số nguyên đơn vị nhỏ nhất: tiền 2 thập phân `4999` = $49.99; VND `10000` = 10.000đ. **0 bị từ chối** |
     | `currency` | Không | Bỏ trống → mặc định org. Set khi cần khác (vd `"vnd"`) |
     | `event_name` / `payment_processor` / `invoice_id` | Không | Siêu dữ liệu giao dịch |
     | `email` / `name` / `phone` / `avatar_url` | Không | Tự tạo khách hàng nếu chưa có |
@@ -208,7 +222,7 @@ Một deep link khớp (`.matched`) để lại một **click id**. Mọi lead/s
 
 - **Gọi `identify` (hoặc lead `__identify__`) ngay khi biết danh tính**, trước sale đầu tiên — đó là lằn ranh giữa "một khách hàng" và "hai hồ sơ tách rời".
 - **Dùng `external_id` ổn định** (user id nội bộ của bạn), giống hệt nhau ở lead, identify và sale. Lệch một ký tự = tách hồ sơ.
-- **`amount` luôn là số nguyên xu** (`4999` = $49.99). Đừng gửi số thực hay đơn vị lớn; **0 bị từ chối**.
+- **`amount` luôn là số nguyên đơn vị nhỏ nhất** — tiền 2 thập phân tính bằng xu (`4999` = $49.99), tiền không thập phân như VND là số đồng trực tiếp (`10000` = 10.000đ). Đừng gửi số thực; **0 bị từ chối**.
 - **Bỏ trống `currency`** để server dùng mặc định của org — chỉ set khi thật sự cần khác (vd `"vnd"`).
 - **Đừng tự truyền click id cũ** trừ khi có lý do đặc biệt. iOS: để mặc định `Li2.lastClickId`. Android: truyền đúng click id vừa lưu từ `Matched`, đừng tái dùng click id của một phiên cũ.
 - **Conversion là best-effort, không hàng đợi/offline buffer**: một POST duy nhất, lỗi thì báo lỗi. Bắt lỗi và quyết định retry theo nghiệp vụ của bạn (đừng retry mù vô hạn).
