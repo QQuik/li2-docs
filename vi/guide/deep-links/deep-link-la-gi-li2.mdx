@@ -9,22 +9,80 @@ Bình thường, khi ai đó chạm vào một short link trên điện thoại,
 
 Điều này biến mỗi short link và QR code thành một cây cầu mượt mà dẫn người dùng vào đúng màn hình trong app của bạn — thay vì bỏ họ lại ở một trang web.
 
+## Vấn đề mà Deep Link "chưa cài app" khắc phục
+
+Hãy hình dung bạn chạy một chiến dịch quảng cáo một **sản phẩm cụ thể**. Khách hàng tiềm năng chạm vào link nhưng **chưa cài app**. Nếu không có deep link, hành trình của họ thường gãy như sau:
+
+1. Chạm link → bị đẩy ra App Store / Google Play.
+2. Cài app xong, mở lên thì rơi vào **màn hình chủ chung chung**.
+3. Sản phẩm họ vừa quan tâm **biến mất** — họ phải tự đi tìm lại, và phần lớn sẽ bỏ cuộc.
+
+**Deferred deep link** (tạm dịch: deep link "có trí nhớ") giải quyết đúng khoảng gãy này: Li2 **ghi nhớ ý định ban đầu** của lượt chạm và giữ nó **xuyên suốt quá trình cài đặt**, để ngay lần mở app đầu tiên người dùng được đưa **thẳng tới đúng nội dung** họ đã quan tâm. Đây là cơ chế chuẩn của ngành (Branch, AppsFlyer… gọi là *deferred deep linking*).
+
+<Tip>
+Một cách ví von: deep link thường giống tấm vé chỉ dùng được khi cửa đã mở (app đã cài). Deferred deep link giống tấm vé **được giữ lại ở quầy** — khi người dùng quay lại (mở app lần đầu sau khi cài), tấm vé vẫn còn đó để dẫn họ vào đúng chỗ.
+</Tip>
+
 ## Hai tình huống thường gặp
 
 <CardGroup cols={2}>
   <Card title="Người dùng đã cài app" icon="bolt">
-    Chạm vào link → app **mở ngay lập tức** đúng nội dung (trên dashboard gọi là **Mở app**). Trên iOS dùng **Universal Link**, trên Android dùng **App Link**.
+    Chạm vào link → app **mở ngay lập tức** đúng nội dung (trên dashboard gọi là **Mở app**). Đây là deep link **tức thời** (*immediate*). Trên iOS dùng **Universal Link**, trên Android dùng **App Link**.
   </Card>
   <Card title="Người dùng chưa cài app" icon="hourglass-half">
-    Chạm vào link → tải app từ store → lần mở đầu tiên app **khôi phục đúng link** và đưa họ tới nội dung mong muốn. Đây gọi là **deferred** (trên dashboard: **Lượt cài đặt mới → Lượt khôi phục Link**).
+    Chạm vào link → tải app từ store → lần mở đầu tiên app **khôi phục đúng link** và đưa họ tới nội dung mong muốn. Đây là deep link **trì hoãn** (*deferred*) — trên dashboard: **Lượt cài đặt mới → Lượt khôi phục Link**.
   </Card>
 </CardGroup>
+
+| | Đã cài app (immediate) | Chưa cài app (deferred) |
+|---|---|---|
+| **Khi nào** | App đã có sẵn trên máy | App chưa cài, phải tải mới |
+| **Điều xảy ra** | App mở ngay, tức thì | Qua store → cài → mở lần đầu mới khôi phục |
+| **Cơ chế** | Universal Link (iOS) / App Link (Android) | Clipboard (iOS) / Install Referrer (Android) |
+| **Độ tin cậy** | Gần như chắc chắn | Best-effort (phụ thuộc thao tác người dùng) |
+| **Tên trên dashboard** | **Mở app** | **Lượt cài đặt mới → Lượt khôi phục Link** |
+
+## Li2 khôi phục lượt chạm như thế nào
+
+Phần "chưa cài app" là phần khó — vì khi người dùng rời đi để cài app, không có kết nối kỹ thuật trực tiếp nào giữa lượt chạm link và lần mở app đầu tiên. Mỗi nền tảng dùng một cách riêng để bắc lại cây cầu đó:
+
+<CardGroup cols={2}>
+  <Card title="iOS — qua Clipboard" icon="apple">
+    Khi người dùng chạm link, Li2 lưu một **mã lượt chạm** vào clipboard. Lần mở app đầu tiên, app **xin phép đọc clipboard** để lấy lại mã đó và khôi phục link.
+
+    ⚠️ Nếu người dùng **bỏ qua** lời mời hoặc **từ chối** quyền dán, app không đọc được mã → lượt đó **không khôi phục được** (xuất hiện trong biểu đồ "lý do trượt").
+  </Card>
+  <Card title="Android — qua Install Referrer" icon="android">
+    Li2 gắn mã lượt chạm vào lượt cài đặt thông qua **Google Play Install Referrer**. Google Play giữ mã này và trả lại cho app ở lần mở đầu — **đáng tin hơn** clipboard, không cần người dùng thao tác gì.
+
+    Điều kiện: người dùng phải tới Play Store **qua chính link Li2**; nếu họ tự tìm app trên store thì không có mã để khôi phục.
+  </Card>
+</CardGroup>
+
+<Note>
+**Khôi phục theo cơ chế "cố gắng tốt nhất" (best-effort), không phải 100%.** Vì phụ thuộc vào thao tác người dùng (đặc biệt là bước dán trên iOS) và điều kiện nền tảng, sẽ luôn có một tỷ lệ lượt cài mới **không** khôi phục được link. Vì vậy **"Tỷ lệ dẫn đúng đích" dưới 100% là bình thường** — mục tiêu là tối ưu nó, không phải đạt tuyệt đối.
+</Note>
 
 ## Vì sao Deep Link hữu ích
 
 - **Trải nghiệm liền mạch**: người dùng vào thẳng sản phẩm/bài viết trong app, không lạc giữa web và app.
-- **Không mất dấu người mới cài**: ngay cả khách hàng chưa có app vẫn được dẫn đúng chỗ sau khi cài.
-- **Đo lường rõ ràng**: bạn biết bao nhiêu lượt chạm mở app, bao nhiêu lượt cài mới được khôi phục đúng link.
+- **Không mất dấu người mới cài**: ngay cả khách hàng chưa có app vẫn được dẫn đúng chỗ sau khi cài — giảm tỷ lệ bỏ cuộc ngay sau cài đặt.
+- **Đo lường rõ ràng**: bạn biết bao nhiêu lượt chạm mở app, bao nhiêu lượt cài mới được khôi phục đúng link, và chiến dịch nào đang kéo người dùng chất lượng.
+
+<Note>
+**QR code cũng là deep link.** Mọi điều ở trên áp dụng y hệt cho QR code in trên bao bì, poster, biển hiệu... Khách quét QR khi chưa cài app vẫn được khôi phục đúng nội dung sau khi cài — biến cả kênh **offline** thành điểm chạm đo lường được.
+</Note>
+
+## Từ điển thuật ngữ nhanh
+
+Nhãn trên dashboard Li2 được viết cho người làm marketing; còn các bài viết kỹ thuật ngoài kia (và tài liệu lập trình viên) dùng thuật ngữ ngành. Bảng này giúp bạn đối chiếu:
+
+| Trên dashboard Li2 | Thuật ngữ ngành | Nghĩa |
+|---|---|---|
+| Mở app | *Immediate / direct deep link* | App đã cài, mở thẳng nội dung |
+| Lượt cài đặt mới | *Deferred deep link (first open)* | Lần đầu mở app sau khi cài mới |
+| Lượt khôi phục Link | *Deferred match / attribution* | Khôi phục đúng nội dung cho lượt cài mới |
+| Lý do trượt | *Miss reason* | Vì sao một lượt cài không khôi phục được |
 
 ## Bạn cần chuẩn bị gì
 

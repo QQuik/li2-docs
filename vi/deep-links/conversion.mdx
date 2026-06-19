@@ -72,7 +72,7 @@ Một deep link khớp (`.matched`) để lại một **click id**. Mọi lead/s
     `amount` tính bằng **đơn vị nhỏ nhất của loại tiền** và phải **> 0** — server từ chối 0. `currency` tùy chọn; bỏ trống để dùng mặc định của org.
 
     <Note>
-    Đơn vị nhỏ nhất phụ thuộc loại tiền. Tiền có 2 chữ số thập phân (USD, EUR…) tính bằng **cent/xu**: `4999` = $49.99. Tiền **không có** số thập phân (VND, JPY…) thì `amount` **chính là số đơn vị tiền** — với VND, `amount` là **số đồng trực tiếp** (không nhân /100): `10000` = 10.000đ.
+    Đơn vị nhỏ nhất phụ thuộc loại tiền. Tiền có 2 chữ số thập phân (như **USD**) tính bằng **cent/xu**: `4999` = $49.99. Tiền **không có** số thập phân (như **VND**) thì `amount` **chính là số đơn vị tiền** — với VND, `amount` là **số đồng trực tiếp** (không nhân /100): `10000` = 10.000đ.
     </Note>
 
     ```swift
@@ -170,7 +170,7 @@ Một deep link khớp (`.matched`) để lại một **click id**. Mọi lead/s
     `amount` là **số nguyên đơn vị nhỏ nhất của loại tiền**, **bắt buộc > 0** — server từ chối 0. `currency` bỏ trống để dùng mặc định của org.
 
     <Note>
-    Đơn vị nhỏ nhất phụ thuộc loại tiền. Tiền có 2 chữ số thập phân (USD, EUR…) tính bằng **cent/xu**: `4999` = $49.99. Tiền **không có** số thập phân (VND, JPY…) thì `amount` **chính là số đơn vị tiền** — với VND, `amount` là **số đồng trực tiếp**: `10000` = 10.000đ.
+    Đơn vị nhỏ nhất phụ thuộc loại tiền. Tiền có 2 chữ số thập phân (như **USD**) tính bằng **cent/xu**: `4999` = $49.99. Tiền **không có** số thập phân (như **VND**) thì `amount` **chính là số đơn vị tiền** — với VND, `amount` là **số đồng trực tiếp**: `10000` = 10.000đ.
     </Note>
 
     ```bash

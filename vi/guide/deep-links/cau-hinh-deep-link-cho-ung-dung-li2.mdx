@@ -100,6 +100,30 @@ Phần việc trên dashboard tới đây là xong. Hai bước **trong app** do
   </Accordion>
 </AccordionGroup>
 
+## Câu hỏi thường gặp
+
+<AccordionGroup>
+  <Accordion title="Sau khi cấu hình, bao lâu thì Deep Link có hiệu lực?">
+    Trên Android thường nhanh (Google xác minh lại khá sớm). Trên **iOS có thể tới ~6 giờ**: Apple phục vụ file `apple-app-site-association` qua CDN với thời gian cache khoảng 6 giờ, nên mọi thay đổi cấu hình iOS cần thời gian để lan tới thiết bị. Nếu vừa lưu xong mà thử ngay trên iPhone chưa thấy mở app, hãy đợi rồi thử lại — và gỡ/cài lại app sau khi file đã đúng.
+  </Accordion>
+
+  <Accordion title="Vì sao có lượt cài mới không khôi phục được đúng link?">
+    Khôi phục cho người **chưa cài app** là cơ chế "cố gắng tốt nhất", không phải 100%:
+    - **iOS** dựa vào clipboard — nếu người dùng bỏ qua lời mời dán hoặc từ chối quyền, app không lấy được mã lượt chạm.
+    - **Android** dựa vào Google Play Install Referrer — nếu người dùng tự tìm app trên store (không qua link Li2) thì không có mã để khôi phục.
+
+    Vì vậy **tỷ lệ dẫn đúng đích dưới 100% là bình thường**. Trang [Xem phân tích Deep Link](/vi/guide/deep-links/xem-phan-tich-deep-link-li2) phân tích từng lý do trượt để bạn biết nên tối ưu ở đâu.
+  </Accordion>
+
+  <Accordion title="Tôi có cần bật Deep Link cho từng short link không?">
+    Không. Deep Link bật ở cấp **domain**. Sau khi cấu hình, **mọi short link** dùng custom domain đó đều tự động có khả năng mở app — kể cả **QR code** tạo từ các link đó.
+  </Accordion>
+
+  <Accordion title="Subdomain miễn phí *.li2.link có dùng được không?">
+    Không. Deep Link **bắt buộc** một custom domain riêng bạn sở hữu và đã xác minh DNS. Subdomain `*.li2.link` là hạ tầng dùng chung của Li2 nên không thể gắn app riêng của bạn.
+  </Accordion>
+</AccordionGroup>
+
 ## Bước tiếp theo
 
 <CardGroup cols={2}>
