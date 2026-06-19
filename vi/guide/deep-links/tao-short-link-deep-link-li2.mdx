@@ -1,0 +1,95 @@
+---
+title: "Tạo Short Link Dùng Deep Link"
+description: "Hướng dẫn tạo một short link mở thẳng ứng dụng (Deep Link) trong Li2: chọn custom domain đã bật Deep Link và thiết lập URL store cho iOS/Android làm phương án dự phòng khi chưa cài app."
+---
+
+# Tạo Short Link Dùng Deep Link
+
+Sau khi đã [cấu hình Deep Link cho ứng dụng](/vi/guide/deep-links/cau-hinh-deep-link-cho-ung-dung-li2) trên một custom domain, mỗi short link tạo trên domain đó đều có thể **mở thẳng app**. Hướng dẫn này chỉ bạn cách tạo một short link như vậy và thiết lập **URL store** để khách chưa cài app vẫn được đưa tới đúng nơi tải.
+
+<Note>
+**Điều kiện tiên quyết.** Bạn cần một custom domain **đã bật Deep Link** (huy hiệu *Deep Links Active*). Nếu chưa có, hãy làm theo [Cấu hình Deep Link cho ứng dụng](/vi/guide/deep-links/cau-hinh-deep-link-cho-ung-dung-li2) trước. Subdomain miễn phí `*.li2.link` **không** dùng được cho Deep Link.
+</Note>
+
+## Các bước tạo link
+
+<Steps>
+  <Step title="Mở trang tạo Short Link">
+    Ở thanh menu bên trái, vào **Short Links** → nhấn **Create Short Link**.
+  </Step>
+
+  <Step title="Nhập URL đích (link web)">
+    Trong **Nhập link của bạn**, dán URL trang web mà link trỏ tới (ví dụ một bài viết, trang sản phẩm). Đây cũng là nơi người dùng **desktop** hoặc người **chưa cài app** trên web được đưa tới.
+  </Step>
+
+  <Step title="Chọn custom domain đã bật Deep Link">
+    Ở phần **Cài đặt Link rút gọn**, mục **Domain**, chọn đúng **custom domain đã bật Deep Link** (trong ví dụ là `deep.li2.link`). Đây là bước then chốt — chỉ link trên domain đã bật Deep Link mới có khả năng mở thẳng app.
+
+    <Frame>
+      ![Chọn custom domain đã bật Deep Link khi tạo short link](/images/deep-link-short-link-domain.png)
+    </Frame>
+
+    <Note>
+    Nếu dropdown không có domain Deep Link nào, nghĩa là domain đó chưa được bật Deep Link. Quay lại bước [cấu hình](/vi/guide/deep-links/cau-hinh-deep-link-cho-ung-dung-li2). Domain bị làm mờ/không cho chọn thường là subdomain `*.li2.link` (không hỗ trợ).
+    </Note>
+  </Step>
+
+  <Step title="Đặt đường dẫn, tên và phân loại (tùy chọn)">
+    - **Tùy chỉnh đường dẫn**: phần cuối của link, ví dụ `rut-gon-link-theo-y-muon`. Hỗ trợ chữ thường, số và dấu gạch ngang; để trống thì Li2 tự tạo.
+    - **Tên Link**, **Tags**, **Space**: giúp tìm kiếm và phân loại link theo chiến dịch — không bắt buộc.
+    - **Theo dõi chuyển đổi**: bật nếu bạn muốn đo lead/sale phát sinh từ link này (tính năng gói trả phí).
+  </Step>
+
+  <Step title="Thiết lập URL store cho iOS và Android">
+    Mở tab **Nhắm mục tiêu thông minh** (Smart Targeting). Đây là nơi khai báo nơi đưa người dùng tới **tùy theo thiết bị** — quan trọng cho trải nghiệm của người **chưa cài app**.
+
+    - **Đích mặc định**: URL web áp dụng khi không có quy tắc thiết bị/quốc gia nào khớp (vd người dùng desktop). Chỉnh ở tab *Cài đặt cơ bản*.
+    - **Thiết bị → Android**: dán **URL Google Play** của app, ví dụ `https://play.google.com/store/apps/details?id=ai.li2.testapp`.
+    - **Thiết bị → iOS**: dán **URL App Store** của app, ví dụ `https://apps.apple.com/vn/app/li2-ai/id6768203140`.
+
+    <Frame>
+      ![Thiết lập URL store cho Android và iOS trong Nhắm mục tiêu thông minh](/images/deep-link-short-link-store-urls.png)
+    </Frame>
+
+    <Info>
+    **Vì sao cần URL store.** Khi người dùng **chưa cài app** chạm link, họ cần được đưa tới đúng store để tải. URL store ở đây chính là điểm đến đó. Sau khi cài và mở app lần đầu, Li2 sẽ **khôi phục** đúng nội dung link gốc (cơ chế *deferred* — xem [Deep Link là gì](/vi/guide/deep-links/deep-link-la-gi-li2)).
+    </Info>
+  </Step>
+
+  <Step title="Lưu link">
+    Nhấn **Tạo Link**. Short link xuất hiện trong danh sách **Short Links** và sẵn sàng chia sẻ — kể cả dưới dạng **QR code** (cũng kích hoạt Deep Link y hệt).
+  </Step>
+</Steps>
+
+## Thứ tự áp dụng quy tắc chuyển hướng
+
+Khi có người chạm link, Li2 quyết định đưa họ đi đâu theo thứ tự: **Thiết bị → Quốc gia → Đích mặc định** — *khớp đầu tiên sẽ thắng*. Nhờ vậy người dùng iOS/Android được đẩy tới đúng store của họ, còn desktop rơi về đích mặc định (link web).
+
+## Kiểm tra nhanh
+
+<AccordionGroup>
+  <Accordion title="Làm sao biết link đã mở app?">
+    Cài app (bản từ store hoặc TestFlight/internal-test) trên một thiết bị thật, rồi chạm short link. Nếu cấu hình đúng, app **mở thẳng** đúng nội dung thay vì mở trình duyệt. Người chưa cài app sẽ được đưa tới store theo URL bạn đã đặt.
+  </Accordion>
+
+  <Accordion title="Chạm link nhưng vẫn mở web/trình duyệt?">
+    - Kiểm tra link có đang dùng đúng **custom domain đã bật Deep Link** không (không phải `*.li2.link`).
+    - Đảm bảo lập trình viên đã thêm **Associated Domains** (iOS) / intent-filter `autoVerify` (Android) cho app — xem [tài liệu cho lập trình viên](/vi/deep-links/mobile-integration).
+    - Trên iOS, thay đổi cấu hình có thể mất tới ~6 giờ do cache CDN của Apple.
+  </Accordion>
+
+  <Accordion title="Người chưa cài app không tới được store?">
+    Mở lại link, vào tab **Nhắm mục tiêu thông minh** và kiểm tra đã điền **URL Google Play** (Android) và **URL App Store** (iOS) chưa. Thiếu URL store, người dùng sẽ rơi về *Đích mặc định* (link web) thay vì trang tải app.
+  </Accordion>
+</AccordionGroup>
+
+## Bước tiếp theo
+
+<CardGroup cols={2}>
+  <Card title="Xem phân tích Deep Link" icon="chart-mixed" href="/vi/guide/deep-links/xem-phan-tich-deep-link-li2">
+    Theo dõi lượt mở app, lượt cài mới và tỷ lệ khôi phục link.
+  </Card>
+  <Card title="Deep Link là gì?" icon="circle-question" href="/vi/guide/deep-links/deep-link-la-gi-li2">
+    Ôn lại immediate vs deferred và cách Li2 khôi phục lượt chạm.
+  </Card>
+</CardGroup>
