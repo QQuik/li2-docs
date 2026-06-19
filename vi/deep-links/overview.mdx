@@ -73,6 +73,31 @@ Luồng deferred đi qua vài định danh khác nhau — phân biệt rõ để
 **Bạn không tự tạo các định danh này.** Li2 *gieo* chúng ở phía hạ tầng: trang trung gian (chỉ phục vụ khi **chưa cài app**) chép link kèm `li2_cid` vào clipboard, và bản chuyển hướng tới Play Store ghép sẵn `li2_dl` vào referrer. Phía app, bạn chỉ **đọc** rồi gửi nguyên trạng cho `/track/open`.
 </Info>
 
+### Luồng deferred — ai gieo, app đọc ở đâu
+
+Sơ đồ dưới đây cố định mental model: định danh được Li2 *gieo* ở bước nào, và app *đọc* nó ở đâu.
+
+```mermaid
+sequenceDiagram
+    participant U as Người dùng
+    participant L as Trang trung gian Li2
+    participant S as Store (App/Play)
+    participant A as App của bạn
+    participant API as POST /track/open
+
+    U->>L: Chạm short link (chưa cài app)
+    Note over L: Li2 GIEO định danh
+    L-->>U: iOS: chép link + li2_cid vào clipboard
+    L-->>S: Android: redirect kèm li2_dl trong referrer
+    U->>S: Cài app
+    U->>A: Mở lần đầu
+    Note over A: App ĐỌC tín hiệu deferred
+    A->>A: iOS: đọc clipboard → tìm li2_cid<br/>Android: query Install Referrer → li2_dl
+    A->>API: Gửi deepLink / installReferrer + X-Li2-Key
+    API-->>A: link.url (khớp) hoặc missReason (trượt)
+    A->>U: Điều hướng tới đúng nội dung
+```
+
 ## Yêu cầu trước khi tích hợp
 
 <CardGroup cols={2}>

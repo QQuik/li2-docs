@@ -15,6 +15,26 @@ Tab iOS dùng **Li2 SDK + SwiftUI** (có phần UIKit riêng). Tab Android dùng
 
 <Tabs>
   <Tab title="iOS (Swift)" icon="apple">
+    #### Preflight — kiểm 4 thứ này trước khi viết một dòng code
+
+    <Check>Custom domain đã **Verified** + huy hiệu **Deep Links Active** (không phải `*.li2.link`).</Check>
+    <Check>File **AASA live**: `curl -s https://your-domain.com/.well-known/apple-app-site-association | jq` trả đúng `<TeamID>.<BundleID>`.</Check>
+    <Check>Có **publishable key** dạng `li2_pk_...` (Settings → Analytics → Publishable Key) — **không** phải server API key.</Check>
+    <Check>**Associated Domains** trong Xcode khớp đúng domain (`applinks:your-domain.com`).</Check>
+
+    <Note>
+    Bỏ qua bước này là nguồn của ~80% sự cố thường gặp (401, "app không mở"). Nếu vướng, xem [Khắc phục sự cố](./troubleshooting).
+    </Note>
+
+    #### SDK lo gì — bạn lo gì
+
+    | Li2 SDK gói sẵn | Bạn tự viết |
+    |---|---|
+    | Gọi `/track/open` (immediate + deferred) | **Điều hướng** theo outcome |
+    | Cổng "một lần mỗi lần cài" + cửa sổ chờ 250ms | **Màn hình đồng ý** (UI) |
+    | `Li2PasteButton` đọc clipboard không bật alert | Quyết định fallback khi `.missed` / `.failed` |
+    | Bóc `li2_cid` khỏi URL đích; cầu nối `Li2.lastClickId` | — |
+
     ### Cách nhanh nhất: dùng Li2 SDK
 
     <Note>
@@ -162,28 +182,38 @@ Tab iOS dùng **Li2 SDK + SwiftUI** (có phần UIKit riêng). Tab Android dùng
                     resolver.submitPasteControlResult(raw)
                 }
                 .frame(height: 52)
-            } else if clipboardHasContent == false {
-                // (a) Clipboard rỗng: Li2PasteButton tự disable, không thể chạm.
-                // Phải có nút thay thế — không thì người dùng bị kẹt và
-                // outcome `empty` không bao giờ được gửi.
-                Button("Tiếp tục") { resolver.submitPasteControlEmpty() }
             } else {
-                // iOS 15: beginRawProbeOptIn() đọc clipboard trực tiếp.
-                // iOS sẽ hiện alert "Allow Paste" hoặc banner — đây là hành vi hệ thống
-                // trên iOS 15, không tránh được.
-                Button("Tiếp tục") { resolver.beginRawProbeOptIn() }
+                // (a) Clipboard rỗng (Li2PasteButton tự disable): phải có nút thay thế —
+                // không thì người dùng bị kẹt và outcome `empty` không bao giờ được gửi.
+                Button("Tiếp tục") { resolver.submitPasteControlEmpty() }
             }
         }
     }
     ```
 
-    <Note>
-    **`beginRawProbeOptIn()` có thể dùng trên iOS 16+ không?** Có — nhưng iOS sẽ hiện alert "Allow Paste / Don't Allow". Dùng `Li2PasteButton` trên iOS 16+ để tránh alert đó: cú chạm vào nút Paste của hệ thống chính là sự đồng ý, nên iOS bỏ qua bước hỏi thêm.
-    </Note>
+    **Hai chi tiết không thể bỏ qua:**
+    - **(a) Empty-clipboard affordance** — `Li2PasteButton` tự disable khi clipboard rỗng. Không có nút thay thế (`submitPasteControlEmpty()`), người dùng clipboard rỗng bị kẹt và outcome `empty` không bao giờ được gửi.
+    - **(b) `scenePhase` re-probe** — clipboard có thể thay đổi khi sheet đang mở (người dùng sang Safari, copy link, quay lại). Probe chỉ trong `onAppear` sẽ hiện trạng thái nút bị cũ.
 
-    **Tại sao hai chi tiết trên quan trọng:**
-    - **(a) Empty-clipboard affordance** — `Li2PasteButton` tự disable khi clipboard rỗng, nên nếu không có nút thay thế, người dùng clipboard rỗng bị kẹt và outcome `empty` không bao giờ được gửi.
-    - **(b) `scenePhase` re-probe** — clipboard có thể thay đổi trong khi sheet đang mở (người dùng chuyển sang Safari, copy link, quay lại). Probe chỉ trong `onAppear` sẽ hiện trạng thái nút bị cũ.
+    <Accordion title="Hỗ trợ iOS 15 (không có Li2PasteButton)">
+    `Li2PasteButton` yêu cầu iOS 16. Trên **iOS 15**, dùng `beginRawProbeOptIn()` — nó đọc clipboard trực tiếp, nên iOS **sẽ hiện alert "Allow Paste"** (hành vi hệ thống của iOS 15, không tránh được). Thêm nhánh fallback vào `primaryButton`:
+
+    ```swift
+    // Đặt TRƯỚC nhánh else, sau nhánh iOS 16:
+    } else if clipboardHasContent != false {
+        // iOS 15: đọc trực tiếp — iOS hiện alert "Allow Paste".
+        Button("Tiếp tục") { resolver.beginRawProbeOptIn() }
+    } else {
+        Button("Tiếp tục") { resolver.submitPasteControlEmpty() }
+    }
+    ```
+
+    Ngược lại, **trên iOS 16+ đừng dùng `beginRawProbeOptIn()`** — nó cũng bật alert "Allow Paste", đúng thứ mà `Li2PasteButton` sinh ra để tránh.
+    </Accordion>
+
+    #### Kiểm chứng nhanh: in response, đọc `matchMethod`
+
+    Sau khi nối xong, chạy thử và **in response của `/track/open`** ra log. Đọc `matchMethod` (`universal_link` / `clipboard` / …) hoặc `missReason` để biết SDK vừa làm gì — đây là công cụ tự chẩn đoán chính. Bảng đầy đủ: [matchMethod & missReason](./track-open-api#giá-trị-matchmethod), cây quyết định theo triệu chứng: [Khắc phục sự cố](./troubleshooting).
 
     #### UIKit integration
 
@@ -226,127 +256,31 @@ Tab iOS dùng **Li2 SDK + SwiftUI** (có phần UIKit riêng). Tab Android dùng
     **Không có zero-grace entry point.** Nếu bạn muốn trì hoãn prompt (ví dụ: sau màn hình onboarding), chỉ cần gọi `requestFirstLaunchConsentAfterGrace()` muộn hơn — các guard nội bộ đảm bảo lời gọi muộn vẫn đúng, và Universal Link đến trong thời gian đó sẽ tự tắt prompt.
     </Note>
 
-    #### Troubleshooting
+    #### Gặp sự cố?
 
-    | Triệu chứng | Nguyên nhân / cách sửa |
-    |---|---|
-    | **401 mọi lời gọi** | Sai loại key. Dùng **publishable key** (`li2_pk_…`), không phải server API key. |
-    | **Universal Link không mở app** | Cache AASA của Apple CDN (~24h) hoặc thiếu entitlement `applinks:`. Kiểm tra domain trên dashboard. |
-    | **`Li2PasteButton` luôn disabled** | Clipboard đang rỗng (behavior đúng) — thêm nhánh `clipboardHasContent == false` như hướng dẫn ở trên. |
-    | **Màn hình đồng ý xuất hiện lại sau Universal Link** | Bình thường nếu UL tới trong cửa sổ grace — UL thắng và sheet tự dismiss. |
+    Các triệu chứng thường gặp — 401 mọi lời gọi, Universal Link không mở app, `Li2PasteButton` luôn xám, sheet hiện lại sau UL — được tra theo triệu chứng tại trang riêng:
+
+    <Card title="Khắc phục sự cố Deep Link" icon="wrench" href="./troubleshooting">
+      Chẩn đoán theo triệu chứng + cách đọc `matchMethod` / `missReason` để tự gỡ lỗi.
+    </Card>
 
     ---
 
     #### Đo lường chuyển đổi (Conversion Tracking)
 
-    Sau khi deep link đã được phân giải, bạn có thể gắn các **sự kiện kinh doanh thật** — đăng ký, mua hàng — về đúng cú click đã dẫn dắt chúng. Từ `0.2.0`, SDK gói sẵn API này: `trackLead` (3 kiểu), `trackSale` (2 kiểu) và `identify`.
+    Sau khi deep link đã được phân giải, bạn có thể gắn các **sự kiện kinh doanh thật** — đăng ký, mua hàng — về đúng cú click đã dẫn dắt chúng. Từ `0.2.0`, SDK gói sẵn `trackLead`, `trackSale` và `identify`; một outcome `.matched` tự lưu `Li2.lastClickId` (TTL 30 ngày) để các phương thức attributed đọc lại — bạn không phải tự truyền click id.
 
-    <Note>
-    **Cầu nối tự động.** Một outcome `.matched` lưu lại `Li2.lastClickId` (TTL 30 ngày). Các phương thức **attributed** tự đọc lại click id này, nên một lead/sale gắn về đúng touch-point **mà bạn không phải tự truyền click id** qua code. Đây là toàn bộ lý do module này tồn tại.
-    </Note>
-
-    ```
-     deep link khớp            lưu lại                     tự đọc
-     (resolver .matched)  ──▶  Li2.lastClickId  ──▶  trackAttributedLead / trackAttributedSale
-                                (TTL 30 ngày)            (không cần truyền clickId)
-    ```
-
-    <Warning>
-    **Yêu cầu gói dịch vụ.** Conversion tracking là tính năng trả phí (Premium+). Nếu org hoặc link cụ thể chưa bật, **mọi lời gọi trả về 403** kèm lý do trong message lỗi.
-    </Warning>
-
-    **Gọi phương thức nào?** API được **định kiểu theo ý định** — chọn đúng phương thức và quy tắc click id được xử lý sẵn (không còn bẫy `nil` vs `""` như web SDK):
-
-    | Có clickId? | Có user id? | Lead | Sale |
-    |---|---|---|---|
-    | Không (hoặc không cần attribution) | Có | `trackDirectLead` | `trackDirectSale` |
-    | Có (từ deep-link match) | Chưa (ẩn danh) | `trackAnonymousLead` | — |
-    | Có | Có | `trackAttributedLead` | `trackAttributedSale` |
-
-    - Biến **Direct** không bao giờ attribute — gửi `click_id = ""` và **bắt buộc** `externalId`. Dùng khi không có deep link nào (vd: người dùng mở app trực tiếp, mua trong app).
-    - Biến **attributed / anonymous** mặc định `clickId = Li2.lastClickId`. Nếu nil (chưa có match nào) chúng **ném `.noClickIdAvailable` ngay phía client, trước khi gọi mạng** — hãy chạy deep-link match trước, hoặc dùng biến Direct.
-
-    **Lead:**
-
-    ```swift
-    import Li2SDK
-
-    // Direct: user đã biết, không attribution.
-    let r = try await Li2.trackDirectLead(externalId: "user_42", eventName: "signup",
-                                          email: "a@b.com")
-
-    // Anonymous: gắn về một click, chưa biết danh tính user.
-    // clickId mặc định = Li2.lastClickId.
-    try await Li2.trackAnonymousLead(eventName: "viewed_pricing")
-
-    // Attributed: user đã biết VÀ có click deep link.
-    try await Li2.trackAttributedLead(externalId: "user_42", eventName: "signup")
-    ```
-
-    **Sale:** `amount` tính bằng **đơn vị nhỏ nhất (cents/xu)** và phải **> 0** — server từ chối 0. `currency` tùy chọn; bỏ trống để dùng mặc định của org.
-
-    ```swift
-    // Sale trực tiếp.
-    let s = try await Li2.trackDirectSale(externalId: "user_42", amount: 4999)  // $49.99
-
-    // Sale attributed — tự đọc Li2.lastClickId, link visit / touch-point.
-    try await Li2.trackAttributedSale(externalId: "user_42", amount: 4999, currency: "vnd")
-    ```
-
-    ##### `identify` — ẩn danh ➜ định danh
-
-    `identify` **bắt buộc** cho hành trình *anonymous lead ➜ attributed sale*. Một sale chỉ phân giải khách hàng theo `externalId` — nó **không có** đường merge ẩn danh — nên nếu thiếu `identify`, lead ẩn danh và sale rơi vào **hai hồ sơ khách hàng tách biệt**. Gọi `identify` trước sẽ "thăng cấp" hồ sơ `anon_<clickId>` thành user id thật, để sale tìm đúng hồ sơ:
-
-    ```swift
-    // 1. Lead ẩn danh từ một click deep link → hồ sơ anon_<clickId>.
-    try await Li2.trackAnonymousLead(eventName: "viewed_pricing")
-
-    // 2. User đăng nhập / đăng ký — thăng cấp hồ sơ ẩn danh.
-    try await Li2.identify(externalId: "user_42", email: "a@b.com")
-
-    // 3. Sale giờ rơi vào CÙNG một hồ sơ.
-    try await Li2.trackAttributedSale(externalId: "user_42", amount: 4999)
-    ```
-
-    <Warning>
-    `externalId` phải **khác rỗng** — một id rỗng không thăng cấp được gì, nên `identify` ném **`.missingExternalId`** trước khi gọi mạng. `clickId` mặc định `Li2.lastClickId` và ném `.noClickIdAvailable` nếu vắng.
-    </Warning>
-
-    <Tip>
-    Hành trình *anonymous lead ➜ attributed **lead*** **không** cần `identify` — `trackAttributedLead` tự merge hồ sơ ẩn danh. `identify` sinh ra **chỉ để** bắc cầu cho hành trình **sale**. Lưu ý: `identify` ghi một lead `__identify__` thật và tăng `lead_count` (giống JS SDK, không có filter phía backend) — chấp nhận theo thiết kế.
-    </Tip>
-
-    ##### Khi nào dùng — use case thực tế
-
-    <Steps>
-      <Step title="Acquisition tới mua hàng (deferred, ẩn danh)">
-        User chạm short link khi **chưa cài** app → cài → mở lần đầu → deep-link match lưu `Li2.lastClickId`. Trước khi đăng nhập, gọi `trackAnonymousLead(eventName: "viewed_pricing")`. Khi user đăng ký, `identify(externalId:)`. Khi họ mua, `trackAttributedSale(externalId:amount:)`. → **Một hồ sơ** mang cả lead lẫn sale, doanh thu quy về đúng chiến dịch.
-      </Step>
-      <Step title="Re-engagement (immediate, đã định danh)">
-        User **đã cài** + đã đăng nhập, chạm short link mở thẳng app (Universal Link). Sau hành động, gọi `trackAttributedLead` / `trackAttributedSale` với `externalId` của họ — clickId từ match tự gắn về.
-      </Step>
-      <Step title="Sự kiện không từ deep link">
-        Mua trong app, không có click nào (mở app trực tiếp). Dùng `trackDirectSale(externalId:amount:)` — `click_id = ""`, không attribution, vẫn ghi nhận doanh thu cho khách hàng.
-      </Step>
-    </Steps>
-
-    ##### Best practices
-
-    - **Gọi `identify` ngay khi biết danh tính**, trước sale đầu tiên — đó là lằn ranh giữa "một khách hàng" và "hai hồ sơ tách rời".
-    - **Dùng `externalId` ổn định** (user id nội bộ của bạn), giống hệt nhau ở lead, `identify` và sale. Lệch một ký tự = tách hồ sơ.
-    - **`amount` luôn là số nguyên xu** (`4999` = $49.99). Đừng gửi số thực hay đơn vị lớn; **0 bị từ chối**.
-    - **Bỏ trống `currency`** để server dùng mặc định của org — chỉ set khi thật sự cần khác (vd `"vnd"`). Khác với web SDK (cứng `"usd"`).
-    - **Đừng tự truyền `clickId`** trừ khi có lý do đặc biệt — để mặc định `Li2.lastClickId` là cách cầu nối hoạt động đúng. Truyền tay dễ gắn nhầm click cũ.
-    - **Conversion là best-effort, không hàng đợi/offline buffer**: một POST duy nhất, lỗi thì `throw`. Bắt lỗi và quyết định retry theo nghiệp vụ của bạn (đừng retry mù vô hạn).
-    - **Xử lý lỗi rõ ràng**: `.noClickIdAvailable` (chạy match trước hoặc dùng Direct), `.missingExternalId` (thiếu user id ở `identify`), `403` (gói/feature chưa bật), `400` (không thấy khách hàng — cấp `email`/`name`/`phone` để tự tạo).
-
-    Tham chiếu đầy đủ tham số từng phương thức + bảng lỗi: xem [README của Li2 Swift SDK](https://github.com/QQuik/li2-swift-sdk#conversion-tracking-deep-link-attribution).
+    <Card title="Đo Lường Chuyển Đổi Cho Deep Link" icon="chart-line" href="./conversion">
+      Hướng dẫn đầy đủ: chọn đúng `trackDirect`/`trackAnonymous`/`trackAttributed`, hành trình ẩn danh ➜ định danh, và cách Android tự gọi HTTP `/track/lead` + `/track/sale`.
+    </Card>
 
     ---
 
-    ### Tích hợp thủ công (nâng cao)
+    ### Tích hợp thủ công (nâng cao) — KHÔNG dùng SDK
 
-    Phần dưới đây dành cho trường hợp bạn không dùng SDK và muốn tự gọi HTTP API trực tiếp, hoặc cần tùy biến sâu ngoài những gì SDK cung cấp.
+    <Warning>
+    **Đây là đường THAY THẾ, không phải bước tiếp theo.** Nếu bạn đã dùng Li2 SDK ở trên, **bỏ qua toàn bộ phần này** — SDK đã làm hết. Chỉ đọc tiếp nếu bạn **không** dùng SDK và muốn tự gọi HTTP, hoặc cần tùy biến sâu hơn những gì SDK cung cấp. Phần này tự dựng lại chính xác những gì `Li2PasteButton` + resolver đã gói sẵn.
+    </Warning>
 
     #### 1. Khai báo Associated Domains
 
@@ -446,6 +380,10 @@ Tab iOS dùng **Li2 SDK + SwiftUI** (có phần UIKit riêng). Tab Android dùng
     #### 4. Khôi phục deferred trong lần mở đầu tiên
 
     Khi người dùng chưa cài app, trang trung gian của Li2 đã **chép sẵn link đích kèm `li2_cid` vào clipboard** trước khi đẩy sang App Store. Việc của app chỉ là **đọc** clipboard đó ở lần mở đầu rồi gửi cho `/track/open` — bạn không tự dựng `li2_cid`.
+
+    <Note>
+    **Nhắc lại "Ba định danh".** `li2_cid` là token 16 ký tự định danh **cú click gốc** — Li2 *gieo* nó vào link trên clipboard, bạn chỉ **đọc**. Đừng nhầm với `clickId` trong response (server trả về). Bảng đầy đủ ba định danh: [Tổng Quan → Ba định danh](./overview#ba-định-danh-bạn-sẽ-gặp).
+    </Note>
 
     Hai điều kiện về thời điểm:
     - **Chờ ≈250ms trước** để một Universal Link (nếu có) kịp tới — nếu nó tới, `hasReceivedUniversalLink` được bật và nhánh deferred bị bỏ qua. 250ms chỉ là đệm; **cờ `hasReceivedUniversalLink` mới là chốt chặn thật**, không phải con số thời gian.
@@ -804,10 +742,16 @@ Không có host sandbox riêng — bạn kiểm thử ngay trên `api.li2.ai` b�
 ## Bước tiếp theo
 
 <CardGroup cols={2}>
+  <Card title="Đo Lường Chuyển Đổi" icon="chart-line" href="./conversion">
+    Gắn lead/sale về đúng click sau khi deep link đã phân giải.
+  </Card>
+  <Card title="Khắc phục sự cố" icon="wrench" href="./troubleshooting">
+    Tra theo triệu chứng + đọc matchMethod / missReason.
+  </Card>
   <Card title="API: POST /track/open" icon="code" href="./track-open-api">
     Chi tiết đầy đủ về request, response, matchMethod và missReason.
   </Card>
   <Card title="Cấu Hình Domain" icon="globe" href="./domain-setup">
-    Đảm bảo file AASA / assetlinks đã phục vụ đúng trước khi test trên thiết bị.
+    Đảm bảo file AASA / assetlinks đã phục vụ đúng trước khi test.
   </Card>
 </CardGroup>

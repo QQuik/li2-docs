@@ -1,0 +1,235 @@
+---
+title: "Đo Lường Chuyển Đổi Cho Deep Link"
+description: "Gắn lead và sale thật về đúng cú click deep link đã dẫn dắt chúng — qua Li2 SDK (iOS) hoặc HTTP API trực tiếp (Android & nâng cao). Gồm hành trình ẩn danh ➜ định danh."
+sidebarTitle: "Đo Lường Chuyển Đổi"
+icon: "chart-line"
+---
+
+# Đo Lường Chuyển Đổi Cho Deep Link
+
+<Info>
+**Bạn sẽ học**: Sau khi deep link được phân giải, cách gắn các **sự kiện kinh doanh thật** — đăng ký (`lead`), mua hàng (`sale`) — về đúng cú click đã dẫn dắt chúng. iOS dùng **Li2 SDK** (gói sẵn cầu nối click id). Android **tự gọi HTTP** `POST /track/lead` và `POST /track/sale`.
+</Info>
+
+<Warning>
+**Yêu cầu gói dịch vụ.** Conversion tracking là tính năng trả phí (Premium+). Nếu org hoặc link cụ thể chưa bật, **mọi lời gọi trả về 403** kèm lý do trong message lỗi.
+</Warning>
+
+## Mô hình tinh thần: cầu nối click id
+
+Một deep link khớp (`.matched`) để lại một **click id**. Mọi lead/sale sau đó gắn về đúng touch-point bằng cách đọc lại click id này — bạn không phải tự truyền nó qua code.
+
+```
+ deep link khớp            lưu lại                       gắn về touch-point
+ (resolver .matched)  ──▶  click id  ──────────────▶  trackAttributedLead / Sale
+                           iOS: Li2.lastClickId          (iOS tự đọc; Android
+                           (TTL 30 ngày)                  bạn tự giữ & truyền)
+```
+
+| Nền tảng | Cách lấy click id | Cách gắn vào conversion |
+|----------|-------------------|--------------------------|
+| **iOS (SDK)** | SDK tự lưu `Li2.lastClickId` khi `.matched` (TTL 30 ngày) | Các biến **attributed/anonymous** **tự đọc** `Li2.lastClickId` — bạn không truyền tay |
+| **Android (HTTP)** | Đọc `outcome.clickId` từ `Li2DeepLinkOutcome.Matched` và **tự lưu** | Truyền chính chuỗi đó vào `click_id` của request |
+
+<Tabs>
+  <Tab title="iOS (Li2 SDK)" icon="apple">
+    Từ `0.2.0`, SDK gói sẵn conversion: `trackLead` (3 biến), `trackSale` (2 biến) và `identify`. API được **định kiểu theo ý định** — chọn đúng phương thức, quy tắc click id được xử lý sẵn (không còn bẫy `nil` vs `""` như web SDK).
+
+    #### Gọi phương thức nào?
+
+    | Có clickId? | Có user id? | Lead | Sale |
+    |---|---|---|---|
+    | Không (hoặc không cần attribution) | Có | `trackDirectLead` | `trackDirectSale` |
+    | Có (từ deep-link match) | Chưa (ẩn danh) | `trackAnonymousLead` | — |
+    | Có | Có | `trackAttributedLead` | `trackAttributedSale` |
+
+    - Biến **Direct** không bao giờ attribute — gửi `click_id = ""` và **bắt buộc** `externalId`. Dùng khi không có deep link nào (vd: người dùng mở app trực tiếp, mua trong app).
+    - Biến **attributed / anonymous** mặc định `clickId = Li2.lastClickId`. Nếu nil (chưa có match nào) chúng **ném `.noClickIdAvailable` ngay phía client, trước khi gọi mạng** — hãy chạy deep-link match trước, hoặc dùng biến Direct.
+
+    #### Lead
+
+    ```swift
+    import Li2SDK
+
+    // Direct: user đã biết, không attribution.
+    let r = try await Li2.trackDirectLead(externalId: "user_42", eventName: "signup",
+                                          email: "a@b.com")
+
+    // Anonymous: gắn về một click, chưa biết danh tính user.
+    // clickId mặc định = Li2.lastClickId.
+    try await Li2.trackAnonymousLead(eventName: "viewed_pricing")
+
+    // Attributed: user đã biết VÀ có click deep link.
+    try await Li2.trackAttributedLead(externalId: "user_42", eventName: "signup")
+    ```
+
+    #### Sale
+
+    `amount` tính bằng **đơn vị nhỏ nhất (cents/xu)** và phải **> 0** — server từ chối 0. `currency` tùy chọn; bỏ trống để dùng mặc định của org.
+
+    ```swift
+    // Sale trực tiếp.
+    let s = try await Li2.trackDirectSale(externalId: "user_42", amount: 4999)  // $49.99
+
+    // Sale attributed — tự đọc Li2.lastClickId, link visit / touch-point.
+    try await Li2.trackAttributedSale(externalId: "user_42", amount: 4999, currency: "vnd")
+    ```
+
+    #### `identify` — ẩn danh ➜ định danh
+
+    `identify` **bắt buộc** cho hành trình *anonymous lead ➜ attributed sale*. Một sale chỉ phân giải khách hàng theo `externalId` — nó **không có** đường merge ẩn danh — nên nếu thiếu `identify`, lead ẩn danh và sale rơi vào **hai hồ sơ khách hàng tách biệt**. Gọi `identify` trước sẽ "thăng cấp" hồ sơ `anon_<clickId>` thành user id thật, để sale tìm đúng hồ sơ:
+
+    ```swift
+    // 1. Lead ẩn danh từ một click deep link → hồ sơ anon_<clickId>.
+    try await Li2.trackAnonymousLead(eventName: "viewed_pricing")
+
+    // 2. User đăng nhập / đăng ký — thăng cấp hồ sơ ẩn danh.
+    try await Li2.identify(externalId: "user_42", email: "a@b.com")
+
+    // 3. Sale giờ rơi vào CÙNG một hồ sơ.
+    try await Li2.trackAttributedSale(externalId: "user_42", amount: 4999)
+    ```
+
+    <Warning>
+    `externalId` phải **khác rỗng** — một id rỗng không thăng cấp được gì, nên `identify` ném **`.missingExternalId`** trước khi gọi mạng. `clickId` mặc định `Li2.lastClickId` và ném `.noClickIdAvailable` nếu vắng.
+    </Warning>
+
+    <Tip>
+    Hành trình *anonymous lead ➜ attributed **lead*** **không** cần `identify` — `trackAttributedLead` tự merge hồ sơ ẩn danh. `identify` sinh ra **chỉ để** bắc cầu cho hành trình **sale**. Lưu ý: `identify` ghi một lead `__identify__` thật và tăng `lead_count` (giống JS SDK, không có filter phía backend) — chấp nhận theo thiết kế.
+    </Tip>
+
+    Tham chiếu đầy đủ tham số từng phương thức + bảng lỗi: xem [README của Li2 Swift SDK](https://github.com/QQuik/li2-swift-sdk#conversion-tracking-deep-link-attribution).
+  </Tab>
+
+  <Tab title="Android & HTTP trực tiếp" icon="android">
+    <Note>
+    **Android chưa có SDK conversion.** Kit Android (`:li2deeplink`) chỉ lo phần *phân giải* deep link. Để đo chuyển đổi, bạn **tự gọi HTTP** hai endpoint dưới đây. Chúng cũng là hợp đồng để tích hợp thủ công trên bất kỳ nền tảng nào (server-side, React Native, Flutter…).
+    </Note>
+
+    Hai endpoint, cùng base URL và cùng publishable key như `/track/open`:
+
+    ```
+    POST https://api.li2.ai/api/v1/track/lead
+    POST https://api.li2.ai/api/v1/track/sale
+    ```
+
+    Header: `X-Li2-Key: li2_pk_...` (giống `/track/open`).
+
+    <Warning>
+    **Payload conversion dùng `snake_case`** (`click_id`, `external_id`, `event_name`…) — **khác** với `/track/open` dùng `camelCase` (`deepLink`, `clipboardStatus`). Đừng bật "convert to snake_case" toàn cục; gửi đúng key như bảng dưới.
+    </Warning>
+
+    #### Lấy click id để gắn
+
+    Kit phát ra `Li2DeepLinkOutcome.Matched(destination, clickId)`. **Tự lưu** `clickId` (vd vào DataStore) khi nhận `Matched`, rồi truyền vào `click_id` của lead/sale sau này:
+
+    ```kotlin
+    is Li2DeepLinkOutcome.Matched -> {
+        navigate(outcome.destination)
+        li2Store.saveClickId(outcome.clickId)   // bạn tự giữ — Android không có Li2.lastClickId
+    }
+    ```
+
+    #### `POST /track/lead`
+
+    `click_id` **luôn phải có mặt** — Direct gửi `""`, attributed/anonymous gửi click id thật. Server trả `400` nếu thiếu hẳn trường này.
+
+    ```bash
+    curl -X POST https://api.li2.ai/api/v1/track/lead \
+      -H "Content-Type: application/json" \
+      -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
+      -d '{
+        "click_id": "Ab3xK9pQ2mN7vR1t",
+        "external_id": "user_42",
+        "event_name": "signup",
+        "email": "a@b.com"
+      }'
+    ```
+
+    | Trường | Bắt buộc | Ghi chú |
+    |--------|----------|---------|
+    | `click_id` | **Có** | `""` cho Direct; click id thật cho attributed. **Không bao giờ** bỏ trống trường này |
+    | `external_id` | Có (trừ anonymous) | User id ổn định của bạn. Bỏ qua để ghi lead ẩn danh (`anon_<click_id>`) |
+    | `event_name` | Không | Vd `signup`, `viewed_pricing` |
+    | `email` / `name` / `phone` | Không | Dùng để tự tạo khách hàng nếu chưa tồn tại |
+    | `metadata` | Không | Object `{string: string}` tùy ý |
+
+    Response thành công: `{ "code": 200, "message": "...", "data": { "success": true, "customer_id": "..." } }`
+
+    #### `POST /track/sale`
+
+    `amount` là **số nguyên đơn vị nhỏ nhất (xu/cents)**, **bắt buộc > 0** — server từ chối 0. `currency` bỏ trống để dùng mặc định của org.
+
+    ```bash
+    curl -X POST https://api.li2.ai/api/v1/track/sale \
+      -H "Content-Type: application/json" \
+      -H "X-Li2-Key: li2_pk_xxxxxxxxxxxxxxxxxxxx" \
+      -d '{
+        "click_id": "Ab3xK9pQ2mN7vR1t",
+        "external_id": "user_42",
+        "amount": 4999,
+        "currency": "vnd"
+      }'
+    ```
+
+    | Trường | Bắt buộc | Ghi chú |
+    |--------|----------|---------|
+    | `click_id` | **Có** | `""` cho Direct; click id thật cho attributed |
+    | `external_id` | **Có** | Sale **luôn** phân giải khách hàng theo `external_id` — không có đường ẩn danh |
+    | `amount` | **Có** | Số nguyên xu (`4999` = $49.99). **0 bị từ chối** |
+    | `currency` | Không | Bỏ trống → mặc định org. Set khi cần khác (vd `"vnd"`) |
+    | `event_name` / `payment_processor` / `invoice_id` | Không | Siêu dữ liệu giao dịch |
+    | `email` / `name` / `phone` / `avatar_url` | Không | Tự tạo khách hàng nếu chưa có |
+    | `metadata` | Không | Object `{string: string}` |
+
+    Response thành công: `{ "code": 200, ..., "data": { "success": true, "sale_event_id": "...", "customer_id": "..." } }`
+
+    <Warning>
+    **Sale không có đường merge ẩn danh.** Nếu bạn ghi lead ẩn danh (`external_id` rỗng) rồi muốn quy sale về cùng khách hàng đó, phải gọi `/track/lead` một lần với `event_name: "__identify__"`, **cùng `click_id`** và `external_id` thật trước — đó là tương đương HTTP của `identify` trên iOS. Thiếu bước này, lead ẩn danh và sale rơi vào hai hồ sơ tách biệt.
+    </Warning>
+  </Tab>
+</Tabs>
+
+## Khi nào dùng — use case thực tế
+
+<Steps>
+  <Step title="Acquisition tới mua hàng (deferred, ẩn danh)">
+    User chạm short link khi **chưa cài** app → cài → mở lần đầu → deep-link match lưu click id. Trước khi đăng nhập, ghi `lead` ẩn danh (`viewed_pricing`). Khi user đăng ký, `identify` (iOS) / lead `__identify__` (HTTP). Khi họ mua, ghi `sale` attributed. → **Một hồ sơ** mang cả lead lẫn sale, doanh thu quy về đúng chiến dịch.
+  </Step>
+  <Step title="Re-engagement (immediate, đã định danh)">
+    User **đã cài** + đã đăng nhập, chạm short link mở thẳng app (Universal Link / App Link). Sau hành động, ghi `lead`/`sale` attributed với `external_id` của họ — click id từ match tự gắn về.
+  </Step>
+  <Step title="Sự kiện không từ deep link">
+    Mua trong app, không có click nào (mở app trực tiếp). Dùng biến **Direct**: `click_id = ""`, không attribution, vẫn ghi nhận doanh thu cho khách hàng.
+  </Step>
+</Steps>
+
+## Best practices
+
+- **Gọi `identify` (hoặc lead `__identify__`) ngay khi biết danh tính**, trước sale đầu tiên — đó là lằn ranh giữa "một khách hàng" và "hai hồ sơ tách rời".
+- **Dùng `external_id` ổn định** (user id nội bộ của bạn), giống hệt nhau ở lead, identify và sale. Lệch một ký tự = tách hồ sơ.
+- **`amount` luôn là số nguyên xu** (`4999` = $49.99). Đừng gửi số thực hay đơn vị lớn; **0 bị từ chối**.
+- **Bỏ trống `currency`** để server dùng mặc định của org — chỉ set khi thật sự cần khác (vd `"vnd"`).
+- **Đừng tự truyền click id cũ** trừ khi có lý do đặc biệt. iOS: để mặc định `Li2.lastClickId`. Android: truyền đúng click id vừa lưu từ `Matched`, đừng tái dùng click id của một phiên cũ.
+- **Conversion là best-effort, không hàng đợi/offline buffer**: một POST duy nhất, lỗi thì báo lỗi. Bắt lỗi và quyết định retry theo nghiệp vụ của bạn (đừng retry mù vô hạn).
+
+## Bảng lỗi conversion
+
+| Tình huống | iOS (lỗi ném ra) | HTTP status | Cách xử lý |
+|---|---|---|---|
+| Chưa có click id để attribute | `.noClickIdAvailable` (ném **trước khi** gọi mạng) | — | Chạy deep-link match trước, hoặc dùng biến **Direct** |
+| `identify` thiếu `external_id` | `.missingExternalId` (ném **trước khi** gọi mạng) | — | Cấp user id ổn định |
+| Gói/feature chưa bật | `.httpError(403, msg)` | `403` | Bật conversion tracking cho org/link |
+| Không thấy khách hàng / thiếu trường | `.httpError(400, msg)` | `400` | Cấp `email`/`name`/`phone` để tự tạo, hoặc ghi `lead` trước |
+| Sai loại key | `.httpError(401, msg)` | `401` | Dùng **publishable key** (`li2_pk_…`), không phải server API key |
+
+## Bước tiếp theo
+
+<CardGroup cols={2}>
+  <Card title="Tích Hợp iOS & Android" icon="mobile" href="./mobile-integration">
+    Quay lại phần phân giải deep link — tiền đề để có click id.
+  </Card>
+  <Card title="Khắc phục sự cố" icon="wrench" href="./troubleshooting">
+    Tra theo triệu chứng khi conversion hoặc deep link không như mong đợi.
+  </Card>
+</CardGroup>

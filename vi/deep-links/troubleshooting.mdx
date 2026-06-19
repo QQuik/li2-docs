@@ -1,0 +1,144 @@
+---
+title: "Khắc Phục Sự Cố Deep Link"
+description: "Chẩn đoán theo triệu chứng quan sát được: app không mở, mọi lời gọi 401, deferred không khôi phục được. Cách đọc matchMethod / missReason để tự gỡ lỗi."
+sidebarTitle: "Khắc Phục Sự Cố"
+icon: "wrench"
+---
+
+# Khắc Phục Sự Cố Deep Link
+
+<Info>
+**Bạn sẽ học**: Cách tự chẩn đoán khi tích hợp không như mong đợi — bắt đầu từ **triệu chứng bạn quan sát được**, rồi dùng `matchMethod` / `missReason` trong response làm la bàn. Hầu hết sự cố tự gỡ được mà không cần mở ticket.
+</Info>
+
+## Công cụ chẩn đoán số 1: đọc response
+
+Trước khi đoán, hãy **in nguyên response** của `/track/open` ra log và đọc ba trường:
+
+```
+matchMethod   →  nó đã làm gì (universal_link / app_link / clipboard / install_referrer)
+missReason    →  vì sao trượt (chỉ có khi link == null)
+platform      →  server nhận diện ios / android (null = User-Agent không rõ)
+```
+
+<Tip>
+**`link != null` nghĩa là KHỚP.** Khi đó `matchMethod` cho biết khớp qua đường nào. **`link == null` nghĩa là TRƯỢT** — `missReason` cho biết lý do. Mọi chẩn đoán bên dưới đều xoay quanh hai trường này.
+</Tip>
+
+## Đặt kỳ vọng đúng: deferred là best-effort
+
+<Warning>
+**`no_candidate` và `clipboard_empty` là chuyện bình thường, không phải bug của bạn.** Deferred deep linking phụ thuộc vào hành vi người dùng (có dán clipboard không, có tới store qua chính link Li2 không) và giới hạn nền tảng. Một tỷ lệ trượt nhất định là **bản chất của cơ chế**, không phải lỗi code. Đừng cố "sửa cho hết trượt" — hãy phân biệt **trượt do người dùng/nền tảng** (bình thường) với **trượt do cấu hình sai** (cần sửa, xem bên dưới).
+</Warning>
+
+## Chẩn đoán theo triệu chứng
+
+### App không mở (vẫn ra trình duyệt) — luồng immediate
+
+<AccordionGroup>
+  <Accordion title="iOS: chạm link nhưng Safari mở thay vì app">
+    Thứ tự kiểm tra:
+    1. **AASA đã live chưa**: `curl -s https://your-domain.com/.well-known/apple-app-site-association | jq` — phải thấy `appID` đúng dạng `<TeamID>.<BundleID>`.
+    2. **Entitlement**: file `.entitlements` có `applinks:your-domain.com` đúng domain.
+    3. **Cache Apple CDN ~6h**: Apple cache AASA ~6 giờ bất kể `max-age`. Sau khi sửa cấu hình, **gỡ app và cài lại** để buộc tải AASA mới. Xem [Cấu Hình Domain](./domain-setup#caching--vì-sao-thay-đổi-cần-thời-gian).
+  </Accordion>
+
+  <Accordion title="Android: hộp chọn ứng dụng hiện ra thay vì mở thẳng app">
+    Thiếu xác minh App Link. Kiểm tra:
+    ```bash
+    adb shell pm get-app-links your.package.name
+    # Phải hiển thị: your-domain.com → verified
+    ```
+    - Nếu thấy `1024` (chưa xác minh): **SHA-256 trong dashboard không khớp** chứng chỉ ký APK đang cài (debug vs release khác nhau — thêm cả hai).
+    - Thiếu `android:autoVerify="true"` trong intent-filter.
+    - Buộc xác minh lại: `adb shell pm verify-app-links --re-verify your.package.name`.
+    - `assetlinks.json` có thể bị cache; xem [Cấu Hình Domain](./domain-setup).
+  </Accordion>
+</AccordionGroup>
+
+### Mọi lời gọi `/track/open` trả 401
+
+<Accordion title="401 Unauthenticated trên mọi request">
+**Đây là lỗi phổ biến nhất.** Gần như luôn là sai loại key:
+
+- Dùng **publishable key** `li2_pk_...` (Settings → Analytics → Publishable Key), **không** dùng server API key `X-Li2-API-Key`. Endpoint mobile chỉ chấp nhận `li2_pk_*`.
+- **Android**: thiếu `LI2_PUBLISHABLE_KEY` trong `local.properties` → `BuildConfig.LI2_PUBLISHABLE_KEY` rỗng → header rỗng → 401. Thêm key rồi build lại.
+- Lỗi xác thực ở middleware **không kèm `error_code`** — branch theo **HTTP status 401**, đừng so khớp chuỗi message. Xem [API: body lỗi](./track-open-api#hình-dạng-body-lỗi).
+</Accordion>
+
+### Deferred không khôi phục được (link == null) — đọc `missReason`
+
+| `missReason` | Bình thường hay cần sửa? | Ý nghĩa & hành động |
+|---|---|---|
+| `no_candidate` | **Thường bình thường** | Không tìm thấy click khớp: người dùng không tới store qua chính link Li2, hoặc bản ghi Redis đã hết hạn (TTL). Chỉ cần lo nếu **mọi** lượt deferred đều `no_candidate` → kiểm tra trang trung gian có thực sự gieo `li2_cid` (iOS) / `li2_dl` (Android) không. |
+| `clipboard_empty` | **Bình thường (iOS)** | Người dùng chạm Paste nhưng clipboard không chứa link Li2. Không sửa được từ phía app. |
+| `clipboard_denied` | **Bình thường (iOS)** | Người dùng chặn quyền dán. Trên iOS 16+ dùng `Li2PasteButton` để tránh alert; iOS 15 không tránh được. |
+| `opt_out` | **Bình thường** | Người dùng chủ động bấm "Bỏ qua". Hành vi đúng. |
+| `cross_tenant_blocked` | **Cần xem lại** | Hostname thuộc org khác — bị chặn theo cô lập tenant. Kiểm tra `li2Domains` / `deepLinkDomains` bạn gửi có đúng là domain của **org bạn** không. |
+
+<Note>
+**Cô lập tenant ở luồng deferred trả `200` + `cross_tenant_blocked`, KHÔNG phải 403** — để không lộ việc hostname có thuộc org khác hay không. Chỉ luồng **immediate** mới trả `403` khi domain không thuộc org. Xem [API](./track-open-api#mã-trạng-thái).
+</Note>
+
+### iOS: `Li2PasteButton` luôn xám / disabled
+
+<Accordion title="Nút Paste không bấm được">
+- **Clipboard đang rỗng** → đây là behavior **đúng** của `Li2PasteButton`. Bạn **phải** có nút thay thế cho nhánh `clipboardHasContent == false` (gọi `submitPasteControlEmpty()`), nếu không người dùng bị kẹt và outcome `empty` không bao giờ được gửi. Xem [ConsentSheet trong Tích hợp App](./mobile-integration#3-màn-hình-đồng-ý-copy-paste--đã-kiểm-chứng-trên-thiết-bị).
+- **Tự dựng UIPasteControl trong `fullScreenCover` bị xám**: phải gán `control.target` tường minh + override `canPaste(_:)`. Đây là lý do nên dùng `Li2PasteButton` của SDK thay vì tự bọc.
+</Accordion>
+
+### iOS: màn hình đồng ý hiện lại sau khi Universal Link đã mở app
+
+<Accordion title="Sheet đồng ý xuất hiện rồi tự biến mất">
+**Bình thường** nếu Universal Link tới trong cửa sổ grace (~250ms). UL "thắng": cờ `hasReceivedUniversalLink` được bật, nhánh deferred bị bỏ qua, và sheet tự dismiss. Không cần sửa.
+</Accordion>
+
+### Android: deferred luôn `no_candidate` dù cài qua Play Store
+
+<Accordion title="Install Referrer không trả li2_dl">
+- **`adb install` APK cục bộ KHÔNG có referrer.** Install Referrer chỉ trả chuỗi thật khi cài qua **Play Store** (internal-test track). Đây là giới hạn nền tảng, không phải bug.
+- Người dùng phải tới Play Store **qua chính link Li2** (URL mang tham số referrer). Tự tìm app trên store → không có `li2_dl` → `no_candidate`.
+- App phải gọi `InstallReferrerClient` ở **lần mở đầu**. Truy vấn **một lần** rồi lưu kết quả — đừng phụ thuộc gọi lại nhiều lần.
+- **Không có cửa sổ "mở ngay kẻo mất"**: Play lưu referrer lúc cài và giữ lại; bạn lấy được ở lần mở đầu dù mở bằng cách nào.
+</Accordion>
+
+### Conversion: lead/sale báo lỗi
+
+| Lỗi | Nguyên nhân / cách sửa |
+|---|---|
+| `.noClickIdAvailable` (iOS) | Gọi attributed/anonymous khi chưa có match. Chạy deep-link match trước, hoặc dùng biến **Direct**. |
+| `.missingExternalId` (iOS) | `identify` thiếu `external_id`. Cấp user id ổn định. |
+| `403` | Gói/feature conversion chưa bật cho org hoặc link. |
+| `400` (customer not found) | Cấp `email`/`name`/`phone` để tự tạo khách hàng, hoặc ghi `lead` trước `sale`. |
+| Lead & sale rơi vào hai hồ sơ | Thiếu `identify` (iOS) / lead `__identify__` (HTTP) trước sale. Xem [Đo Lường Chuyển Đổi](./conversion#identify--ẩn-danh--định-danh). |
+
+## Cây quyết định nhanh
+
+```
+Response về?
+├─ Không (timeout/network)  → retry TRONG CÙNG lần mở; đừng retry xuyên nhiều lần mở
+├─ 401                       → sai loại key (xem mục 401 ở trên)
+├─ 403                       → org thiếu gói Pro, HOẶC immediate domain không thuộc org
+├─ 200, link != null         → KHỚP ✓  (matchMethod cho biết qua đường nào)
+└─ 200, link == null         → TRƯỢT — đọc missReason:
+                               ├─ no_candidate / clipboard_* / opt_out → thường bình thường
+                               └─ cross_tenant_blocked → kiểm tra domain bạn gửi
+```
+
+## Khi nào cần mở ticket
+
+Tự gỡ được hầu hết bằng các bước trên. Mở ticket tới [support@li2.ai](mailto:support@li2.ai) khi:
+- AASA/assetlinks báo **"Live & correct"** trên dashboard nhưng device vẫn không xác minh sau khi đã chờ qua cache (~6h iOS).
+- `/track/open` trả **5xx** lặp lại (lỗi server — kèm timestamp + response body).
+- `matchMethod`/`missReason` trả giá trị **không có trong tài liệu**.
+
+## Bước tiếp theo
+
+<CardGroup cols={2}>
+  <Card title="API: POST /track/open" icon="code" href="./track-open-api">
+    Tra cứu đầy đủ matchMethod, missReason, mã trạng thái và body lỗi.
+  </Card>
+  <Card title="Cấu Hình Domain" icon="globe" href="./domain-setup">
+    Kiểm tra file AASA / assetlinks và vấn đề caching.
+  </Card>
+</CardGroup>

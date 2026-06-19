@@ -151,7 +151,9 @@
                   "vi/deep-links/overview",
                   "vi/deep-links/domain-setup",
                   "vi/deep-links/mobile-integration",
-                  "vi/deep-links/track-open-api"
+                  "vi/deep-links/conversion",
+                  "vi/deep-links/track-open-api",
+                  "vi/deep-links/troubleshooting"
                 ]
               },
               {
